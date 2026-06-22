@@ -15,7 +15,7 @@ import "crypto";
 import "async_hooks";
 import "stream";
 import "../_libs/isbot.mjs";
-const appCss = "/assets/styles-C7wRDjoC.css";
+const appCss = "/assets/styles-RHu6j7OJ.css";
 function reportLovableError(error, context = {}) {
   if (typeof window === "undefined") return;
   window.__lovableEvents?.captureException?.(
@@ -118,20 +118,20 @@ function RootComponent() {
   const { queryClient } = Route$1.useRouteContext();
   return /* @__PURE__ */ jsxRuntimeExports.jsx(QueryClientProvider, { client: queryClient, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {}) });
 }
-const $$splitComponentImporter = () => import("./index-KzDpnzSp.mjs");
+const $$splitComponentImporter = () => import("./index-DpTbSBsH.mjs");
 const Route = createFileRoute("/")({
   head: () => ({
     meta: [{
-      title: "agent-dev — a minimal terminal coding agent"
+      title: "agent-dev — terminal coding agent with Ink TUI"
     }, {
       name: "description",
-      content: "agent-dev is a minimal terminal coding agent with an Ink UI. Chat with an AI that reads, writes, edits files, and runs bash — right in your terminal."
+      content: "A minimal terminal coding agent with an Ink TUI. Read and edit code, search the web, run git/shell with approval, use MCP servers, load skills, and optionally delegate through a boss orchestrator."
     }, {
       property: "og:title",
-      content: "agent-dev — a minimal terminal coding agent"
+      content: "agent-dev — terminal coding agent with Ink TUI"
     }, {
       property: "og:description",
-      content: "A minimal terminal coding agent with an Ink UI. Read, write, edit, and run bash from your shell."
+      content: "Chat with an AI in your terminal. 17 built-in tools, Build/Plan modes, boss orchestrator, MCP, and Vercel Agent Skills."
     }, {
       property: "og:type",
       content: "website"
@@ -156,7 +156,7 @@ const Route = createFileRoute("/")({
           price: "0",
           priceCurrency: "USD"
         },
-        description: "A minimal terminal coding agent with an Ink UI. Read, write, edit files and run bash commands."
+        description: "A minimal terminal coding agent with an Ink TUI. ReAct loop with 17 tools, boss orchestrator, MCP, and skills."
       })
     }]
   }),

@@ -62,9 +62,9 @@
 .dark {
   --background: oklch(0.16 0.012 60);
   --foreground: oklch(0.94 0.018 85);
-  --card: oklch(0.20 0.014 60);
+  --card: oklch(0.2 0.014 60);
   --card-foreground: oklch(0.94 0.018 85);
-  --popover: oklch(0.20 0.014 60);
+  --popover: oklch(0.2 0.014 60);
   --popover-foreground: oklch(0.94 0.018 85);
   --primary: oklch(0.72 0.18 50);
   --primary-foreground: oklch(0.16 0.012 60);
@@ -88,7 +88,8 @@
     border-color: var(--color-border);
   }
 
-  html, body {
+  html,
+  body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-mono);
@@ -120,6 +121,8 @@
     color: var(--color-primary);
   }
   @keyframes blink {
-    to { visibility: hidden; }
+    to {
+      visibility: hidden;
+    }
   }
 }
