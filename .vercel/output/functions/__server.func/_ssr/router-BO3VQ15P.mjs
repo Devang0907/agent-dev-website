@@ -15,7 +15,7 @@ import "crypto";
 import "async_hooks";
 import "stream";
 import "../_libs/isbot.mjs";
-const appCss = "/assets/styles-RHu6j7OJ.css";
+const appCss = "/assets/styles-BudpCGG8.css";
 function reportLovableError(error, context = {}) {
   if (typeof window === "undefined") return;
   window.__lovableEvents?.captureException?.(
@@ -79,7 +79,7 @@ function ErrorComponent({ error, reset }) {
     ] })
   ] }) });
 }
-const Route$1 = createRootRouteWithContext()({
+const Route$2 = createRootRouteWithContext()({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -97,7 +97,11 @@ const Route$1 = createRootRouteWithContext()({
       {
         rel: "stylesheet",
         href: appCss
-      }
+      },
+      // Tab icon — place your logo in public/ (see filenames below)
+      { rel: "icon", href: "/favicon.ico", sizes: "any" },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" }
     ]
   }),
   shellComponent: RootShell,
@@ -115,23 +119,23 @@ function RootShell({ children }) {
   ] });
 }
 function RootComponent() {
-  const { queryClient } = Route$1.useRouteContext();
+  const { queryClient } = Route$2.useRouteContext();
   return /* @__PURE__ */ jsxRuntimeExports.jsx(QueryClientProvider, { client: queryClient, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {}) });
 }
-const $$splitComponentImporter = () => import("./index-DpTbSBsH.mjs");
-const Route = createFileRoute("/")({
+const $$splitComponentImporter$1 = () => import("./index-BF5fHihY.mjs");
+const Route$1 = createFileRoute("/")({
   head: () => ({
     meta: [{
-      title: "agent-dev — terminal coding agent with Ink TUI"
+      title: "agent-dev — a minimal terminal coding agent"
     }, {
       name: "description",
-      content: "A minimal terminal coding agent with an Ink TUI. Read and edit code, search the web, run git/shell with approval, use MCP servers, load skills, and optionally delegate through a boss orchestrator."
+      content: "A minimal terminal coding agent with an Ink TUI. Read and edit code, search the web, run git/shell with approval, use MCP servers, load skills, control a browser, chat via Telegram, and optionally delegate through a boss orchestrator."
     }, {
       property: "og:title",
       content: "agent-dev — terminal coding agent with Ink TUI"
     }, {
       property: "og:description",
-      content: "Chat with an AI in your terminal. 17 built-in tools, Build/Plan modes, boss orchestrator, MCP, and Vercel Agent Skills."
+      content: "Chat with an AI in your terminal. 19 built-in tools, Telegram gateway, browser automation, Build/Plan modes, boss orchestrator, MCP, and Vercel Agent Skills."
     }, {
       property: "og:type",
       content: "website"
@@ -156,21 +160,55 @@ const Route = createFileRoute("/")({
           price: "0",
           priceCurrency: "USD"
         },
-        description: "A minimal terminal coding agent with an Ink TUI. ReAct loop with 17 tools, boss orchestrator, MCP, and skills."
+        description: "A minimal terminal coding agent with an Ink TUI. ReAct loop with 19 tools, Telegram gateway, browser automation, boss orchestrator, MCP, and skills."
       })
+    }]
+  }),
+  component: lazyRouteComponent($$splitComponentImporter$1, "component")
+});
+const $$splitComponentImporter = () => import("./index-Bjre0O72.mjs");
+const Route = createFileRoute("/docs/")({
+  head: () => ({
+    meta: [{
+      title: "Documentation — agent-dev"
+    }, {
+      name: "description",
+      content: "How to install, configure, and use agent-dev."
+    }, {
+      property: "og:title",
+      content: "Documentation — agent-dev"
+    }, {
+      property: "og:description",
+      content: "How to install, configure, and use agent-dev."
+    }, {
+      property: "og:type",
+      content: "website"
+    }, {
+      property: "og:url",
+      content: "/docs"
+    }],
+    links: [{
+      rel: "canonical",
+      href: "/docs"
     }]
   }),
   component: lazyRouteComponent($$splitComponentImporter, "component")
 });
-const IndexRoute = Route.update({
+const IndexRoute = Route$1.update({
   id: "/",
   path: "/",
-  getParentRoute: () => Route$1
+  getParentRoute: () => Route$2
+});
+const DocsIndexRoute = Route.update({
+  id: "/docs/",
+  path: "/docs/",
+  getParentRoute: () => Route$2
 });
 const rootRouteChildren = {
-  IndexRoute
+  IndexRoute,
+  DocsIndexRoute
 };
-const routeTree = Route$1._addFileChildren(rootRouteChildren)._addFileTypes();
+const routeTree = Route$2._addFileChildren(rootRouteChildren)._addFileTypes();
 const getRouter = () => {
   const queryClient = new QueryClient();
   const router = createRouter({

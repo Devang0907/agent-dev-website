@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteNav } from "@/components/site-nav";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -8,13 +10,13 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "A minimal terminal coding agent with an Ink TUI. Read and edit code, search the web, run git/shell with approval, use MCP servers, load skills, and optionally delegate through a boss orchestrator.",
+          "A minimal terminal coding agent with an Ink TUI. Read and edit code, search the web, run git/shell with approval, use MCP servers, load skills, control a browser, chat via Telegram, and optionally delegate through a boss orchestrator.",
       },
       { property: "og:title", content: "agent-dev — terminal coding agent with Ink TUI" },
       {
         property: "og:description",
         content:
-          "Chat with an AI in your terminal. 17 built-in tools, Build/Plan modes, boss orchestrator, MCP, and Vercel Agent Skills.",
+          "Chat with an AI in your terminal. 19 built-in tools, Telegram gateway, browser automation, Build/Plan modes, boss orchestrator, MCP, and Vercel Agent Skills.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/" },
@@ -31,7 +33,7 @@ export const Route = createFileRoute("/")({
           operatingSystem: "macOS, Linux, Windows",
           offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
           description:
-            "A minimal terminal coding agent with an Ink TUI. ReAct loop with 17 tools, boss orchestrator, MCP, and skills.",
+            "A minimal terminal coding agent with an Ink TUI. ReAct loop with 19 tools, Telegram gateway, browser automation, boss orchestrator, MCP, and skills.",
         }),
       },
     ],
@@ -49,99 +51,21 @@ const ASCII = ` █████╗  ██████╗ ███████�
 function Index() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Nav />
+      <SiteNav />
       <main className="mx-auto max-w-6xl px-5 sm:px-8">
         <Hero />
         <Install />
         <Modes />
         <Tools />
         <Providers />
+        <Telegram />
         <Commands />
         <SkillsMcp />
         <Config />
         <CTA />
       </main>
-      <Footer />
+      <SiteFooter />
     </div>
-  );
-}
-
-function Nav() {
-  return (
-    <header className="sticky top-0 z-30 border-b border-border/60 backdrop-blur supports-[backdrop-filter]:bg-background/70">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3 sm:px-8">
-        <a href="/" className="flex items-center gap-2 text-sm font-bold tracking-tight">
-          <span className="text-primary">▮</span>
-          <span>agent-dev</span>
-        </a>
-        <nav className="hidden items-center gap-5 text-xs text-muted-foreground lg:flex">
-          <a href="#install" className="hover:text-foreground">
-            install
-          </a>
-          <a href="#modes" className="hover:text-foreground">
-            modes
-          </a>
-          <a href="#tools" className="hover:text-foreground">
-            tools
-          </a>
-          <a href="#providers" className="hover:text-foreground">
-            providers
-          </a>
-          <a href="#commands" className="hover:text-foreground">
-            commands
-          </a>
-          <a href="#skills" className="hover:text-foreground">
-            skills
-          </a>
-          <a
-            href="https://github.com/Devang0907/agent-dev"
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-foreground"
-          >
-            github ↗
-          </a>
-        </nav>
-        <div className="flex items-center gap-2">
-          <ThemeToggle />
-          <a
-            href="https://www.npmjs.com/package/@devang0907/agent-dev"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-sm bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground transition-colors hover:opacity-90"
-          >
-            $ install
-          </a>
-        </div>
-      </div>
-    </header>
-  );
-}
-
-function ThemeToggle() {
-  const [dark, setDark] = useState(false);
-  useEffect(() => {
-    const stored = localStorage.getItem("theme");
-    const prefers = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const isDark = stored ? stored === "dark" : prefers;
-    document.documentElement.classList.toggle("dark", isDark);
-    setDark(isDark);
-  }, []);
-  const toggle = () => {
-    const next = !dark;
-    setDark(next);
-    document.documentElement.classList.toggle("dark", next);
-    localStorage.setItem("theme", next ? "dark" : "light");
-  };
-  return (
-    <button
-      onClick={toggle}
-      aria-label="Toggle theme"
-      title={dark ? "Switch to light" : "Switch to dark"}
-      className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-border text-sm transition-colors hover:bg-secondary"
-    >
-      {dark ? "☀" : "☾"}
-    </button>
   );
 }
 
@@ -155,7 +79,7 @@ function Hero() {
         </pre>
         <div className="mt-6 inline-flex w-fit items-center gap-2 rounded-sm border border-border bg-card px-2.5 py-1 text-[11px] text-muted-foreground">
           <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-          Ink TUI · ReAct loop · Node 20+
+          Ink TUI · Telegram · Browser · Node 20+
         </div>
         <h1 className="mt-4 text-3xl font-bold leading-[1.1] tracking-tight sm:text-5xl">
           AI in your terminal.
@@ -165,7 +89,8 @@ function Hero() {
         <p className="mt-5 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
           <span className="text-foreground">agent-dev</span> is a minimal terminal coding agent.
           Chat with an AI that reads and edits code, searches the web, runs git and shell commands
-          (with approval), uses MCP servers, loads skills — and optionally delegates work through a{" "}
+          (with approval), uses MCP servers, loads skills, controls a real Chromium browser,
+          schedules Telegram reminders — and optionally delegates work through a{" "}
           <span className="text-purple-500 dark:text-purple-400">boss orchestrator</span> that
           coordinates specialized workers.
         </p>
@@ -182,9 +107,10 @@ function Hero() {
         </div>
         <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[11px] text-muted-foreground">
           <span>● MIT licensed</span>
-          <span>● 17 built-in tools</span>
-          <span>● Build · Plan · Boss modes</span>
-          <span>● MCP + Vercel skills</span>
+          <span>● 19 built-in tools</span>
+          <span>● Telegram gateway</span>
+          <span>● Browser automation</span>
+          <span>● Build · Plan · Boss</span>
         </div>
       </div>
 
@@ -286,6 +212,7 @@ function Install() {
         <pre className="overflow-x-auto leading-relaxed">
           {`export OPENROUTER_API_KEY=sk-or-...   # free models (default)
 export OPENAI_API_KEY=sk-...          # ChatGPT
+export ANTHROPIC_API_KEY=sk-ant-...   # Claude
 export GROQ_API_KEY=gsk_...           # Groq
 export GEMINI_API_KEY=...             # Google Gemini`}
         </pre>
@@ -319,7 +246,7 @@ function Modes() {
     },
   ];
   const workers = [
-    ["explore", "read-only research", "read, grep, git, docs"],
+    ["explore", "read-only research", "read, grep, git, docs, browser"],
     ["implement", "focused code changes", "read, write, edit, diff, grep, verify"],
     ["shell", "commands & tests", "bash, exec, verify"],
     ["plan", "architecture docs", "plan, read, grep"],
@@ -388,9 +315,9 @@ function Tools() {
     ["read", "Read a file in the project directory"],
     ["write", "Create or overwrite a file"],
     ["edit", "Replace text in a file"],
-    ["diff", "Preview unified diff before applying"],
+    ["diff", "Preview unified diff before applying changes"],
     ["grep", "Search codebase (ripgrep; findstr on Windows)"],
-    ["git", "Status, diff, log, commit — writes need approval"],
+    ["git", "Git status, diff, log, commit — writes need approval"],
     ["bash", "Run a shell command — requires approval"],
     ["exec", "Structured shell command — requires approval"],
     ["web_search", "Search the internet (DuckDuckGo / Google News)"],
@@ -402,14 +329,24 @@ function Tools() {
     ["verify", "Auto-run tests/build from package.json scripts"],
     ["mcp", "Call tools from MCP servers"],
     ["skill", "Load a skill from available_skills"],
+    ["schedule", "Telegram reminders and daily tasks (gateway must run)"],
+    ["browser", "Control Chromium — navigate, click, extract, screenshot"],
+  ];
+  const browserActions = [
+    ["open / goto", "Launch browser or navigate to a URL"],
+    ["click / type / select", "Interact with page elements via CSS selectors"],
+    ["getPageContent / extract", "Inspect page text and element values"],
+    ["screenshot", "Save PNG to ~/.agent-dev/screenshots/"],
+    ["listTabs / switchTab", "Multi-tab control across a session"],
+    ["waitForUser", "Pause for CAPTCHA, OTP, or manual payment"],
   ];
   return (
-    <Section id="tools" label="03" title="17 built-in tools">
+    <Section id="tools" label="03" title="19 built-in tools">
       <p className="-mt-4 mb-6 text-sm text-muted-foreground">
-        16 in normal mode; <code className="text-foreground">delegate</code> is boss-only. File ops
-        are scoped to the working directory. Shell, git writes, SQL mutations, and MCP calls prompt
-        for approval (<code className="text-foreground">y</code> /{" "}
-        <code className="text-foreground">n</code>).
+        18 in normal mode; <code className="text-foreground">delegate</code> is boss-only. File ops
+        are scoped to the working directory. Shell, git writes, SQL mutations, MCP calls, and
+        destructive browser actions prompt for approval (
+        <code className="text-foreground">y</code> / <code className="text-foreground">n</code>).
       </p>
       <div className="grid gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
         {tools.map(([k, d]) => (
@@ -419,10 +356,51 @@ function Tools() {
               {k === "delegate" && (
                 <span className="text-[10px] text-purple-500 dark:text-purple-400">boss</span>
               )}
+              {k === "browser" && (
+                <span className="text-[10px] text-sky-500 dark:text-sky-400">new</span>
+              )}
+              {k === "schedule" && (
+                <span className="text-[10px] text-sky-500 dark:text-sky-400">telegram</span>
+              )}
             </div>
             <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{d}</p>
           </div>
         ))}
+      </div>
+
+      <div id="browser" className="mt-6 rounded-md border border-border bg-card p-5">
+        <h3 className="text-sm font-semibold">Browser automation</h3>
+        <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+          The agent can interact with real websites — fill forms, click buttons, extract data, and
+          take screenshots. Runs <strong className="text-foreground">visible by default</strong> so
+          you can watch it work. Session state (tabs, cookies) persists across tool calls.
+        </p>
+        <CodeBlock
+          title="one-time setup"
+          lines={["$ npx playwright install chromium"]}
+        />
+        <div className="mt-4 overflow-hidden rounded-md border border-border">
+          <table className="w-full text-left text-xs">
+            <thead className="border-b border-border bg-secondary/50 text-[10px] uppercase tracking-wider text-muted-foreground">
+              <tr>
+                <th className="px-3 py-2 font-medium">Action</th>
+                <th className="px-3 py-2 font-medium">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {browserActions.map(([action, desc]) => (
+                <tr key={action} className="border-b border-border last:border-0">
+                  <td className="px-3 py-2 font-semibold text-primary">{action}</td>
+                  <td className="px-3 py-2 text-muted-foreground">{desc}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-3 text-xs text-muted-foreground">
+          Plan mode allows read-only browser actions only. Form interactions and purchases require
+          Build mode and may prompt for approval.
+        </p>
       </div>
     </Section>
   );
@@ -430,25 +408,28 @@ function Tools() {
 
 function Providers() {
   const rows = [
-    ["OpenAI", "OPENAI_API_KEY", "gpt-4o, gpt-4o-mini"],
-    ["Groq", "GROQ_API_KEY", "llama-3.3-70b-versatile, openai/gpt-oss-120b"],
-    ["Google Gemini", "GEMINI_API_KEY or GOOGLE_API_KEY", "gemini-2.0-flash, gemini-2.5-flash"],
+    ["OpenAI (ChatGPT)", "OPENAI_API_KEY", "gpt-4o, gpt-4.1, o4-mini"],
+    ["Anthropic (Claude)", "ANTHROPIC_API_KEY", "claude-sonnet-4-6, claude-opus-4-8, claude-haiku-4-5"],
+    ["Groq", "GROQ_API_KEY", "llama-3.3-70b-versatile, llama-3.1-8b-instant"],
+    ["Google Gemini", "GEMINI_API_KEY or GOOGLE_API_KEY", "gemini-2.5-pro, gemini-2.5-flash"],
     ["Free (OpenRouter)", "OPENROUTER_API_KEY", "meta-llama/llama-3.3-70b-instruct:free"],
   ];
   const freeModels = [
-    ["Llama 3.3 70B", "meta-llama/llama-3.3-70b-instruct:free"],
-    ["DeepSeek R1", "deepseek/deepseek-r1:free"],
-    ["Qwen3 235B", "qwen/qwen3-235b-a22b:free"],
-    ["Gemma 3 27B", "google/gemma-3-27b-it:free"],
-    ["Free auto", "openrouter/free — picks any available free model"],
+    ["Free auto (recommended)", "openrouter/free"],
+    ["Llama 3.3 70B (free)", "meta-llama/llama-3.3-70b-instruct:free"],
+    ["Qwen3 Coder (free)", "qwen/qwen3-coder:free"],
+    ["Qwen3 Next 80B (free)", "qwen/qwen3-next-80b-a3b-instruct:free"],
+    ["GPT-OSS 120B (free)", "openai/gpt-oss-120b:free"],
+    ["Gemma 4 26B (free)", "google/gemma-4-26b-a4b-it:free"],
   ];
   return (
     <Section id="providers" label="04" title="bring your own model">
       <p className="-mt-4 mb-6 text-sm text-muted-foreground">
         Model refs use <code className="text-foreground">provider/model-id</code>, e.g.{" "}
-        <code className="text-foreground">groq/llama-3.3-70b-versatile</code> or{" "}
-        <code className="text-foreground">free/deepseek/deepseek-r1:free</code>. Default:{" "}
+        <code className="text-foreground">anthropic/claude-sonnet-4-6</code> or{" "}
+        <code className="text-foreground">free/openrouter/free</code>. Default:{" "}
         <code className="text-foreground">free/meta-llama/llama-3.3-70b-instruct:free</code>.
+        Retired free slugs are remapped automatically.
       </p>
       <div className="overflow-hidden rounded-md border border-border bg-card">
         <table className="w-full text-left text-sm">
@@ -499,6 +480,102 @@ function Providers() {
   );
 }
 
+function Telegram() {
+  const tgCommands = [
+    ["/start", "Welcome guide — commands, tools, project path"],
+    ["/build, /plan, /boss", "Switch agent modes from Telegram"],
+    ["/model <provider/id>", "Switch model remotely"],
+    ["/schedules", "List active reminders and daily tasks"],
+    ["/stop", "Abort the current turn"],
+    ["/whoami", "Show your Telegram user ID for setup"],
+  ];
+  return (
+    <Section id="telegram" label="05" title="telegram gateway">
+      <p className="-mt-4 mb-6 text-sm text-muted-foreground">
+        Chat with agent-dev from your phone via Telegram. The gateway runs on your PC with
+        long-polling — no public URL or port forwarding. Shell/git/exec approvals arrive as{" "}
+        <strong className="text-foreground">Approve / Deny</strong> inline buttons. Set reminders
+        and daily tasks (e.g. morning news) while the gateway is running.
+      </p>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <div className="space-y-4">
+          <CodeBlock
+            title="setup via /connect in TUI"
+            lines={[
+              "# 1. Create a bot with @BotFather, save the token",
+              "# 2. In agent-dev run /connect → Telegram",
+              "# 3. DM your bot, send /whoami, add ID to allowlist",
+            ]}
+          />
+          <CodeBlock
+            title="or settings.json"
+            lines={[
+              "{",
+              '  "telegram": {',
+              '    "botToken": "123456789:ABCdef...",',
+              '    "allowedUserIds": [987654321],',
+              '    "workdir": "D:/projects/MyRepo"',
+              "  }",
+              "}",
+            ]}
+          />
+        </div>
+        <div className="space-y-4">
+          <CodeBlock
+            title="run the gateway"
+            lines={[
+              "$ agent telegram --workdir D:/projects/MyRepo",
+              "$ agent telegram --boss --verbose",
+            ]}
+          />
+          <div className="rounded-md border border-border bg-terminal p-4 text-xs leading-relaxed text-terminal-foreground">
+            <div className="mb-2 text-white/40"># live gateway log</div>
+            <pre>{`[user] (123456789) list files in src
+[agent] Here are the files in src/...
+[tool] Running: grep pattern
+[approval] npm test
+[approval] Approved`}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-6 grid gap-4 lg:grid-cols-2">
+        <div className="overflow-hidden rounded-md border border-border bg-card">
+          <div className="border-b border-border px-4 py-2 text-xs text-muted-foreground">
+            telegram commands
+          </div>
+          <table className="w-full text-left text-xs">
+            <tbody>
+              {tgCommands.map(([cmd, desc]) => (
+                <tr key={cmd} className="border-b border-border last:border-0">
+                  <td className="px-4 py-2.5 font-mono text-primary">{cmd}</td>
+                  <td className="px-4 py-2.5 text-muted-foreground">{desc}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="rounded-md border border-border bg-card p-5">
+          <h3 className="text-sm font-semibold">Reminders & scheduled tasks</h3>
+          <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+            Ask the agent to remind you later or run recurring tasks. Uses the{" "}
+            <code className="text-foreground">schedule</code> tool — a background scheduler checks
+            every 30 seconds and delivers due items to your chat.
+          </p>
+          <pre className="mt-4 overflow-x-auto rounded-sm border border-border bg-background p-3 text-[11px] leading-relaxed text-muted-foreground">
+            {`Remind me to drink water in 5 minutes
+Send me top news headlines every morning at 8:00`}
+          </pre>
+          <p className="mt-3 text-xs text-muted-foreground">
+            Only users in <code className="text-foreground">allowedUserIds</code> can chat. Treat
+            the bot token like a password.
+          </p>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
 function Commands() {
   const cmds = [
     ["/model, /m [search]", "Open model selector (grouped by provider)"],
@@ -509,6 +586,7 @@ function Commands() {
     ["/trace", "Show path to the latest worker trace log"],
     ["/sessions", "Browse and load saved chat sessions"],
     ["/settings", "Thinking level and API key status"],
+    ["/connect", "Configure Telegram gateway (bot token & allowed user IDs)"],
     ["/skills", "Browse and install skills (Vercel CLI)"],
     ["/skill <name>", "Load a skill for the current turn"],
     ["/new", "Start a new session"],
@@ -521,6 +599,7 @@ function Commands() {
     [`npm run dev -- --boss -p "refactor auth"`, "Boss mode, print and exit"],
     ["npm run dev -- -c", "Continue last session"],
     ["npm run dev -- --model groq/llama-3.3-70b-versatile", "Pick a model inline"],
+    ["agent telegram --workdir ./my-repo", "Start Telegram gateway"],
     ["npm run build && npm start", "Production build"],
   ];
   const flags = [
@@ -537,7 +616,7 @@ function Commands() {
     ["Ctrl+U / Ctrl+D", "Scroll chat up/down"],
   ];
   return (
-    <Section id="commands" label="05" title="commands & cli">
+    <Section id="commands" label="06" title="commands & cli">
       <div className="grid gap-4 lg:grid-cols-2">
         <div className="rounded-md border border-border bg-card">
           <div className="border-b border-border px-4 py-2 text-xs text-muted-foreground">
@@ -593,7 +672,7 @@ function Commands() {
 
 function SkillsMcp() {
   return (
-    <Section id="skills" label="06" title="skills & mcp">
+    <Section id="skills" label="07" title="skills & mcp">
       <div className="grid gap-4 lg:grid-cols-2">
         <div className="rounded-md border border-border bg-card p-5">
           <h3 className="text-sm font-semibold">Vercel Agent Skills</h3>
@@ -641,7 +720,7 @@ agent skills list`}
   "servers": {
     "filesystem": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "."]
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "D:/projects"]
     }
   }
 }`}
@@ -678,7 +757,7 @@ agent skills list`}
 
 function Config() {
   return (
-    <Section id="config" label="07" title="configuration">
+    <Section id="config" label="08" title="configuration">
       <p className="-mt-4 mb-4 text-sm text-muted-foreground">
         All config lives under <code className="text-foreground">~/.agent-dev/</code> (override with{" "}
         <code className="text-foreground">AGENT_DEV_DIR</code>).
@@ -701,6 +780,8 @@ function Config() {
                 ["plan.json", "Active task plan"],
                 ["mcp.json", "MCP server definitions"],
                 ["traces/<sessionId>/", "Boss worker trace logs (JSONL)"],
+                ["telegram-sessions.json", "Telegram chat → session id mapping"],
+                ["schedules.json", "Active reminders and daily scheduled tasks"],
               ].map(([path, purpose]) => (
                 <tr key={path} className="border-b border-border last:border-0">
                   <td className="px-4 py-2 font-mono text-primary">{path}</td>
@@ -725,9 +806,11 @@ function Config() {
       </div>
       <p className="mt-4 text-xs text-muted-foreground">
         Set <code className="text-foreground">orchestratorMode</code> to{" "}
-        <code className="text-foreground">"boss"</code> to enable boss mode by default. Single-agent
-        ReAct loop — no LangGraph. Boss mode nests additional loops inside the{" "}
-        <code className="text-foreground">delegate</code> tool.
+        <code className="text-foreground">"boss"</code> to enable boss mode by default. Env vars:{" "}
+        <code className="text-foreground">TELEGRAM_BOT_TOKEN</code>,{" "}
+        <code className="text-foreground">TELEGRAM_ALLOWED_USER_IDS</code>,{" "}
+        <code className="text-foreground">AGENT_DEV_DIR</code>. Single-agent ReAct loop — boss mode
+        nests additional loops inside the <code className="text-foreground">delegate</code> tool.
       </p>
     </Section>
   );
@@ -746,43 +829,6 @@ function CTA() {
         <CopyCmd cmd="npx @devang0907/agent-dev" />
       </div>
     </section>
-  );
-}
-
-function Footer() {
-  return (
-    <footer className="border-t border-border">
-      <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-3 px-5 py-8 text-xs text-muted-foreground sm:flex-row sm:items-center sm:px-8">
-        <div className="flex items-center gap-2">
-          <span className="text-primary">▮</span>
-          <span>agent-dev — MIT — built with Ink</span>
-        </div>
-        <div className="flex flex-wrap items-center gap-5">
-          <a
-            href="https://github.com/Devang0907/agent-dev"
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-foreground"
-          >
-            github
-          </a>
-          <a
-            href="https://www.npmjs.com/package/@devang0907/agent-dev"
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-foreground"
-          >
-            npm
-          </a>
-          <a href="#install" className="hover:text-foreground">
-            install
-          </a>
-          <a href="#commands" className="hover:text-foreground">
-            docs
-          </a>
-        </div>
-      </div>
-    </footer>
   );
 }
 
