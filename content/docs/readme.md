@@ -1,18 +1,16 @@
 # agent-dev
 
-A minimal terminal coding agent with an **OpenTUI + SolidJS** terminal UI. Chat with an AI that can read and edit code, search the web, run git/shell commands (with approval), use MCP servers, load skills, schedule Telegram reminders and daily tasks, and optionally delegate work through a **boss orchestrator** that coordinates specialized worker agents.
+A minimal terminal coding agent with an Ink TUI. Chat with an AI that can read and edit code, search the web, run git/shell commands (with approval), use MCP servers, load skills, schedule Telegram reminders and daily tasks, and optionally delegate work through a **boss orchestrator** that coordinates specialized worker agents.
 
 ## Quick start
-
-**Requires [Bun](https://bun.sh) 1.2+.**
 
 **From source:**
 
 ```bash
 git clone https://github.com/Devang0907/agent-dev.git
 cd agent-dev
-bun install
-bun run dev
+npm install
+npm run dev
 ```
 
 **Global install (npm):**
@@ -32,7 +30,7 @@ export GROQ_API_KEY=gsk_...           # Groq
 export GEMINI_API_KEY=...             # Google Gemini
 ```
 
-Requires **Bun 1.2+** (Bun must be on your PATH for the `agent` command).
+Requires **Node.js 20+**.
 
 ## Providers
 
@@ -66,16 +64,16 @@ Default provider/model: `free/meta-llama/llama-3.3-70b-instruct:free`.
 ## CLI
 
 ```bash
-bun run dev                                    # Interactive TUI
-bun run dev -- -p "List files in src"          # Print mode (no TUI)
-bun run dev -- --boss                          # Start in boss orchestrator mode
-bun run dev -- --boss -p "refactor auth module" # Boss mode, print and exit
-bun run dev -- -c                              # Continue last session
-bun run dev -- --model groq/llama-3.3-70b-versatile "hello"
-bun run build && bun start                     # Production build
-bun run test                                   # Run test suite
-bun run test:watch                             # Watch mode
-bun run test:coverage                          # Coverage report
+npm run dev                                    # Interactive TUI
+npm run dev -- -p "List files in src"          # Print mode (no TUI)
+npm run dev -- --boss                          # Start in boss orchestrator mode
+npm run dev -- --boss -p "refactor auth module" # Boss mode, print and exit
+npm run dev -- -c                              # Continue last session
+npm run dev -- --model groq/llama-3.3-70b-versatile "hello"
+npm run build && npm start                     # Production build
+npm test                                       # Run test suite
+npm run test:watch                             # Watch mode
+npm run test:coverage                          # Coverage report
 ```
 
 | Flag | Description |
@@ -97,7 +95,7 @@ agent skills list
 
 ## Telegram gateway
 
-Chat with agent-dev from your phone via Telegram. The gateway runs on your PC, uses long-polling (no public URL or port forwarding), and forwards DMs to the agent. Shell/git/exec approvals arrive as **Approve / Deny** inline buttons. You can also set **reminders** and **daily tasks** (e.g. morning news) that fire while the gateway is running.
+Chat with agent-dev from your phone via Telegram (OpenClaw-style). The gateway runs on your PC, uses long-polling (no public URL or port forwarding), and forwards DMs to the agent. Shell/git/exec approvals arrive as **Approve / Deny** inline buttons. You can also set **reminders** and **daily tasks** (e.g. morning news) that fire while the gateway is running.
 
 On first connect, send `/start` (or any message) to receive a welcome guide with available commands and capabilities.
 
@@ -133,7 +131,7 @@ export TELEGRAM_ALLOWED_USER_IDS=987654321
 ### Run
 
 ```bash
-bun run dev -- telegram --workdir D:/projects/MyRepo
+npm run dev -- telegram --workdir D:/projects/MyRepo
 # or after build:
 agent telegram --workdir D:/projects/MyRepo
 agent telegram --boss --verbose
@@ -262,7 +260,7 @@ Telegram: `/compact` (same as TUI).
 
 ## Project rules
 
-Project rules are markdown instructions injected into the system prompt automatically from `AGENTS.md` and related files.
+Project rules are markdown instructions injected into the system prompt automatically.
 
 **Discovery order** (root → specific; all matching files are concatenated):
 
@@ -334,7 +332,7 @@ Read-only git commands and `SELECT` queries stay allowed regardless of rules.
 
 ### Build and Plan
 
-Switch between **Build** and **Plan** mode from the prompt footer, slash commands, or Tab:
+Switch between **Build** and **Plan** mode:
 
 | Mode | Toggle | Behavior |
 |------|--------|----------|
@@ -404,7 +402,7 @@ File operations are restricted to the current working directory. Shell commands,
 Requires a one-time browser install:
 
 ```bash
-bunx playwright install chromium
+npx playwright install chromium
 ```
 
 The browser runs **visible by default** so you can watch the agent. Session state (tabs, cookies) persists across tool calls within a chat session.
@@ -456,7 +454,7 @@ Use the `mcp` tool with `list_servers`, `list_tools`, and `call_tool` actions.
 
 ### Skills
 
-Skills use the [Vercel Agent Skills](https://vercel.com/docs/agent-resources/skills) format (compatible with the Vercel skills CLI and Cursor).
+Skills use the [Vercel Agent Skills](https://vercel.com/docs/agent-resources/skills) ecosystem (same format as Cursor).
 
 **Install skills:**
 
@@ -577,7 +575,7 @@ src/
 │   ├── telegram/            # Telegram bot daemon (grammY)
 │   └── scheduler.ts         # Fires due reminders and daily tasks
 ├── providers/               # OpenAI, Groq, Gemini, OpenRouter
-├── tui/                     # OpenTUI + SolidJS terminal UI
+├── ui/                      # Ink TUI
 └── modes/print-mode.ts      # Headless / CI output
 ```
 

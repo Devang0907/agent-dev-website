@@ -10,11 +10,11 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "A minimal terminal coding agent with an OpenTUI + SolidJS TUI. Read and edit code, use MCP servers, load skills, chat via Telegram, and optionally delegate through a boss orchestrator.",
+          "A minimal terminal coding agent with an Ink TUI. Read and edit code, use MCP servers, load skills, chat via Telegram, and optionally delegate through a boss orchestrator.",
       },
       {
         property: "og:title",
-        content: "agent-dev — terminal coding agent with OpenTUI + SolidJS",
+        content: "agent-dev — terminal coding agent with Ink TUI",
       },
       {
         property: "og:description",
@@ -36,7 +36,7 @@ export const Route = createFileRoute("/")({
           operatingSystem: "macOS, Linux, Windows",
           offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
           description:
-            "A minimal terminal coding agent with an OpenTUI + SolidJS TUI. ReAct loop with 20 tools, Telegram gateway, browser automation, boss orchestrator, MCP, and skills.",
+            "A minimal terminal coding agent with an Ink TUI. ReAct loop with 20 tools, Telegram gateway, browser automation, boss orchestrator, MCP, and skills.",
         }),
       },
     ],
@@ -76,7 +76,7 @@ function Hero() {
         </pre>
         <div className="mt-6 inline-flex w-fit items-center gap-2 rounded-sm border border-border bg-card px-2.5 py-1 text-[11px] text-muted-foreground">
           <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-          OpenTUI + SolidJS · Telegram · Browser · Bun 1.2+
+          Ink TUI · Telegram · Browser · Node 20+
         </div>
         <h1 className="mt-4 text-3xl font-bold leading-[1.1] tracking-tight sm:text-5xl">
           AI in your terminal.
@@ -189,8 +189,8 @@ function Install() {
           title="from source"
           lines={[
             "$ git clone https://github.com/Devang0907/agent-dev.git",
-            "$ cd agent-dev && bun install",
-            "$ bun run dev",
+            "$ cd agent-dev && npm install",
+            "$ npm run dev",
           ]}
         />
         <CodeBlock
@@ -200,7 +200,7 @@ function Install() {
       </div>
       <div className="mt-4 rounded-md border border-border bg-card p-4 text-xs">
         <div className="mb-2 text-muted-foreground">
-          # set at least one API key · requires Bun 1.2+ on PATH
+          # set at least one API key · requires Node.js 20+
         </div>
         <pre className="overflow-x-auto leading-relaxed">
           {`export OPENROUTER_API_KEY=sk-or-...   # free models (default)

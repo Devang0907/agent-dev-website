@@ -81,7 +81,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "A minimal terminal coding agent with an OpenTUI + SolidJS TUI. 20 built-in tools, Telegram gateway, boss orchestrator, MCP, and skills.",
+          "A minimal terminal coding agent with an Ink TUI. 20 built-in tools, Telegram gateway, boss orchestrator, MCP, and skills.",
       },
       { property: "og:title", content: "agent-dev — terminal coding agent" },
       {

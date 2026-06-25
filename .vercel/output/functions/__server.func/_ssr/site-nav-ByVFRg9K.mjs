@@ -4,7 +4,7 @@ function SiteFooter() {
   return /* @__PURE__ */ jsxRuntimeExports.jsx("footer", { className: "border-t border-border", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto flex max-w-6xl flex-col items-start justify-between gap-3 px-5 py-8 text-xs text-muted-foreground sm:flex-row sm:items-center sm:px-8", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-primary", children: "▮" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "agent-dev — MIT — built with OpenTUI + SolidJS" })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "agent-dev — MIT — built with Ink" })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-5", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(

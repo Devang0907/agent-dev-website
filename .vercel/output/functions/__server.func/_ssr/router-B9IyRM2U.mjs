@@ -87,7 +87,7 @@ const Route$2 = createRootRouteWithContext()({
       { title: "agent-dev — a minimal terminal coding agent" },
       {
         name: "description",
-        content: "A minimal terminal coding agent with an OpenTUI + SolidJS TUI. 20 built-in tools, Telegram gateway, boss orchestrator, MCP, and skills."
+        content: "A minimal terminal coding agent with an Ink TUI. 20 built-in tools, Telegram gateway, boss orchestrator, MCP, and skills."
       },
       { property: "og:title", content: "agent-dev — terminal coding agent" },
       {
@@ -126,17 +126,17 @@ function RootComponent() {
   const { queryClient } = Route$2.useRouteContext();
   return /* @__PURE__ */ jsxRuntimeExports.jsx(QueryClientProvider, { client: queryClient, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {}) });
 }
-const $$splitComponentImporter$1 = () => import("./index-Dyrd6-CL.mjs");
+const $$splitComponentImporter$1 = () => import("./index-C37lmhP9.mjs");
 const Route$1 = createFileRoute("/")({
   head: () => ({
     meta: [{
       title: "agent-dev — a minimal terminal coding agent"
     }, {
       name: "description",
-      content: "A minimal terminal coding agent with an OpenTUI + SolidJS TUI. Read and edit code, use MCP servers, load skills, chat via Telegram, and optionally delegate through a boss orchestrator."
+      content: "A minimal terminal coding agent with an Ink TUI. Read and edit code, use MCP servers, load skills, chat via Telegram, and optionally delegate through a boss orchestrator."
     }, {
       property: "og:title",
-      content: "agent-dev — terminal coding agent with OpenTUI + SolidJS"
+      content: "agent-dev — terminal coding agent with Ink TUI"
     }, {
       property: "og:description",
       content: "Chat with an AI in your terminal. 20 built-in tools, Telegram gateway, browser automation, Build/Plan modes, boss orchestrator, MCP, and Vercel Agent Skills."
@@ -164,13 +164,13 @@ const Route$1 = createFileRoute("/")({
           price: "0",
           priceCurrency: "USD"
         },
-        description: "A minimal terminal coding agent with an OpenTUI + SolidJS TUI. ReAct loop with 20 tools, Telegram gateway, browser automation, boss orchestrator, MCP, and skills."
+        description: "A minimal terminal coding agent with an Ink TUI. ReAct loop with 20 tools, Telegram gateway, browser automation, boss orchestrator, MCP, and skills."
       })
     }]
   }),
   component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-const $$splitComponentImporter = () => import("./index-B4lRgPQI.mjs");
+const $$splitComponentImporter = () => import("./index-DHOXKfmx.mjs");
 const Route = createFileRoute("/docs/")({
   head: () => ({
     meta: [{

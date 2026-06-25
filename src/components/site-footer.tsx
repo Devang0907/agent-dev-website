@@ -6,7 +6,7 @@ export function SiteFooter() {
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-3 px-5 py-8 text-xs text-muted-foreground sm:flex-row sm:items-center sm:px-8">
         <div className="flex items-center gap-2">
           <span className="text-primary">▮</span>
-          <span>agent-dev — MIT — built with OpenTUI + SolidJS</span>
+          <span>agent-dev — MIT — built with Ink</span>
         </div>
         <div className="flex flex-wrap items-center gap-5">
           <a

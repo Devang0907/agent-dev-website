@@ -1,6 +1,6 @@
 import { j as jsxRuntimeExports, r as reactExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
-import { S as SiteNav, a as SiteFooter } from "./site-nav-qU8sQVoa.mjs";
+import { S as SiteNav, a as SiteFooter } from "./site-nav-ByVFRg9K.mjs";
 import "../_libs/tanstack__router-core.mjs";
 import "../_libs/tanstack__history.mjs";
 import "../_libs/cookie-es.mjs";
@@ -39,7 +39,7 @@ function Hero() {
       /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "hidden text-[8px] leading-tight text-primary sm:block sm:text-[10px]", children: ASCII }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-6 inline-flex w-fit items-center gap-2 rounded-sm border border-border bg-card px-2.5 py-1 text-[11px] text-muted-foreground", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "h-1.5 w-1.5 rounded-full bg-primary" }),
-        "OpenTUI + SolidJS · Telegram · Browser · Bun 1.2+"
+        "Ink TUI · Telegram · Browser · Node 20+"
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("h1", { className: "mt-4 text-3xl font-bold leading-[1.1] tracking-tight sm:text-5xl", children: [
         "AI in your terminal.",
@@ -142,11 +142,11 @@ function TerminalDemo() {
 function Install() {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(Section, { id: "install", label: "01", title: "quick start", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid gap-4 lg:grid-cols-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(CodeBlock, { title: "from source", lines: ["$ git clone https://github.com/Devang0907/agent-dev.git", "$ cd agent-dev && bun install", "$ bun run dev"] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(CodeBlock, { title: "from source", lines: ["$ git clone https://github.com/Devang0907/agent-dev.git", "$ cd agent-dev && npm install", "$ npm run dev"] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(CodeBlock, { title: "global install", lines: ["$ npm i -g @devang0907/agent-dev", "$ agent"] })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 rounded-md border border-border bg-card p-4 text-xs", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-2 text-muted-foreground", children: "# set at least one API key · requires Bun 1.2+ on PATH" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-2 text-muted-foreground", children: "# set at least one API key · requires Node.js 20+" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "overflow-x-auto leading-relaxed", children: `export OPENROUTER_API_KEY=sk-or-...   # free models (default)
 export OPENAI_API_KEY=sk-...          # ChatGPT
 export ANTHROPIC_API_KEY=sk-ant-...   # Claude
