@@ -15,7 +15,7 @@ import "crypto";
 import "async_hooks";
 import "stream";
 import "../_libs/isbot.mjs";
-const appCss = "/assets/styles-BudpCGG8.css";
+const appCss = "/assets/styles-BkXzkZvz.css";
 function reportLovableError(error, context = {}) {
   if (typeof window === "undefined") return;
   window.__lovableEvents?.captureException?.(
@@ -84,14 +84,18 @@ const Route$2 = createRootRouteWithContext()({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "agent-dev — a minimal terminal coding agent" },
+      {
+        name: "description",
+        content: "A minimal terminal coding agent with an OpenTUI + SolidJS TUI. 20 built-in tools, Telegram gateway, boss orchestrator, MCP, and skills."
+      },
+      { property: "og:title", content: "agent-dev — terminal coding agent" },
+      {
+        property: "og:description",
+        content: "Chat with an AI in your terminal. Build, plan, or boss it — with MCP, skills, browser automation, and Telegram."
+      },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" }
+      { name: "twitter:card", content: "summary" }
     ],
     links: [
       {
@@ -122,20 +126,20 @@ function RootComponent() {
   const { queryClient } = Route$2.useRouteContext();
   return /* @__PURE__ */ jsxRuntimeExports.jsx(QueryClientProvider, { client: queryClient, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {}) });
 }
-const $$splitComponentImporter$1 = () => import("./index-BF5fHihY.mjs");
+const $$splitComponentImporter$1 = () => import("./index-Dyrd6-CL.mjs");
 const Route$1 = createFileRoute("/")({
   head: () => ({
     meta: [{
       title: "agent-dev — a minimal terminal coding agent"
     }, {
       name: "description",
-      content: "A minimal terminal coding agent with an Ink TUI. Read and edit code, search the web, run git/shell with approval, use MCP servers, load skills, control a browser, chat via Telegram, and optionally delegate through a boss orchestrator."
+      content: "A minimal terminal coding agent with an OpenTUI + SolidJS TUI. Read and edit code, use MCP servers, load skills, chat via Telegram, and optionally delegate through a boss orchestrator."
     }, {
       property: "og:title",
-      content: "agent-dev — terminal coding agent with Ink TUI"
+      content: "agent-dev — terminal coding agent with OpenTUI + SolidJS"
     }, {
       property: "og:description",
-      content: "Chat with an AI in your terminal. 19 built-in tools, Telegram gateway, browser automation, Build/Plan modes, boss orchestrator, MCP, and Vercel Agent Skills."
+      content: "Chat with an AI in your terminal. 20 built-in tools, Telegram gateway, browser automation, Build/Plan modes, boss orchestrator, MCP, and Vercel Agent Skills."
     }, {
       property: "og:type",
       content: "website"
@@ -160,13 +164,13 @@ const Route$1 = createFileRoute("/")({
           price: "0",
           priceCurrency: "USD"
         },
-        description: "A minimal terminal coding agent with an Ink TUI. ReAct loop with 19 tools, Telegram gateway, browser automation, boss orchestrator, MCP, and skills."
+        description: "A minimal terminal coding agent with an OpenTUI + SolidJS TUI. ReAct loop with 20 tools, Telegram gateway, browser automation, boss orchestrator, MCP, and skills."
       })
     }]
   }),
   component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-const $$splitComponentImporter = () => import("./index-Bjre0O72.mjs");
+const $$splitComponentImporter = () => import("./index-B4lRgPQI.mjs");
 const Route = createFileRoute("/docs/")({
   head: () => ({
     meta: [{

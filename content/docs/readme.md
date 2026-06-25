@@ -1,16 +1,18 @@
 # agent-dev
 
-A minimal terminal coding agent with an Ink TUI. Chat with an AI that can read and edit code, search the web, run git/shell commands (with approval), use MCP servers, load skills, schedule Telegram reminders and daily tasks, and optionally delegate work through a **boss orchestrator** that coordinates specialized worker agents.
+A minimal terminal coding agent with an **OpenTUI + SolidJS** terminal UI. Chat with an AI that can read and edit code, search the web, run git/shell commands (with approval), use MCP servers, load skills, schedule Telegram reminders and daily tasks, and optionally delegate work through a **boss orchestrator** that coordinates specialized worker agents.
 
 ## Quick start
+
+**Requires [Bun](https://bun.sh) 1.2+.**
 
 **From source:**
 
 ```bash
 git clone https://github.com/Devang0907/agent-dev.git
 cd agent-dev
-npm install
-npm run dev
+bun install
+bun run dev
 ```
 
 **Global install (npm):**
@@ -30,7 +32,7 @@ export GROQ_API_KEY=gsk_...           # Groq
 export GEMINI_API_KEY=...             # Google Gemini
 ```
 
-Requires **Node.js 20+**.
+Requires **Bun 1.2+** (Bun must be on your PATH for the `agent` command).
 
 ## Providers
 
@@ -64,13 +66,16 @@ Default provider/model: `free/meta-llama/llama-3.3-70b-instruct:free`.
 ## CLI
 
 ```bash
-npm run dev                                    # Interactive TUI
-npm run dev -- -p "List files in src"          # Print mode (no TUI)
-npm run dev -- --boss                          # Start in boss orchestrator mode
-npm run dev -- --boss -p "refactor auth module" # Boss mode, print and exit
-npm run dev -- -c                              # Continue last session
-npm run dev -- --model groq/llama-3.3-70b-versatile "hello"
-npm run build && npm start                     # Production build
+bun run dev                                    # Interactive TUI
+bun run dev -- -p "List files in src"          # Print mode (no TUI)
+bun run dev -- --boss                          # Start in boss orchestrator mode
+bun run dev -- --boss -p "refactor auth module" # Boss mode, print and exit
+bun run dev -- -c                              # Continue last session
+bun run dev -- --model groq/llama-3.3-70b-versatile "hello"
+bun run build && bun start                     # Production build
+bun run test                                   # Run test suite
+bun run test:watch                             # Watch mode
+bun run test:coverage                          # Coverage report
 ```
 
 | Flag | Description |
@@ -92,7 +97,7 @@ agent skills list
 
 ## Telegram gateway
 
-Chat with agent-dev from your phone via Telegram (OpenClaw-style). The gateway runs on your PC, uses long-polling (no public URL or port forwarding), and forwards DMs to the agent. Shell/git/exec approvals arrive as **Approve / Deny** inline buttons. You can also set **reminders** and **daily tasks** (e.g. morning news) that fire while the gateway is running.
+Chat with agent-dev from your phone via Telegram. The gateway runs on your PC, uses long-polling (no public URL or port forwarding), and forwards DMs to the agent. Shell/git/exec approvals arrive as **Approve / Deny** inline buttons. You can also set **reminders** and **daily tasks** (e.g. morning news) that fire while the gateway is running.
 
 On first connect, send `/start` (or any message) to receive a welcome guide with available commands and capabilities.
 
@@ -128,7 +133,7 @@ export TELEGRAM_ALLOWED_USER_IDS=987654321
 ### Run
 
 ```bash
-npm run dev -- telegram --workdir D:/projects/MyRepo
+bun run dev -- telegram --workdir D:/projects/MyRepo
 # or after build:
 agent telegram --workdir D:/projects/MyRepo
 agent telegram --boss --verbose
@@ -164,6 +169,7 @@ On Windows, run it in a dedicated terminal, or use Task Scheduler / [pm2](https:
 | `/model` | List available models |
 | `/model <provider/id>` | Switch model (e.g. `/model groq/llama-3.3-70b-versatile`) |
 | `/schedules` | List active reminders and daily tasks for this chat |
+| `/compact` | Summarize older messages to free context |
 
 ### Reminders and scheduled tasks
 
@@ -192,6 +198,8 @@ Timing options the agent can set: `in_minutes` (e.g. 5), `daily_at` in 24h local
 
 **Requirements:** the gateway process must stay running (see [Run](#run) above). If a **task** fires while the agent is busy, it retries in about a minute. **Reminders** always send immediately.
 
+While the agent is busy, Telegram accepts **one queued follow-up message** per chat; additional messages get a busy reply until the queue drains.
+
 ### Security
 
 - Only users in `allowedUserIds` can chat with the agent (except `/whoami` for setup).
@@ -207,6 +215,9 @@ Timing options the agent can set: `in_minutes` (e.g. 5), `daily_at` in 24h local
 | `/plan` | Switch to Plan mode (read-only exploration) |
 | `/boss` | Toggle boss orchestrator mode |
 | `/tasks` | Show the active task plan |
+| `/compact [instructions]` | Summarize older messages to free context (optional focus) |
+| `/rules` | List loaded project rule files (`AGENTS.md`, etc.) |
+| `/permissions` | Show merged permission presets for this project |
 | `/trace` | Show path to the latest worker trace log |
 | `/sessions` | Browse and load saved chat sessions |
 | `/settings` | Thinking level and API key status |
@@ -223,11 +234,107 @@ Timing options the agent can set: `in_minutes` (e.g. 5), `daily_at` in 24h local
 - **Ctrl+G** — scroll chat to latest
 - **Ctrl+U** / **Ctrl+D** — scroll chat up/down
 
+## Context compaction
+
+Long sessions can exceed model context limits. agent-dev tracks approximate token usage (footer shows `ctx 42k/128k`) and compacts older history when needed.
+
+| Trigger | Behavior |
+|---------|----------|
+| **Auto** | Before each turn when `tokens > contextWindow - reserveTokens` (default reserve 16k) |
+| **Overflow** | On provider context errors — compact once and retry the turn |
+| **Manual** | `/compact` or `/compact focus on auth changes` |
+
+Compaction is **lossy for the model** but **non-destructive on disk**: full chat history stays in `sessions/*.jsonl`; a `compaction` entry records the summary and which messages the LLM still sees.
+
+Toggle auto-compaction in `/settings` or `settings.json`:
+
+```json
+{
+  "compaction": {
+    "enabled": true,
+    "reserveTokens": 16384,
+    "keepRecentTokens": 20000
+  }
+}
+```
+
+Telegram: `/compact` (same as TUI).
+
+## Project rules
+
+Project rules are markdown instructions injected into the system prompt automatically from `AGENTS.md` and related files.
+
+**Discovery order** (root → specific; all matching files are concatenated):
+
+| Priority | Path |
+|----------|------|
+| 1 | `~/.agent-dev/AGENTS.md` |
+| 2 | `AGENTS.md` or `CLAUDE.md` from git root down to cwd |
+| 3 | `<workdir>/.agent-dev/AGENTS.md` |
+| 4 | `<workdir>/.agent-dev/rules/*.md` (sorted by filename) |
+
+Use `/rules` in the TUI to see which files were loaded. Total injected size is capped (default 32k characters).
+
+Disable with `AGENT_NO_PROJECT_RULES=1` or in `settings.json`:
+
+```json
+{
+  "projectRules": {
+    "enabled": false,
+    "maxChars": 32768
+  }
+}
+```
+
+Boss worker sessions do not inherit project rules in v1 (main agent loop only).
+
+## Permission presets
+
+Gated tools (shell, `verify`, git writes, DB mutations, MCP `call_tool`, destructive browser actions) normally prompt for approval. Optional **`files`** rules gate `write`/`edit` when configured. Permission presets let you **allow**, **ask**, or **deny** by pattern.
+
+**Config** (project patterns append to global; **last matching rule wins**):
+
+| Scope | Path |
+|-------|------|
+| Global | `~/.agent-dev/settings.json` → `permissions` |
+| Project | `<workdir>/.agent-dev/permissions.json` |
+
+Example `permissions.json`:
+
+```json
+{
+  "bash": {
+    "*": "ask",
+    "npm test": "allow",
+    "npm test *": "allow",
+    "rm *": "deny"
+  },
+  "git": {
+    "commit": "ask",
+    "push *": "deny"
+  },
+  "database": { "*": "ask", "SELECT *": "allow" },
+  "mcp": { "call_tool": "ask" },
+  "browser": { "*": "ask" },
+  "files": { "*": "ask", ".agent-dev/plans/*": "allow" }
+}
+```
+
+`verify` uses the same **`bash`** permission rules (e.g. `npm test: allow` applies to both `bash` and `verify`).
+
+The **`files`** category is optional — without `files` rules, `write` and `edit` are allowed without prompting. Add `files` rules for paranoid setups.
+
+Shorthand: `"bash": "ask"` expands to `{ "*": "ask" }`. Put `"*": "ask"` first, then more specific patterns after.
+
+Use `/permissions` to inspect merged rules. `/settings` shows a rule count summary.
+
+Read-only git commands and `SELECT` queries stay allowed regardless of rules.
+
 ## Agent modes
 
 ### Build and Plan
 
-Switch between **Build** and **Plan** mode like OpenCode:
+Switch between **Build** and **Plan** mode from the prompt footer, slash commands, or Tab:
 
 | Mode | Toggle | Behavior |
 |------|--------|----------|
@@ -265,11 +372,12 @@ Boss mode uses the same model you select in `/model`. Workers run in isolated co
 
 ## Tools
 
-The agent has **19 built-in tools** (`delegate` is boss-only; 18 are available in normal mode):
+The agent has **20 built-in tools** (`delegate` is boss-only; 19 are available in normal mode):
 
 | Tool | Description |
 |------|-------------|
 | `read` | Read a file in the project directory |
+| `list_dir` | List files and directories (use instead of shell `ls`) |
 | `write` | Create or overwrite a file |
 | `edit` | Replace text in a file |
 | `diff` | Preview unified diff before applying changes |
@@ -296,7 +404,7 @@ File operations are restricted to the current working directory. Shell commands,
 Requires a one-time browser install:
 
 ```bash
-npx playwright install chromium
+bunx playwright install chromium
 ```
 
 The browser runs **visible by default** so you can watch the agent. Session state (tabs, cookies) persists across tool calls within a chat session.
@@ -348,7 +456,7 @@ Use the `mcp` tool with `list_servers`, `list_tools`, and `call_tool` actions.
 
 ### Skills
 
-Skills use the [Vercel Agent Skills](https://vercel.com/docs/agent-resources/skills) ecosystem (same format as OpenCode and Cursor).
+Skills use the [Vercel Agent Skills](https://vercel.com/docs/agent-resources/skills) format (compatible with the Vercel skills CLI and Cursor).
 
 **Install skills:**
 
@@ -397,7 +505,7 @@ All config lives under `~/.agent-dev/` (override with `AGENT_DEV_DIR`):
 
 | Path | Purpose |
 |------|---------|
-| `settings.json` | Default provider/model, thinking level, agent mode, orchestrator mode, API keys, skills |
+| `settings.json` | Default provider/model, thinking level, agent mode, orchestrator mode, API keys, skills, permissions, project rules |
 | `sessions/*.jsonl` | Chat history (one file per session) |
 | `last-session.json` | Pointer to resume with `-c` |
 | `memory.json` | Cross-session memory |
@@ -415,11 +523,24 @@ Example `settings.json`:
   "defaultModel": "meta-llama/llama-3.3-70b-instruct:free",
   "thinkingLevel": "off",
   "agentMode": "build",
-  "orchestratorMode": "off"
+  "orchestratorMode": "off",
+  "compaction": {
+    "enabled": true,
+    "reserveTokens": 16384,
+    "keepRecentTokens": 20000
+  },
+  "permissions": {
+    "bash": { "*": "ask", "npm test *": "allow" }
+  },
+  "projectRules": {
+    "enabled": true
+  }
 }
 ```
 
 Set `orchestratorMode` to `"boss"` to enable boss mode by default.
+
+**Thinking level** (`thinkingLevel` in settings or `/settings`) enables extended reasoning on supported models: Claude Sonnet/Opus 4+, OpenAI o3/o4-mini, and Gemini 2.5+. Other providers ignore it.
 
 ### Environment variables
 
@@ -433,6 +554,9 @@ Set `orchestratorMode` to `"boss"` to enable boss mode by default.
 | `AGENT_DEV_DIR` | Config directory (default `~/.agent-dev`) |
 | `AGENT_MAX_TOOL_ROUNDS` | Max tool-call rounds per turn (default `50`) |
 | `AGENT_MAX_DELEGATIONS` | Max worker delegations per boss turn (default `10`) |
+| `AGENT_COMPACTION_ENABLED` | `0`/`false` to disable auto-compaction |
+| `AGENT_COMPACTION_RESERVE_TOKENS` | Tokens reserved for model response (default `16384`) |
+| `AGENT_NO_PROJECT_RULES` | `1` to disable project rules injection |
 | `TELEGRAM_BOT_TOKEN` | Telegram bot token (overrides settings) |
 | `TELEGRAM_ALLOWED_USER_IDS` | Comma-separated Telegram user IDs |
 
@@ -453,7 +577,7 @@ src/
 │   ├── telegram/            # Telegram bot daemon (grammY)
 │   └── scheduler.ts         # Fires due reminders and daily tasks
 ├── providers/               # OpenAI, Groq, Gemini, OpenRouter
-├── ui/                      # Ink TUI
+├── tui/                     # OpenTUI + SolidJS terminal UI
 └── modes/print-mode.ts      # Headless / CI output
 ```
 

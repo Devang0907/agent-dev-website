@@ -16,26 +16,8 @@ export function SiteNav() {
           <a href="/#install" className="hover:text-foreground">
             install
           </a>
-          <a href="/#modes" className="hover:text-foreground">
-            modes
-          </a>
-          <a href="/#tools" className="hover:text-foreground">
-            tools
-          </a>
-          <a href="/#providers" className="hover:text-foreground">
-            providers
-          </a>
-          <a href="/#telegram" className="hover:text-foreground">
-            telegram
-          </a>
-          <a href="/#browser" className="hover:text-foreground">
-            browser
-          </a>
-          <a href="/#commands" className="hover:text-foreground">
-            commands
-          </a>
-          <a href="/#skills" className="hover:text-foreground">
-            skills
+          <a href="/#features" className="hover:text-foreground">
+            features
           </a>
           <a
             href="https://github.com/Devang0907/agent-dev"

@@ -4,7 +4,7 @@ function SiteFooter() {
   return /* @__PURE__ */ jsxRuntimeExports.jsx("footer", { className: "border-t border-border", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto flex max-w-6xl flex-col items-start justify-between gap-3 px-5 py-8 text-xs text-muted-foreground sm:flex-row sm:items-center sm:px-8", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-primary", children: "▮" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "agent-dev — MIT — built with Ink" })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "agent-dev — MIT — built with OpenTUI + SolidJS" })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-5", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -77,13 +77,7 @@ function SiteNav() {
     /* @__PURE__ */ jsxRuntimeExports.jsxs("nav", { className: "hidden items-center gap-5 text-xs text-muted-foreground lg:flex", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/docs", className: "hover:text-foreground", children: "docs" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#install", className: "hover:text-foreground", children: "install" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#modes", className: "hover:text-foreground", children: "modes" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#tools", className: "hover:text-foreground", children: "tools" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#providers", className: "hover:text-foreground", children: "providers" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#telegram", className: "hover:text-foreground", children: "telegram" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#browser", className: "hover:text-foreground", children: "browser" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#commands", className: "hover:text-foreground", children: "commands" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#skills", className: "hover:text-foreground", children: "skills" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#features", className: "hover:text-foreground", children: "features" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         "a",
         {
