@@ -367,4 +367,23 @@
   .docs-toc-mobile-scroll::-webkit-scrollbar {
     display: none;
   }
+
+  .logo-ticker-track {
+    display: flex;
+    width: max-content;
+    animation: logo-ticker-scroll 35s linear infinite;
+  }
+
+  .logo-ticker-track:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes logo-ticker-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
 }

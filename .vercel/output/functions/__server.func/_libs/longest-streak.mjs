@@ -20,4 +20,6 @@ function longestStreak(value, substring) {
   }
   return max;
 }
-export { longestStreak as l };
+export {
+  longestStreak as l
+};

@@ -11,13 +11,18 @@ function enterFootnoteDefinitionLabelString() {
   this.buffer();
 }
 function enterFootnoteDefinition(token) {
-  this.enter({ type: "footnoteDefinition", identifier: "", label: "", children: [] }, token);
+  this.enter(
+    { type: "footnoteDefinition", identifier: "", label: "", children: [] },
+    token
+  );
 }
 function exitFootnoteCallString(token) {
   const label = this.resume();
   const node = this.stack[this.stack.length - 1];
   ok(node.type === "footnoteReference");
-  node.identifier = normalizeIdentifier(this.sliceSerialize(token)).toLowerCase();
+  node.identifier = normalizeIdentifier(
+    this.sliceSerialize(token)
+  ).toLowerCase();
   node.label = label;
 }
 function exitFootnoteCall(token) {
@@ -27,7 +32,9 @@ function exitFootnoteDefinitionLabelString(token) {
   const label = this.resume();
   const node = this.stack[this.stack.length - 1];
   ok(node.type === "footnoteDefinition");
-  node.identifier = normalizeIdentifier(this.sliceSerialize(token)).toLowerCase();
+  node.identifier = normalizeIdentifier(
+    this.sliceSerialize(token)
+  ).toLowerCase();
   node.label = label;
 }
 function exitFootnoteDefinition(token) {
@@ -41,7 +48,9 @@ function footnoteReference(node, _, state, info) {
   let value = tracker.move("[^");
   const exit = state.enter("footnoteReference");
   const subexit = state.enter("reference");
-  value += tracker.move(state.safe(state.associationId(node), { after: "]", before: value }));
+  value += tracker.move(
+    state.safe(state.associationId(node), { after: "]", before: value })
+  );
   subexit();
   exit();
   value += tracker.move("]");
@@ -53,14 +62,14 @@ function gfmFootnoteFromMarkdown() {
       gfmFootnoteCallString: enterFootnoteCallString,
       gfmFootnoteCall: enterFootnoteCall,
       gfmFootnoteDefinitionLabelString: enterFootnoteDefinitionLabelString,
-      gfmFootnoteDefinition: enterFootnoteDefinition,
+      gfmFootnoteDefinition: enterFootnoteDefinition
     },
     exit: {
       gfmFootnoteCallString: exitFootnoteCallString,
       gfmFootnoteCall: exitFootnoteCall,
       gfmFootnoteDefinitionLabelString: exitFootnoteDefinitionLabelString,
-      gfmFootnoteDefinition: exitFootnoteDefinition,
-    },
+      gfmFootnoteDefinition: exitFootnoteDefinition
+    }
   };
 }
 function gfmFootnoteToMarkdown(options) {
@@ -71,24 +80,25 @@ function gfmFootnoteToMarkdown(options) {
   return {
     handlers: { footnoteDefinition, footnoteReference },
     // This is on by default already.
-    unsafe: [{ character: "[", inConstruct: ["label", "phrasing", "reference"] }],
+    unsafe: [{ character: "[", inConstruct: ["label", "phrasing", "reference"] }]
   };
   function footnoteDefinition(node, _, state, info) {
     const tracker = state.createTracker(info);
     let value = tracker.move("[^");
     const exit = state.enter("footnoteDefinition");
     const subexit = state.enter("label");
-    value += tracker.move(state.safe(state.associationId(node), { before: value, after: "]" }));
+    value += tracker.move(
+      state.safe(state.associationId(node), { before: value, after: "]" })
+    );
     subexit();
     value += tracker.move("]:");
     if (node.children && node.children.length > 0) {
       tracker.shift(4);
       value += tracker.move(
-        (firstLineBlank ? "\n" : " ") +
-          state.indentLines(
-            state.containerFlow(node, tracker.current()),
-            firstLineBlank ? mapAll : mapExceptFirst,
-          ),
+        (firstLineBlank ? "\n" : " ") + state.indentLines(
+          state.containerFlow(node, tracker.current()),
+          firstLineBlank ? mapAll : mapExceptFirst
+        )
       );
     }
     exit();
@@ -101,4 +111,7 @@ function mapExceptFirst(line, index, blank) {
 function mapAll(line, index, blank) {
   return (blank ? "" : "    ") + line;
 }
-export { gfmFootnoteToMarkdown as a, gfmFootnoteFromMarkdown as g };
+export {
+  gfmFootnoteToMarkdown as a,
+  gfmFootnoteFromMarkdown as g
+};

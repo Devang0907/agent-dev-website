@@ -5,14 +5,14 @@ function gfmTaskListItemFromMarkdown() {
     exit: {
       taskListCheckValueChecked: exitCheck,
       taskListCheckValueUnchecked: exitCheck,
-      paragraph: exitParagraphWithTaskListItem,
-    },
+      paragraph: exitParagraphWithTaskListItem
+    }
   };
 }
 function gfmTaskListItemToMarkdown() {
   return {
     unsafe: [{ atBreak: true, character: "-", after: "[:|-]" }],
-    handlers: { listItem: listItemWithTaskListItem },
+    handlers: { listItem: listItemWithTaskListItem }
   };
 }
 function exitCheck(token) {
@@ -41,11 +41,7 @@ function exitParagraphWithTaskListItem(token) {
         head.value = head.value.slice(1);
         if (head.value.length === 0) {
           node.children.shift();
-        } else if (
-          node.position &&
-          head.position &&
-          typeof head.position.start.offset === "number"
-        ) {
+        } else if (node.position && head.position && typeof head.position.start.offset === "number") {
           head.position.start.column++;
           head.position.start.offset++;
           node.position.start = Object.assign({}, head.position.start);
@@ -65,7 +61,7 @@ function listItemWithTaskListItem(node, parent, state, info) {
   }
   let value = handle.listItem(node, parent, state, {
     ...info,
-    ...tracker.current(),
+    ...tracker.current()
   });
   if (checkable) {
     value = value.replace(/^(?:[*+-]|\d+\.)([\r\n]| {1,3})/, check);
@@ -75,4 +71,7 @@ function listItemWithTaskListItem(node, parent, state, info) {
     return $0 + checkbox;
   }
 }
-export { gfmTaskListItemToMarkdown as a, gfmTaskListItemFromMarkdown as g };
+export {
+  gfmTaskListItemToMarkdown as a,
+  gfmTaskListItemFromMarkdown as g
+};

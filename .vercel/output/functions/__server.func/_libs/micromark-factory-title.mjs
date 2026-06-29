@@ -40,7 +40,7 @@ function factoryTitle(effects, ok, nok, type, markerType, stringType) {
       return factorySpace(effects, atBreak, "linePrefix");
     }
     effects.enter("chunkString", {
-      contentType: "string",
+      contentType: "string"
     });
     return inside(code);
   }
@@ -60,4 +60,6 @@ function factoryTitle(effects, ok, nok, type, markerType, stringType) {
     return inside(code);
   }
 }
-export { factoryTitle as f };
+export {
+  factoryTitle as f
+};

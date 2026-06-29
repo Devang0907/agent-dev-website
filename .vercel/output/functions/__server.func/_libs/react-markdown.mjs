@@ -17,24 +17,24 @@ const deprecations = [
   {
     from: "allowNode",
     id: "replace-allownode-allowedtypes-and-disallowedtypes",
-    to: "allowElement",
+    to: "allowElement"
   },
   {
     from: "allowedTypes",
     id: "replace-allownode-allowedtypes-and-disallowedtypes",
-    to: "allowedElements",
+    to: "allowedElements"
   },
   { from: "className", id: "remove-classname" },
   {
     from: "disallowedTypes",
     id: "replace-allownode-allowedtypes-and-disallowedtypes",
-    to: "disallowedElements",
+    to: "disallowedElements"
   },
   { from: "escapeHtml", id: "remove-buggy-html-in-markdown-parser" },
   { from: "includeElementIndex", id: "#remove-includeelementindex" },
   {
     from: "includeNodeIndex",
-    id: "change-includenodeindex-to-includeelementindex",
+    id: "change-includenodeindex-to-includeelementindex"
   },
   { from: "linkTarget", id: "remove-linktarget" },
   { from: "plugins", id: "change-plugins-to-remarkplugins", to: "remarkPlugins" },
@@ -43,7 +43,7 @@ const deprecations = [
   { from: "source", id: "change-source-to-children", to: "children" },
   { from: "sourcePos", id: "#remove-sourcepos" },
   { from: "transformImageUri", id: "#add-urltransform", to: "urlTransform" },
-  { from: "transformLinkUri", id: "#add-urltransform", to: "urlTransform" },
+  { from: "transformLinkUri", id: "#add-urltransform", to: "urlTransform" }
 ];
 function Markdown(options) {
   const processor = createProcessor(options);
@@ -53,14 +53,8 @@ function Markdown(options) {
 function createProcessor(options) {
   const rehypePlugins = options.rehypePlugins || emptyPlugins;
   const remarkPlugins = options.remarkPlugins || emptyPlugins;
-  const remarkRehypeOptions = options.remarkRehypeOptions
-    ? { ...options.remarkRehypeOptions, ...emptyRemarkRehypeOptions }
-    : emptyRemarkRehypeOptions;
-  const processor = unified()
-    .use(remarkParse)
-    .use(remarkPlugins)
-    .use(remarkRehype, remarkRehypeOptions)
-    .use(rehypePlugins);
+  const remarkRehypeOptions = options.remarkRehypeOptions ? { ...options.remarkRehypeOptions, ...emptyRemarkRehypeOptions } : emptyRemarkRehypeOptions;
+  const processor = unified().use(remarkParse).use(remarkPlugins).use(remarkRehype, remarkRehypeOptions).use(rehypePlugins);
   return processor;
 }
 function createFile(options) {
@@ -82,15 +76,7 @@ function post(tree, options) {
   for (const deprecation of deprecations) {
     if (Object.hasOwn(options, deprecation.from)) {
       unreachable(
-        "Unexpected `" +
-          deprecation.from +
-          "` prop, " +
-          (deprecation.to ? "use `" + deprecation.to + "` instead" : "remove it") +
-          " (see <" +
-          changelog +
-          "#" +
-          deprecation.id +
-          "> for more info)",
+        "Unexpected `" + deprecation.from + "` prop, " + (deprecation.to ? "use `" + deprecation.to + "` instead" : "remove it") + " (see <" + changelog + "#" + deprecation.id + "> for more info)"
       );
     }
   }
@@ -102,7 +88,7 @@ function post(tree, options) {
     jsx: jsxRuntimeExports.jsx,
     jsxs: jsxRuntimeExports.jsxs,
     passKeys: true,
-    passNode: true,
+    passNode: true
   });
   function transform(node, index, parent) {
     if (node.type === "raw" && parent && typeof index === "number") {
@@ -126,11 +112,7 @@ function post(tree, options) {
       }
     }
     if (node.type === "element") {
-      let remove = allowedElements
-        ? !allowedElements.includes(node.tagName)
-        : disallowedElements
-          ? disallowedElements.includes(node.tagName)
-          : false;
+      let remove = allowedElements ? !allowedElements.includes(node.tagName) : disallowedElements ? disallowedElements.includes(node.tagName) : false;
       if (!remove && allowElement && typeof index === "number") {
         remove = !allowElement(node, index, parent);
       }
@@ -153,13 +135,13 @@ function defaultUrlTransform(value) {
   if (
     // If there is no protocol, it’s relative.
     colon === -1 || // If the first colon is after a `?`, `#`, or `/`, it’s not a protocol.
-    (slash !== -1 && colon > slash) ||
-    (questionMark !== -1 && colon > questionMark) ||
-    (numberSign !== -1 && colon > numberSign) || // It is a protocol, it should be allowed.
+    slash !== -1 && colon > slash || questionMark !== -1 && colon > questionMark || numberSign !== -1 && colon > numberSign || // It is a protocol, it should be allowed.
     safeProtocol.test(value.slice(0, colon))
   ) {
     return value;
   }
   return "";
 }
-export { Markdown as M };
+export {
+  Markdown as M
+};

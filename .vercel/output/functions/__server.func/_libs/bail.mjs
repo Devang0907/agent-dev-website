@@ -3,4 +3,6 @@ function bail(error) {
     throw error;
   }
 }
-export { bail as b };
+export {
+  bail as b
+};

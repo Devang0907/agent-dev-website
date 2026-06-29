@@ -19,4 +19,6 @@ function factorySpace(effects, ok, type, max) {
     return ok(code);
   }
 }
-export { factorySpace as f };
+export {
+  factorySpace as f
+};

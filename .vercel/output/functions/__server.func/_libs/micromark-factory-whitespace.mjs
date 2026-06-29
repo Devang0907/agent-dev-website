@@ -17,4 +17,6 @@ function factoryWhitespace(effects, ok) {
     return ok(code);
   }
 }
-export { factoryWhitespace as f };
+export {
+  factoryWhitespace as f
+};

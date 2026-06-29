@@ -4,7 +4,7 @@ import { n as normalizeIdentifier } from "./micromark-util-normalize-identifier+
 import { b as blankLine } from "./micromark-core-commonmark.mjs";
 const indent = {
   tokenize: tokenizeIndent,
-  partial: true,
+  partial: true
 };
 function gfmFootnote() {
   return {
@@ -13,23 +13,23 @@ function gfmFootnote() {
         name: "gfmFootnoteDefinition",
         tokenize: tokenizeDefinitionStart,
         continuation: {
-          tokenize: tokenizeDefinitionContinuation,
+          tokenize: tokenizeDefinitionContinuation
         },
-        exit: gfmFootnoteDefinitionEnd,
-      },
+        exit: gfmFootnoteDefinitionEnd
+      }
     },
     text: {
       [91]: {
         name: "gfmFootnoteCall",
-        tokenize: tokenizeGfmFootnoteCall,
+        tokenize: tokenizeGfmFootnoteCall
       },
       [93]: {
         name: "gfmPotentialFootnoteCall",
         add: "after",
         tokenize: tokenizePotentialGfmFootnoteCall,
-        resolveTo: resolveToPotentialGfmFootnoteCall,
-      },
-    },
+        resolveTo: resolveToPotentialGfmFootnoteCall
+      }
+    }
   };
 }
 function tokenizePotentialGfmFootnoteCall(effects, ok, nok) {
@@ -43,13 +43,7 @@ function tokenizePotentialGfmFootnoteCall(effects, ok, nok) {
       labelStart = token;
       break;
     }
-    if (
-      token.type === "gfmFootnoteCall" ||
-      token.type === "labelLink" ||
-      token.type === "label" ||
-      token.type === "image" ||
-      token.type === "link"
-    ) {
+    if (token.type === "gfmFootnoteCall" || token.type === "labelLink" || token.type === "label" || token.type === "image" || token.type === "link") {
       break;
     }
   }
@@ -58,12 +52,10 @@ function tokenizePotentialGfmFootnoteCall(effects, ok, nok) {
     if (!labelStart || !labelStart._balanced) {
       return nok(code);
     }
-    const id = normalizeIdentifier(
-      self.sliceSerialize({
-        start: labelStart.end,
-        end: self.now(),
-      }),
-    );
+    const id = normalizeIdentifier(self.sliceSerialize({
+      start: labelStart.end,
+      end: self.now()
+    }));
     if (id.codePointAt(0) !== 94 || !defined.includes(id.slice(1))) {
       return nok(code);
     }
@@ -86,12 +78,12 @@ function resolveToPotentialGfmFootnoteCall(events, context) {
   const call = {
     type: "gfmFootnoteCall",
     start: Object.assign({}, events[index + 3][1].start),
-    end: Object.assign({}, events[events.length - 1][1].end),
+    end: Object.assign({}, events[events.length - 1][1].end)
   };
   const marker = {
     type: "gfmFootnoteCallMarker",
     start: Object.assign({}, events[index + 3][1].end),
-    end: Object.assign({}, events[index + 3][1].end),
+    end: Object.assign({}, events[index + 3][1].end)
   };
   marker.end.column++;
   marker.end.offset++;
@@ -99,13 +91,13 @@ function resolveToPotentialGfmFootnoteCall(events, context) {
   const string = {
     type: "gfmFootnoteCallString",
     start: Object.assign({}, marker.end),
-    end: Object.assign({}, events[events.length - 1][1].start),
+    end: Object.assign({}, events[events.length - 1][1].start)
   };
   const chunk = {
     type: "chunkString",
     contentType: "string",
     start: Object.assign({}, string.start),
-    end: Object.assign({}, string.end),
+    end: Object.assign({}, string.end)
   };
   const replacement = [
     // Take the `labelImageMarker` (now `data`, the `!`)
@@ -126,7 +118,7 @@ function resolveToPotentialGfmFootnoteCall(events, context) {
     // The ending (`]`, properly parsed and labelled).
     events[events.length - 2],
     events[events.length - 1],
-    ["exit", call, context],
+    ["exit", call, context]
   ];
   events.splice(index, events.length - index + 1, ...replacement);
   return events;
@@ -157,11 +149,9 @@ function tokenizeGfmFootnoteCall(effects, ok, nok) {
     if (
       // Too long.
       size > 999 || // Closing brace with nothing.
-      (code === 93 && !data) || // Space or tab is not supported by GFM for some reason.
+      code === 93 && !data || // Space or tab is not supported by GFM for some reason.
       // `\n` and `[` not being supported makes sense.
-      code === null ||
-      code === 91 ||
-      markdownLineEndingOrSpace(code)
+      code === null || code === 91 || markdownLineEndingOrSpace(code)
     ) {
       return nok(code);
     }
@@ -223,11 +213,9 @@ function tokenizeDefinitionStart(effects, ok, nok) {
     if (
       // Too long.
       size > 999 || // Closing brace with nothing.
-      (code === 93 && !data) || // Space or tab is not supported by GFM for some reason.
+      code === 93 && !data || // Space or tab is not supported by GFM for some reason.
       // `\n` and `[` not being supported makes sense.
-      code === null ||
-      code === 91 ||
-      markdownLineEndingOrSpace(code)
+      code === null || code === 91 || markdownLineEndingOrSpace(code)
     ) {
       return nok(code);
     }
@@ -283,11 +271,9 @@ function tokenizeIndent(effects, ok, nok) {
   return factorySpace(effects, afterPrefix, "gfmFootnoteDefinitionIndent", 4 + 1);
   function afterPrefix(code) {
     const tail = self.events[self.events.length - 1];
-    return tail &&
-      tail[1].type === "gfmFootnoteDefinitionIndent" &&
-      tail[2].sliceSerialize(tail[1], true).length === 4
-      ? ok(code)
-      : nok(code);
+    return tail && tail[1].type === "gfmFootnoteDefinitionIndent" && tail[2].sliceSerialize(tail[1], true).length === 4 ? ok(code) : nok(code);
   }
 }
-export { gfmFootnote as g };
+export {
+  gfmFootnote as g
+};

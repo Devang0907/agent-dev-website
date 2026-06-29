@@ -1,7 +1,6 @@
 import { d as decodeNamedCharacterReference } from "./decode-named-character-reference+[...].mjs";
 import { d as decodeNumericCharacterReference } from "./micromark-util-decode-numeric-character-reference+[...].mjs";
-const characterEscapeOrReference =
-  /\\([!-/:-@[-`{-~])|&(#(?:\d{1,7}|x[\da-f]{1,6})|[\da-z]{1,31});/gi;
+const characterEscapeOrReference = /\\([!-/:-@[-`{-~])|&(#(?:\d{1,7}|x[\da-f]{1,6})|[\da-z]{1,31});/gi;
 function decodeString(value) {
   return value.replace(characterEscapeOrReference, decode);
 }
@@ -17,4 +16,6 @@ function decode($0, $1, $2) {
   }
   return decodeNamedCharacterReference($2) || $0;
 }
-export { decodeString as d };
+export {
+  decodeString as d
+};

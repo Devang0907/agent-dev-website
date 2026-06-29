@@ -10,8 +10,10 @@ function remarkParse(options) {
       // The goal is for them to be set by plugins on `data` instead of being
       // passed by users.
       extensions: self.data("micromarkExtensions") || [],
-      mdastExtensions: self.data("fromMarkdownExtensions") || [],
+      mdastExtensions: self.data("fromMarkdownExtensions") || []
     });
   }
 }
-export { remarkParse as r };
+export {
+  remarkParse as r
+};

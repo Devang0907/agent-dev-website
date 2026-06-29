@@ -22,4 +22,6 @@ function position(pos) {
 function index(value) {
   return value && typeof value === "number" ? value : 1;
 }
-export { stringifyPosition as s };
+export {
+  stringifyPosition as s
+};

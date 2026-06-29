@@ -10,7 +10,9 @@ function gfm(options) {
     gfmFootnote(),
     gfmStrikethrough(options),
     gfmTable(),
-    gfmTaskListItem(),
+    gfmTaskListItem()
   ]);
 }
-export { gfm as g };
+export {
+  gfm as g
+};

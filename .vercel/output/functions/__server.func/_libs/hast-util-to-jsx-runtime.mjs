@@ -21,7 +21,9 @@ function toJsxRuntime(tree, options) {
   let create;
   if (options.development) {
     if (typeof options.jsxDEV !== "function") {
-      throw new TypeError("Expected `jsxDEV` in options when `development: true`");
+      throw new TypeError(
+        "Expected `jsxDEV` in options when `development: true`"
+      );
     }
     create = developmentCreate(filePath, options.jsxDEV);
   } else {
@@ -46,13 +48,18 @@ function toJsxRuntime(tree, options) {
     passNode: options.passNode || false,
     schema: options.space === "svg" ? svg : html,
     stylePropertyNameCase: options.stylePropertyNameCase || "dom",
-    tableCellAlignToStyle: options.tableCellAlignToStyle !== false,
+    tableCellAlignToStyle: options.tableCellAlignToStyle !== false
   };
   const result = one(state, tree, void 0);
   if (result && typeof result !== "string") {
     return result;
   }
-  return state.create(tree, state.Fragment, { children: result || void 0 }, void 0);
+  return state.create(
+    tree,
+    state.Fragment,
+    { children: result || void 0 },
+    void 0
+  );
 }
 function one(state, node, key) {
   if (node.type === "element") {
@@ -86,7 +93,7 @@ function element(state, node, key) {
   const props = createElementProps(state, node);
   let children = createChildren(state, node);
   if (tableElements.has(node.tagName)) {
-    children = children.filter(function (child) {
+    children = children.filter(function(child) {
       return typeof child === "string" ? !whitespace(child) : true;
     });
   }
@@ -176,9 +183,9 @@ function developmentCreate(filePath, jsxDEV) {
       {
         columnNumber: point ? point.column - 1 : void 0,
         fileName: filePath,
-        lineNumber: point ? point.line : void 0,
+        lineNumber: point ? point.line : void 0
       },
-      void 0,
+      void 0
     );
   }
 }
@@ -191,12 +198,7 @@ function createElementProps(state, node) {
       const result = createProperty(state, prop, node.properties[prop]);
       if (result) {
         const [key, value] = result;
-        if (
-          state.tableCellAlignToStyle &&
-          key === "align" &&
-          typeof value === "string" &&
-          tableCellElement.has(node.tagName)
-        ) {
+        if (state.tableCellAlignToStyle && key === "align" && typeof value === "string" && tableCellElement.has(node.tagName)) {
           alignValue = value;
         } else {
           props[key] = value;
@@ -205,9 +207,10 @@ function createElementProps(state, node) {
     }
   }
   if (alignValue) {
-    const style =
+    const style = (
       /** @type {Style} */
-      props.style || (props.style = {});
+      props.style || (props.style = {})
+    );
     style[state.stylePropertyNameCase === "css" ? "text-align" : "textAlign"] = alignValue;
   }
   return props;
@@ -224,7 +227,10 @@ function createJsxElementProps(state, node) {
         ok(objectExpression.type === "ObjectExpression");
         const property = objectExpression.properties[0];
         ok(property.type === "SpreadElement");
-        Object.assign(props, state.evaluater.evaluateExpression(property.argument));
+        Object.assign(
+          props,
+          state.evaluater.evaluateExpression(property.argument)
+        );
       } else {
         crashEstree(state, node.position);
       }
@@ -243,7 +249,8 @@ function createJsxElementProps(state, node) {
       } else {
         value = attribute.value === null ? true : attribute.value;
       }
-      props[name2] = /** @type {Props[keyof Props]} */ value;
+      props[name2] = /** @type {Props[keyof Props]} */
+      value;
     }
   }
   return props;
@@ -256,12 +263,7 @@ function createChildren(state, node) {
     const child = node.children[index];
     let key;
     if (state.passKeys) {
-      const name2 =
-        child.type === "element"
-          ? child.tagName
-          : child.type === "mdxJsxFlowElement" || child.type === "mdxJsxTextElement"
-            ? child.name
-            : void 0;
+      const name2 = child.type === "element" ? child.tagName : child.type === "mdxJsxFlowElement" || child.type === "mdxJsxTextElement" ? child.name : void 0;
       if (name2) {
         const count = countsByName.get(name2) || 0;
         key = name2 + "-" + count;
@@ -275,7 +277,7 @@ function createChildren(state, node) {
 }
 function createProperty(state, prop, value) {
   const info = find(state.schema, prop);
-  if (value === null || value === void 0 || (typeof value === "number" && Number.isNaN(value))) {
+  if (value === null || value === void 0 || typeof value === "number" && Number.isNaN(value)) {
     return;
   }
   if (Array.isArray(value)) {
@@ -289,10 +291,8 @@ function createProperty(state, prop, value) {
     return ["style", styleObject];
   }
   return [
-    state.elementAttributeNameCase === "react" && info.space
-      ? hastToReact[info.property] || info.property
-      : info.attribute,
-    value,
+    state.elementAttributeNameCase === "react" && info.space ? hastToReact[info.property] || info.property : info.attribute,
+    value
   ];
 }
 function parseStyle(state, value) {
@@ -302,14 +302,15 @@ function parseStyle(state, value) {
     if (state.ignoreInvalidStyle) {
       return {};
     }
-    const cause =
+    const cause = (
       /** @type {Error} */
-      error;
+      error
+    );
     const message = new VFileMessage("Cannot parse `style` attribute", {
       ancestors: state.ancestors,
       cause,
       ruleId: "style",
-      source: "hast-util-to-jsx-runtime",
+      source: "hast-util-to-jsx-runtime"
     });
     message.file = state.filePath || void 0;
     message.url = docs + "#cannot-parse-style-attribute";
@@ -325,30 +326,24 @@ function findComponentFromName(state, name$1, allowExpression) {
     let index = -1;
     let node;
     while (++index < identifiers.length) {
-      const prop = name(identifiers[index])
-        ? { type: "Identifier", name: identifiers[index] }
-        : { type: "Literal", value: identifiers[index] };
-      node = node
-        ? {
-            type: "MemberExpression",
-            object: node,
-            property: prop,
-            computed: Boolean(index && prop.type === "Literal"),
-            optional: false,
-          }
-        : prop;
+      const prop = name(identifiers[index]) ? { type: "Identifier", name: identifiers[index] } : { type: "Literal", value: identifiers[index] };
+      node = node ? {
+        type: "MemberExpression",
+        object: node,
+        property: prop,
+        computed: Boolean(index && prop.type === "Literal"),
+        optional: false
+      } : prop;
     }
     result = node;
   } else {
-    result =
-      name(name$1) && !/^[a-z]/.test(name$1)
-        ? { type: "Identifier", name: name$1 }
-        : { type: "Literal", value: name$1 };
+    result = name(name$1) && !/^[a-z]/.test(name$1) ? { type: "Identifier", name: name$1 } : { type: "Literal", value: name$1 };
   }
   if (result.type === "Literal") {
-    const name2 =
+    const name2 = (
       /** @type {string | number} */
-      result.value;
+      result.value
+    );
     return own.call(state.components, name2) ? state.components[name2] : name2;
   }
   if (state.evaluater) {
@@ -357,12 +352,15 @@ function findComponentFromName(state, name$1, allowExpression) {
   crashEstree(state);
 }
 function crashEstree(state, place) {
-  const message = new VFileMessage("Cannot handle MDX estrees without `createEvaluater`", {
-    ancestors: state.ancestors,
-    place,
-    ruleId: "mdx-estree",
-    source: "hast-util-to-jsx-runtime",
-  });
+  const message = new VFileMessage(
+    "Cannot handle MDX estrees without `createEvaluater`",
+    {
+      ancestors: state.ancestors,
+      place,
+      ruleId: "mdx-estree",
+      source: "hast-util-to-jsx-runtime"
+    }
+  );
   message.file = state.filePath || void 0;
   message.url = docs + "#cannot-handle-mdx-estrees-without-createevaluater";
   throw message;
@@ -385,4 +383,6 @@ function transformStyleToCssCasing(from) {
 function toDash($0) {
   return "-" + $0.toLowerCase();
 }
-export { toJsxRuntime as t };
+export {
+  toJsxRuntime as t
+};

@@ -1,4 +1,4 @@
-const convert =
+const convert = (
   // Note: overloads in JSDoc can’t yet use different `@template`s.
   /**
    * @type {(
@@ -13,7 +13,7 @@ const convert =
    * @param {Test} [test]
    * @returns {Check}
    */
-  function (test) {
+  (function(test) {
     if (test === null || test === void 0) {
       return ok;
     }
@@ -21,20 +21,21 @@ const convert =
       return castFactory(test);
     }
     if (typeof test === "object") {
-      return Array.isArray(test)
-        ? anyFactory(test)
-        : // Cast because `ReadonlyArray` goes into the above but `isArray`
-          // narrows to `Array`.
-          propertiesFactory(
-            /** @type {Props} */
-            test,
-          );
+      return Array.isArray(test) ? anyFactory(test) : (
+        // Cast because `ReadonlyArray` goes into the above but `isArray`
+        // narrows to `Array`.
+        propertiesFactory(
+          /** @type {Props} */
+          test
+        )
+      );
     }
     if (typeof test === "string") {
       return typeFactory(test);
     }
     throw new Error("Expected function, string, or object as test");
-  };
+  })
+);
 function anyFactory(tests) {
   const checks = [];
   let index = -1;
@@ -51,15 +52,17 @@ function anyFactory(tests) {
   }
 }
 function propertiesFactory(check) {
-  const checkAsRecord =
+  const checkAsRecord = (
     /** @type {Record<string, unknown>} */
-    check;
+    check
+  );
   return castFactory(all);
   function all(node) {
-    const nodeAsRecord =
+    const nodeAsRecord = (
       /** @type {Record<string, unknown>} */
       /** @type {unknown} */
-      node;
+      node
+    );
     let key;
     for (key in check) {
       if (nodeAsRecord[key] !== checkAsRecord[key]) return false;
@@ -77,8 +80,12 @@ function castFactory(testFunction) {
   return check;
   function check(value, index, parent) {
     return Boolean(
-      looksLikeANode(value) &&
-      testFunction.call(this, value, typeof index === "number" ? index : void 0, parent || void 0),
+      looksLikeANode(value) && testFunction.call(
+        this,
+        value,
+        typeof index === "number" ? index : void 0,
+        parent || void 0
+      )
     );
   }
 }
@@ -88,4 +95,6 @@ function ok() {
 function looksLikeANode(value) {
   return value !== null && typeof value === "object" && "type" in value;
 }
-export { convert as c };
+export {
+  convert as c
+};

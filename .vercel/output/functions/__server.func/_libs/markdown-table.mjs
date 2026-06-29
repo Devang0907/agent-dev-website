@@ -23,10 +23,7 @@ function markdownTable(table, options) {
       if (settings.alignDelimiters !== false) {
         const size = stringLength(cell);
         sizes2[columnIndex2] = size;
-        if (
-          longestCellByColumn[columnIndex2] === void 0 ||
-          size > longestCellByColumn[columnIndex2]
-        ) {
+        if (longestCellByColumn[columnIndex2] === void 0 || size > longestCellByColumn[columnIndex2]) {
           longestCellByColumn[columnIndex2] = size;
         }
       }
@@ -61,10 +58,10 @@ function markdownTable(table, options) {
     } else if (code === 114) {
       after = ":";
     }
-    let size =
-      settings.alignDelimiters === false
-        ? 1
-        : Math.max(1, longestCellByColumn[columnIndex] - before.length - after.length);
+    let size = settings.alignDelimiters === false ? 1 : Math.max(
+      1,
+      longestCellByColumn[columnIndex] - before.length - after.length
+    );
     const cell = before + "-".repeat(size) + after;
     if (settings.alignDelimiters !== false) {
       size = before.length + size + after.length;
@@ -108,12 +105,9 @@ function markdownTable(table, options) {
       if (settings.delimiterStart !== false && !columnIndex) {
         line.push("|");
       }
-      if (
-        settings.padding !== false && // Don’t add the opening space if we’re not aligning and the cell is
-        // empty: there will be a closing space.
-        !(settings.alignDelimiters === false && cell === "") &&
-        (settings.delimiterStart !== false || columnIndex)
-      ) {
+      if (settings.padding !== false && // Don’t add the opening space if we’re not aligning and the cell is
+      // empty: there will be a closing space.
+      !(settings.alignDelimiters === false && cell === "") && (settings.delimiterStart !== false || columnIndex)) {
         line.push(" ");
       }
       if (settings.alignDelimiters !== false) {
@@ -130,7 +124,9 @@ function markdownTable(table, options) {
         line.push("|");
       }
     }
-    lines.push(settings.delimiterEnd === false ? line.join("").replace(/ +$/, "") : line.join(""));
+    lines.push(
+      settings.delimiterEnd === false ? line.join("").replace(/ +$/, "") : line.join("")
+    );
   }
   return lines.join("\n");
 }
@@ -139,12 +135,8 @@ function serialize(value) {
 }
 function toAlignment(value) {
   const code = typeof value === "string" ? value.codePointAt(0) : 0;
-  return code === 67 || code === 99
-    ? 99
-    : code === 76 || code === 108
-      ? 108
-      : code === 82 || code === 114
-        ? 114
-        : 0;
+  return code === 67 || code === 99 ? 99 : code === 76 || code === 108 ? 108 : code === 82 || code === 114 ? 114 : 0;
 }
-export { markdownTable as m };
+export {
+  markdownTable as m
+};

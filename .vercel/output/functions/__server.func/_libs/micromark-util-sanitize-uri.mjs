@@ -7,11 +7,7 @@ function normalizeUri(value) {
   while (++index < value.length) {
     const code = value.charCodeAt(index);
     let replace = "";
-    if (
-      code === 37 &&
-      asciiAlphanumeric(value.charCodeAt(index + 1)) &&
-      asciiAlphanumeric(value.charCodeAt(index + 2))
-    ) {
+    if (code === 37 && asciiAlphanumeric(value.charCodeAt(index + 1)) && asciiAlphanumeric(value.charCodeAt(index + 2))) {
       skip = 2;
     } else if (code < 128) {
       if (!/[!#$&-;=?-Z_a-z~]/.test(String.fromCharCode(code))) {
@@ -40,4 +36,6 @@ function normalizeUri(value) {
   }
   return result.join("") + value.slice(start);
 }
-export { normalizeUri as n };
+export {
+  normalizeUri as n
+};

@@ -11,13 +11,7 @@ function fromMarkdown(value, encoding, options) {
     options = encoding;
     encoding = void 0;
   }
-  return compiler(options)(
-    postprocess(
-      parse(options)
-        .document()
-        .write(preprocess()(value, encoding, true)),
-    ),
-  );
+  return compiler(options)(postprocess(parse(options).document().write(preprocess()(value, encoding, true))));
 }
 function compiler(options) {
   const config = {
@@ -64,7 +58,7 @@ function compiler(options) {
       resourceTitleString: buffer,
       setextHeading: opener(heading),
       strong: opener(strong),
-      thematicBreak: opener(thematicBreak),
+      thematicBreak: opener(thematicBreak)
     },
     exit: {
       atxHeading: closer(),
@@ -115,8 +109,8 @@ function compiler(options) {
       setextHeadingLineSequence: onexitsetextheadinglinesequence,
       setextHeadingText: onexitsetextheadingtext,
       strong: closer(),
-      thematicBreak: closer(),
-    },
+      thematicBreak: closer()
+    }
   };
   configure(config, (options || {}).mdastExtensions || []);
   const data = {};
@@ -124,7 +118,7 @@ function compiler(options) {
   function compile(events) {
     let tree = {
       type: "root",
-      children: [],
+      children: []
     };
     const context = {
       stack: [tree],
@@ -134,7 +128,7 @@ function compiler(options) {
       exit,
       buffer,
       resume,
-      data,
+      data
     };
     const listStack = [];
     let index = -1;
@@ -152,15 +146,9 @@ function compiler(options) {
     while (++index < events.length) {
       const handler = config[events[index][0]];
       if (own.call(handler, events[index][1].type)) {
-        handler[events[index][1].type].call(
-          Object.assign(
-            {
-              sliceSerialize: events[index][2].sliceSerialize,
-            },
-            context,
-          ),
-          events[index][1],
-        );
+        handler[events[index][1].type].call(Object.assign({
+          sliceSerialize: events[index][2].sliceSerialize
+        }, context), events[index][1]);
       }
     }
     if (context.tokenStack.length > 0) {
@@ -169,24 +157,16 @@ function compiler(options) {
       handler.call(context, void 0, tail[0]);
     }
     tree.position = {
-      start: point(
-        events.length > 0
-          ? events[0][1].start
-          : {
-              line: 1,
-              column: 1,
-              offset: 0,
-            },
-      ),
-      end: point(
-        events.length > 0
-          ? events[events.length - 2][1].end
-          : {
-              line: 1,
-              column: 1,
-              offset: 0,
-            },
-      ),
+      start: point(events.length > 0 ? events[0][1].start : {
+        line: 1,
+        column: 1,
+        offset: 0
+      }),
+      end: point(events.length > 0 ? events[events.length - 2][1].end : {
+        line: 1,
+        column: 1,
+        offset: 0
+      })
     };
     index = -1;
     while (++index < config.transforms.length) {
@@ -236,12 +216,7 @@ function compiler(options) {
           atMarker = void 0;
         }
       }
-      if (
-        (!containerBalance && event[0] === "enter" && event[1].type === "listItemPrefix") ||
-        (containerBalance === -1 &&
-          event[0] === "exit" &&
-          (event[1].type === "listUnordered" || event[1].type === "listOrdered"))
-      ) {
+      if (!containerBalance && event[0] === "enter" && event[1].type === "listItemPrefix" || containerBalance === -1 && event[0] === "exit" && (event[1].type === "listUnordered" || event[1].type === "listOrdered")) {
         if (listItem2) {
           let tailIndex = index;
           lineIndex = void 0;
@@ -255,13 +230,7 @@ function compiler(options) {
               }
               tailEvent[1].type = "lineEnding";
               lineIndex = tailIndex;
-            } else if (
-              tailEvent[1].type === "linePrefix" ||
-              tailEvent[1].type === "blockQuotePrefix" ||
-              tailEvent[1].type === "blockQuotePrefixWhitespace" ||
-              tailEvent[1].type === "blockQuoteMarker" ||
-              tailEvent[1].type === "listItemIndent"
-            );
+            } else if (tailEvent[1].type === "linePrefix" || tailEvent[1].type === "blockQuotePrefix" || tailEvent[1].type === "blockQuotePrefixWhitespace" || tailEvent[1].type === "blockQuoteMarker" || tailEvent[1].type === "listItemIndent") ;
             else {
               break;
             }
@@ -280,7 +249,7 @@ function compiler(options) {
             _spread: false,
             start: Object.assign({}, event[1].start),
             // @ts-expect-error: we’ll add `end` in a second.
-            end: void 0,
+            end: void 0
           };
           listItem2 = item;
           events.splice(index, 0, ["enter", item, event[2]]);
@@ -304,7 +273,7 @@ function compiler(options) {
   function buffer() {
     this.stack.push({
       type: "fragment",
-      children: [],
+      children: []
     });
   }
   function enter(node, token, errorHandler) {
@@ -316,7 +285,7 @@ function compiler(options) {
     node.position = {
       start: point(token.start),
       // @ts-expect-error: `end` will be patched later.
-      end: void 0,
+      end: void 0
     };
   }
   function closer(and) {
@@ -330,16 +299,10 @@ function compiler(options) {
     const node = this.stack.pop();
     const open = this.tokenStack.pop();
     if (!open) {
-      throw new Error(
-        "Cannot close `" +
-          token.type +
-          "` (" +
-          stringifyPosition({
-            start: token.start,
-            end: token.end,
-          }) +
-          "): it’s not open",
-      );
+      throw new Error("Cannot close `" + token.type + "` (" + stringifyPosition({
+        start: token.start,
+        end: token.end
+      }) + "): it’s not open");
     } else if (open[0].type !== token.type) {
       if (onExitError) {
         onExitError.call(this, token, open[0]);
@@ -431,7 +394,7 @@ function compiler(options) {
       tail.position = {
         start: point(token.start),
         // @ts-expect-error: we’ll add `end` later.
-        end: void 0,
+        end: void 0
       };
       siblings.push(tail);
     }
@@ -550,10 +513,7 @@ function compiler(options) {
     const type = this.data.characterReferenceType;
     let value;
     if (type) {
-      value = decodeNumericCharacterReference(
-        data2,
-        type === "characterReferenceMarkerNumeric" ? 10 : 16,
-      );
+      value = decodeNumericCharacterReference(data2, type === "characterReferenceMarkerNumeric" ? 10 : 16);
       this.data.characterReferenceType = void 0;
     } else {
       const result = decodeNamedCharacterReference(data2);
@@ -579,7 +539,7 @@ function compiler(options) {
   function blockQuote() {
     return {
       type: "blockquote",
-      children: [],
+      children: []
     };
   }
   function codeFlow() {
@@ -587,13 +547,13 @@ function compiler(options) {
       type: "code",
       lang: null,
       meta: null,
-      value: "",
+      value: ""
     };
   }
   function codeText() {
     return {
       type: "inlineCode",
-      value: "",
+      value: ""
     };
   }
   function definition() {
@@ -602,13 +562,13 @@ function compiler(options) {
       identifier: "",
       label: null,
       title: null,
-      url: "",
+      url: ""
     };
   }
   function emphasis() {
     return {
       type: "emphasis",
-      children: [],
+      children: []
     };
   }
   function heading() {
@@ -616,18 +576,18 @@ function compiler(options) {
       type: "heading",
       // @ts-expect-error `depth` will be set later.
       depth: 0,
-      children: [],
+      children: []
     };
   }
   function hardBreak() {
     return {
-      type: "break",
+      type: "break"
     };
   }
   function html() {
     return {
       type: "html",
-      value: "",
+      value: ""
     };
   }
   function image() {
@@ -635,7 +595,7 @@ function compiler(options) {
       type: "image",
       title: null,
       url: "",
-      alt: null,
+      alt: null
     };
   }
   function link() {
@@ -643,7 +603,7 @@ function compiler(options) {
       type: "link",
       title: null,
       url: "",
-      children: [],
+      children: []
     };
   }
   function list(token) {
@@ -652,7 +612,7 @@ function compiler(options) {
       ordered: token.type === "listOrdered",
       start: null,
       spread: token._spread,
-      children: [],
+      children: []
     };
   }
   function listItem(token) {
@@ -660,30 +620,30 @@ function compiler(options) {
       type: "listItem",
       spread: token._spread,
       checked: null,
-      children: [],
+      children: []
     };
   }
   function paragraph() {
     return {
       type: "paragraph",
-      children: [],
+      children: []
     };
   }
   function strong() {
     return {
       type: "strong",
-      children: [],
+      children: []
     };
   }
   function text() {
     return {
       type: "text",
-      value: "",
+      value: ""
     };
   }
   function thematicBreak() {
     return {
-      type: "thematicBreak",
+      type: "thematicBreak"
     };
   }
 }
@@ -691,7 +651,7 @@ function point(d) {
   return {
     line: d.line,
     column: d.column,
-    offset: d.offset,
+    offset: d.offset
   };
 }
 function configure(combined, extensions) {
@@ -738,34 +698,20 @@ function extension(combined, extension2) {
 }
 function defaultOnError(left, right) {
   if (left) {
-    throw new Error(
-      "Cannot close `" +
-        left.type +
-        "` (" +
-        stringifyPosition({
-          start: left.start,
-          end: left.end,
-        }) +
-        "): a different token (`" +
-        right.type +
-        "`, " +
-        stringifyPosition({
-          start: right.start,
-          end: right.end,
-        }) +
-        ") is open",
-    );
+    throw new Error("Cannot close `" + left.type + "` (" + stringifyPosition({
+      start: left.start,
+      end: left.end
+    }) + "): a different token (`" + right.type + "`, " + stringifyPosition({
+      start: right.start,
+      end: right.end
+    }) + ") is open");
   } else {
-    throw new Error(
-      "Cannot close document, a token (`" +
-        right.type +
-        "`, " +
-        stringifyPosition({
-          start: right.start,
-          end: right.end,
-        }) +
-        ") is still open",
-    );
+    throw new Error("Cannot close document, a token (`" + right.type + "`, " + stringifyPosition({
+      start: right.start,
+      end: right.end
+    }) + ") is still open");
   }
 }
-export { fromMarkdown as f };
+export {
+  fromMarkdown as f
+};

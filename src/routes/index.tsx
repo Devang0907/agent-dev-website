@@ -51,7 +51,6 @@ function Index() {
       <Hero />
       <FeatureSpotlight />
       <main className="editorial-shell">
-        <ProvidersStrip />
         <Install />
         <Features />
         <CTA />
@@ -138,14 +137,54 @@ const SHOWCASE_TABS = [
   },
 ] as const;
 
+const PROVIDERS = [
+  { name: "OpenAI", logo: "/logos/openai.svg", color: "#10A37F" },
+  { name: "Anthropic", logo: "/logos/anthropic.svg", color: "#CC785C" },
+  { name: "Google Gemini", logo: "/logos/google-gemini.svg", color: "#8E75B2" },
+  { name: "Meta Llama", logo: "/logos/meta.svg", color: "#0467DF" },
+  { name: "DeepSeek", logo: "/logos/deepseek.svg", color: "#4D6BFE" },
+] as const;
+
+function LogoTicker() {
+  const items = [...PROVIDERS, ...PROVIDERS];
+
+  return (
+    <div className="relative mb-8 overflow-hidden sm:mb-10" aria-label="Supported AI providers">
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-linear-to-r from-[#d4eaf7] to-transparent sm:w-16" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-linear-to-l from-[#d4eaf7] to-transparent sm:w-16" />
+      <div className="logo-ticker-track gap-10 sm:gap-14">
+        {items.map((provider, i) => (
+          <div key={`${provider.name}-${i}`} className="flex shrink-0 items-center gap-3">
+            <img
+              src={provider.logo}
+              alt=""
+              className="h-7 w-7 object-contain sm:h-8 sm:w-8"
+            />
+            <span
+              className="text-sm font-semibold tracking-[0.02em] sm:text-base"
+              style={{ color: provider.color }}
+            >
+              {provider.name}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function FeatureSpotlight() {
   const [active, setActive] = useState<(typeof SHOWCASE_TABS)[number]["id"]>("boss");
   const tab = SHOWCASE_TABS.find((t) => t.id === active) ?? SHOWCASE_TABS[0];
 
   return (
-    <section className="mx-3 pt-10 pb-8 sm:mx-4 sm:pt-14 lg:mx-5">
+    <section className="mx-3 pt-2 pb-8 sm:mx-4 sm:pt-4 lg:mx-5">
       <div className="hero-frame ref-sky-bg editorial-shadow overflow-hidden">
-        <div className="border-b border-black/8 px-4 pt-6 sm:px-8">
+        <div className="border-b border-black/8 px-4 pt-8 sm:px-8 sm:pt-10">
+          <h2 className="ref-section-title mb-6 text-center text-foreground sm:mb-8">
+            Empowering autonomous development with
+          </h2>
+          <LogoTicker />
           <div className="flex gap-6 overflow-x-auto pb-0 sm:gap-10">
             {SHOWCASE_TABS.map((item) => (
               <button
@@ -310,22 +349,6 @@ export GEMINI_API_KEY=...             # Google Gemini`}
         </pre>
       </div>
     </Section>
-  );
-}
-
-function ProvidersStrip() {
-  const providers = ["OpenAI", "Anthropic", "Google Gemini", "Meta Llama", "DeepSeek"];
-  return (
-    <section className="border-y border-border/60 py-12">
-      <p className="editorial-label mb-8 text-center text-muted-foreground">
-        powering autonomous development with
-      </p>
-      <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-sm font-semibold uppercase tracking-[0.08em] text-muted-foreground sm:gap-x-16">
-        {providers.map((provider) => (
-          <span key={provider}>{provider}</span>
-        ))}
-      </div>
-    </section>
   );
 }
 

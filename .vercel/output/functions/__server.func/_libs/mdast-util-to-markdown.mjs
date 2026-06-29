@@ -9,7 +9,10 @@ function blockquote(node, _, state, info) {
   const tracker = state.createTracker(info);
   tracker.move("> ");
   tracker.shift(2);
-  const value = state.indentLines(state.containerFlow(node, tracker.current()), map$1);
+  const value = state.indentLines(
+    state.containerFlow(node, tracker.current()),
+    map$1
+  );
   exit();
   return value;
 }
@@ -17,10 +20,7 @@ function map$1(line, _, blank) {
   return ">" + (blank ? "" : " ") + line;
 }
 function patternInScope(stack, pattern) {
-  return (
-    listInScope(stack, pattern.inConstruct, true) &&
-    !listInScope(stack, pattern.notInConstruct, false)
-  );
+  return listInScope(stack, pattern.inConstruct, true) && !listInScope(stack, pattern.notInConstruct, false);
 }
 function listInScope(stack, list2, none) {
   if (typeof list2 === "string") {
@@ -40,10 +40,7 @@ function listInScope(stack, list2, none) {
 function hardBreak(_, _1, state, info) {
   let index = -1;
   while (++index < state.unsafe.length) {
-    if (
-      state.unsafe[index].character === "\n" &&
-      patternInScope(state.stack, state.unsafe[index])
-    ) {
+    if (state.unsafe[index].character === "\n" && patternInScope(state.stack, state.unsafe[index])) {
       return /[ \t]/.test(info.before) ? "" : " ";
     }
   }
@@ -51,18 +48,17 @@ function hardBreak(_, _1, state, info) {
 }
 function formatCodeAsIndented(node, state) {
   return Boolean(
-    state.options.fences === false &&
-    node.value && // If there’s no info…
+    state.options.fences === false && node.value && // If there’s no info…
     !node.lang && // And there’s a non-whitespace character…
     /[^ \r\n]/.test(node.value) && // And the value doesn’t start or end in a blank…
-    !/^[\t ]*(?:[\r\n]|$)|(?:^|[\r\n])[\t ]*$/.test(node.value),
+    !/^[\t ]*(?:[\r\n]|$)|(?:^|[\r\n])[\t ]*$/.test(node.value)
   );
 }
 function checkFence(state) {
   const marker = state.options.fence || "`";
   if (marker !== "`" && marker !== "~") {
     throw new Error(
-      "Cannot serialize code with `" + marker + "` for `options.fence`, expected `` ` `` or `~`",
+      "Cannot serialize code with `" + marker + "` for `options.fence`, expected `` ` `` or `~`"
     );
   }
   return marker;
@@ -88,8 +84,8 @@ function code(node, _, state, info) {
         before: value,
         after: " ",
         encode: ["`"],
-        ...tracker.current(),
-      }),
+        ...tracker.current()
+      })
     );
     subexit();
   }
@@ -101,8 +97,8 @@ function code(node, _, state, info) {
         before: value,
         after: "\n",
         encode: ["`"],
-        ...tracker.current(),
-      }),
+        ...tracker.current()
+      })
     );
     subexit();
   }
@@ -121,7 +117,7 @@ function checkQuote(state) {
   const marker = state.options.quote || '"';
   if (marker !== '"' && marker !== "'") {
     throw new Error(
-      "Cannot serialize title with `" + marker + "` for `options.quote`, expected `\"`, or `'`",
+      "Cannot serialize title with `" + marker + "` for `options.quote`, expected `\"`, or `'`"
     );
   }
   return marker;
@@ -137,8 +133,8 @@ function definition(node, _, state, info) {
     state.safe(state.associationId(node), {
       before: value,
       after: "]",
-      ...tracker.current(),
-    }),
+      ...tracker.current()
+    })
   );
   value += tracker.move("]: ");
   subexit();
@@ -150,7 +146,7 @@ function definition(node, _, state, info) {
     subexit = state.enter("destinationLiteral");
     value += tracker.move("<");
     value += tracker.move(
-      state.safe(node.url, { before: value, after: ">", ...tracker.current() }),
+      state.safe(node.url, { before: value, after: ">", ...tracker.current() })
     );
     value += tracker.move(">");
   } else {
@@ -159,8 +155,8 @@ function definition(node, _, state, info) {
       state.safe(node.url, {
         before: value,
         after: node.title ? " " : "\n",
-        ...tracker.current(),
-      }),
+        ...tracker.current()
+      })
     );
   }
   subexit();
@@ -171,8 +167,8 @@ function definition(node, _, state, info) {
       state.safe(node.title, {
         before: value,
         after: quote,
-        ...tracker.current(),
-      }),
+        ...tracker.current()
+      })
     );
     value += tracker.move(quote);
     subexit();
@@ -184,9 +180,7 @@ function checkEmphasis(state) {
   const marker = state.options.emphasis || "*";
   if (marker !== "*" && marker !== "_") {
     throw new Error(
-      "Cannot serialize emphasis with `" +
-        marker +
-        "` for `options.emphasis`, expected `*`, or `_`",
+      "Cannot serialize emphasis with `" + marker + "` for `options.emphasis`, expected `*`, or `_`"
     );
   }
   return marker;
@@ -198,37 +192,41 @@ function encodeInfo(outside, inside, marker) {
   const outsideKind = classifyCharacter(outside);
   const insideKind = classifyCharacter(inside);
   if (outsideKind === void 0) {
-    return insideKind === void 0
-      ? // Letter inside:
-        // we have to encode *both* letters for `_` as it is looser.
-        // it already forms for `*` (and GFMs `~`).
-        marker === "_"
-        ? { inside: true, outside: true }
-        : { inside: false, outside: false }
-      : insideKind === 1
-        ? // Whitespace inside: encode both (letter, whitespace).
-          { inside: true, outside: true }
-        : // Punctuation inside: encode outer (letter)
-          { inside: false, outside: true };
+    return insideKind === void 0 ? (
+      // Letter inside:
+      // we have to encode *both* letters for `_` as it is looser.
+      // it already forms for `*` (and GFMs `~`).
+      marker === "_" ? { inside: true, outside: true } : { inside: false, outside: false }
+    ) : insideKind === 1 ? (
+      // Whitespace inside: encode both (letter, whitespace).
+      { inside: true, outside: true }
+    ) : (
+      // Punctuation inside: encode outer (letter)
+      { inside: false, outside: true }
+    );
   }
   if (outsideKind === 1) {
-    return insideKind === void 0
-      ? // Letter inside: already forms.
-        { inside: false, outside: false }
-      : insideKind === 1
-        ? // Whitespace inside: encode both (whitespace).
-          { inside: true, outside: true }
-        : // Punctuation inside: already forms.
-          { inside: false, outside: false };
-  }
-  return insideKind === void 0
-    ? // Letter inside: already forms.
+    return insideKind === void 0 ? (
+      // Letter inside: already forms.
       { inside: false, outside: false }
-    : insideKind === 1
-      ? // Whitespace inside: encode inner (whitespace).
-        { inside: true, outside: false }
-      : // Punctuation inside: already forms.
-        { inside: false, outside: false };
+    ) : insideKind === 1 ? (
+      // Whitespace inside: encode both (whitespace).
+      { inside: true, outside: true }
+    ) : (
+      // Punctuation inside: already forms.
+      { inside: false, outside: false }
+    );
+  }
+  return insideKind === void 0 ? (
+    // Letter inside: already forms.
+    { inside: false, outside: false }
+  ) : insideKind === 1 ? (
+    // Whitespace inside: encode inner (whitespace).
+    { inside: true, outside: false }
+  ) : (
+    // Punctuation inside: already forms.
+    { inside: false, outside: false }
+  );
 }
 emphasis.peek = emphasisPeek;
 function emphasis(node, _, state, info) {
@@ -240,11 +238,15 @@ function emphasis(node, _, state, info) {
     state.containerPhrasing(node, {
       after: marker,
       before,
-      ...tracker.current(),
-    }),
+      ...tracker.current()
+    })
   );
   const betweenHead = between.charCodeAt(0);
-  const open = encodeInfo(info.before.charCodeAt(info.before.length - 1), betweenHead, marker);
+  const open = encodeInfo(
+    info.before.charCodeAt(info.before.length - 1),
+    betweenHead,
+    marker
+  );
   if (open.inside) {
     between = encodeCharacterReference(betweenHead) + between.slice(1);
   }
@@ -257,7 +259,7 @@ function emphasis(node, _, state, info) {
   exit();
   state.attentionEncodeSurroundingInfo = {
     after: close.outside,
-    before: open.outside,
+    before: open.outside
   };
   return before + between + after;
 }
@@ -266,14 +268,14 @@ function emphasisPeek(_, _1, state) {
 }
 function formatHeadingAsSetext(node, state) {
   let literalWithBreak = false;
-  visit(node, function (node2) {
-    if (("value" in node2 && /\r?\n|\r/.test(node2.value)) || node2.type === "break") {
+  visit(node, function(node2) {
+    if ("value" in node2 && /\r?\n|\r/.test(node2.value) || node2.type === "break") {
       literalWithBreak = true;
       return EXIT;
     }
   });
   return Boolean(
-    (!node.depth || node.depth < 3) && toString(node) && (state.options.setext || literalWithBreak),
+    (!node.depth || node.depth < 3) && toString(node) && (state.options.setext || literalWithBreak)
   );
 }
 function heading(node, _, state, info) {
@@ -285,19 +287,15 @@ function heading(node, _, state, info) {
     const value2 = state.containerPhrasing(node, {
       ...tracker.current(),
       before: "\n",
-      after: "\n",
+      after: "\n"
     });
     subexit2();
     exit2();
-    return (
-      value2 +
-      "\n" +
-      (rank === 1 ? "=" : "-").repeat(
-        // The whole size…
-        value2.length - // Minus the position of the character after the last EOL (or
-          // 0 if there is none)…
-          (Math.max(value2.lastIndexOf("\r"), value2.lastIndexOf("\n")) + 1),
-      )
+    return value2 + "\n" + (rank === 1 ? "=" : "-").repeat(
+      // The whole size…
+      value2.length - // Minus the position of the character after the last EOL (or
+      // 0 if there is none)…
+      (Math.max(value2.lastIndexOf("\r"), value2.lastIndexOf("\n")) + 1)
     );
   }
   const sequence = "#".repeat(rank);
@@ -307,7 +305,7 @@ function heading(node, _, state, info) {
   let value = state.containerPhrasing(node, {
     before: "# ",
     after: "\n",
-    ...tracker.current(),
+    ...tracker.current()
   });
   if (/^[\t ]/.test(value)) {
     value = encodeCharacterReference(value.charCodeAt(0)) + value.slice(1);
@@ -335,18 +333,20 @@ function image(node, _, state, info) {
   let subexit = state.enter("label");
   const tracker = state.createTracker(info);
   let value = tracker.move("![");
-  value += tracker.move(state.safe(node.alt, { before: value, after: "]", ...tracker.current() }));
+  value += tracker.move(
+    state.safe(node.alt, { before: value, after: "]", ...tracker.current() })
+  );
   value += tracker.move("](");
   subexit();
   if (
     // If there’s no url but there is a title…
-    (!node.url && node.title) || // If there are control characters or whitespace.
+    !node.url && node.title || // If there are control characters or whitespace.
     /[\0- \u007F]/.test(node.url)
   ) {
     subexit = state.enter("destinationLiteral");
     value += tracker.move("<");
     value += tracker.move(
-      state.safe(node.url, { before: value, after: ">", ...tracker.current() }),
+      state.safe(node.url, { before: value, after: ">", ...tracker.current() })
     );
     value += tracker.move(">");
   } else {
@@ -355,8 +355,8 @@ function image(node, _, state, info) {
       state.safe(node.url, {
         before: value,
         after: node.title ? " " : ")",
-        ...tracker.current(),
-      }),
+        ...tracker.current()
+      })
     );
   }
   subexit();
@@ -367,8 +367,8 @@ function image(node, _, state, info) {
       state.safe(node.title, {
         before: value,
         after: quote,
-        ...tracker.current(),
-      }),
+        ...tracker.current()
+      })
     );
     value += tracker.move(quote);
     subexit();
@@ -390,7 +390,7 @@ function imageReference(node, _, state, info) {
   const alt = state.safe(node.alt, {
     before: value,
     after: "]",
-    ...tracker.current(),
+    ...tracker.current()
   });
   value += tracker.move(alt + "][");
   subexit();
@@ -400,7 +400,7 @@ function imageReference(node, _, state, info) {
   const reference = state.safe(state.associationId(node), {
     before: value,
     after: "]",
-    ...tracker.current(),
+    ...tracker.current()
   });
   subexit();
   state.stack = stack;
@@ -425,10 +425,7 @@ function inlineCode(node, _, state) {
   while (new RegExp("(^|[^`])" + sequence + "([^`]|$)").test(value)) {
     sequence += "`";
   }
-  if (
-    /[^ \r\n]/.test(value) &&
-    ((/^[ \r\n]/.test(value) && /[ \r\n]$/.test(value)) || /^`|`$/.test(value))
-  ) {
+  if (/[^ \r\n]/.test(value) && (/^[ \r\n]/.test(value) && /[ \r\n]$/.test(value) || /^`|`$/.test(value))) {
     value = " " + value + " ";
   }
   while (++index < state.unsafe.length) {
@@ -436,7 +433,7 @@ function inlineCode(node, _, state) {
     const expression = state.compilePattern(pattern);
     let match;
     if (!pattern.atBreak) continue;
-    while ((match = expression.exec(value))) {
+    while (match = expression.exec(value)) {
       let position = match.index;
       if (value.charCodeAt(position) === 10 && value.charCodeAt(position - 1) === 13) {
         position--;
@@ -455,13 +452,11 @@ function formatLinkAsAutolink(node, state) {
     !state.options.resourceLink && // If there’s a url…
     node.url && // And there’s a no title…
     !node.title && // And the content of `node` is a single text node…
-    node.children &&
-    node.children.length === 1 &&
-    node.children[0].type === "text" && // And if the url is the same as the content…
+    node.children && node.children.length === 1 && node.children[0].type === "text" && // And if the url is the same as the content…
     (raw === node.url || "mailto:" + raw === node.url) && // And that starts w/ a protocol…
     /^[a-z][a-z+.-]+:/i.test(node.url) && // And that doesn’t contain ASCII control codes (character escapes and
     // references don’t work), space, or angle brackets…
-    !/[\0- <>\u007F]/.test(node.url),
+    !/[\0- <>\u007F]/.test(node.url)
   );
 }
 link.peek = linkPeek;
@@ -480,8 +475,8 @@ function link(node, _, state, info) {
       state.containerPhrasing(node, {
         before: value2,
         after: ">",
-        ...tracker.current(),
-      }),
+        ...tracker.current()
+      })
     );
     value2 += tracker.move(">");
     exit();
@@ -495,20 +490,20 @@ function link(node, _, state, info) {
     state.containerPhrasing(node, {
       before: value,
       after: "](",
-      ...tracker.current(),
-    }),
+      ...tracker.current()
+    })
   );
   value += tracker.move("](");
   subexit();
   if (
     // If there’s no url but there is a title…
-    (!node.url && node.title) || // If there are control characters or whitespace.
+    !node.url && node.title || // If there are control characters or whitespace.
     /[\0- \u007F]/.test(node.url)
   ) {
     subexit = state.enter("destinationLiteral");
     value += tracker.move("<");
     value += tracker.move(
-      state.safe(node.url, { before: value, after: ">", ...tracker.current() }),
+      state.safe(node.url, { before: value, after: ">", ...tracker.current() })
     );
     value += tracker.move(">");
   } else {
@@ -517,8 +512,8 @@ function link(node, _, state, info) {
       state.safe(node.url, {
         before: value,
         after: node.title ? " " : ")",
-        ...tracker.current(),
-      }),
+        ...tracker.current()
+      })
     );
   }
   subexit();
@@ -529,8 +524,8 @@ function link(node, _, state, info) {
       state.safe(node.title, {
         before: value,
         after: quote,
-        ...tracker.current(),
-      }),
+        ...tracker.current()
+      })
     );
     value += tracker.move(quote);
     subexit();
@@ -552,7 +547,7 @@ function linkReference(node, _, state, info) {
   const text2 = state.containerPhrasing(node, {
     before: value,
     after: "]",
-    ...tracker.current(),
+    ...tracker.current()
   });
   value += tracker.move(text2 + "][");
   subexit();
@@ -562,7 +557,7 @@ function linkReference(node, _, state, info) {
   const reference = state.safe(state.associationId(node), {
     before: value,
     after: "]",
-    ...tracker.current(),
+    ...tracker.current()
   });
   subexit();
   state.stack = stack;
@@ -583,9 +578,7 @@ function checkBullet(state) {
   const marker = state.options.bullet || "*";
   if (marker !== "*" && marker !== "+" && marker !== "-") {
     throw new Error(
-      "Cannot serialize items with `" +
-        marker +
-        "` for `options.bullet`, expected `*`, `+`, or `-`",
+      "Cannot serialize items with `" + marker + "` for `options.bullet`, expected `*`, `+`, or `-`"
     );
   }
   return marker;
@@ -598,18 +591,12 @@ function checkBulletOther(state) {
   }
   if (bulletOther !== "*" && bulletOther !== "+" && bulletOther !== "-") {
     throw new Error(
-      "Cannot serialize items with `" +
-        bulletOther +
-        "` for `options.bulletOther`, expected `*`, `+`, or `-`",
+      "Cannot serialize items with `" + bulletOther + "` for `options.bulletOther`, expected `*`, `+`, or `-`"
     );
   }
   if (bulletOther === bullet) {
     throw new Error(
-      "Expected `bullet` (`" +
-        bullet +
-        "`) and `bulletOther` (`" +
-        bulletOther +
-        "`) to be different",
+      "Expected `bullet` (`" + bullet + "`) and `bulletOther` (`" + bulletOther + "`) to be different"
     );
   }
   return bulletOther;
@@ -618,9 +605,7 @@ function checkBulletOrdered(state) {
   const marker = state.options.bulletOrdered || ".";
   if (marker !== "." && marker !== ")") {
     throw new Error(
-      "Cannot serialize items with `" +
-        marker +
-        "` for `options.bulletOrdered`, expected `.` or `)`",
+      "Cannot serialize items with `" + marker + "` for `options.bulletOrdered`, expected `.` or `)`"
     );
   }
   return marker;
@@ -629,7 +614,7 @@ function checkRule(state) {
   const marker = state.options.rule || "*";
   if (marker !== "*" && marker !== "-" && marker !== "_") {
     throw new Error(
-      "Cannot serialize rules with `" + marker + "` for `options.rule`, expected `*`, `-`, or `_`",
+      "Cannot serialize rules with `" + marker + "` for `options.rule`, expected `*`, `-`, or `_`"
     );
   }
   return marker;
@@ -638,22 +623,16 @@ function list(node, parent, state, info) {
   const exit = state.enter("list");
   const bulletCurrent = state.bulletCurrent;
   let bullet = node.ordered ? checkBulletOrdered(state) : checkBullet(state);
-  const bulletOther = node.ordered ? (bullet === "." ? ")" : ".") : checkBulletOther(state);
+  const bulletOther = node.ordered ? bullet === "." ? ")" : "." : checkBulletOther(state);
   let useDifferentMarker = parent && state.bulletLastUsed ? bullet === state.bulletLastUsed : false;
   if (!node.ordered) {
     const firstListItem = node.children ? node.children[0] : void 0;
     if (
       // Bullet could be used as a thematic break marker:
       (bullet === "*" || bullet === "-") && // Empty first list item:
-      firstListItem &&
-      (!firstListItem.children || !firstListItem.children[0]) && // Directly in two other list items:
-      state.stack[state.stack.length - 1] === "list" &&
-      state.stack[state.stack.length - 2] === "listItem" &&
-      state.stack[state.stack.length - 3] === "list" &&
-      state.stack[state.stack.length - 4] === "listItem" && // That are each the first child.
-      state.indexStack[state.indexStack.length - 1] === 0 &&
-      state.indexStack[state.indexStack.length - 2] === 0 &&
-      state.indexStack[state.indexStack.length - 3] === 0
+      firstListItem && (!firstListItem.children || !firstListItem.children[0]) && // Directly in two other list items:
+      state.stack[state.stack.length - 1] === "list" && state.stack[state.stack.length - 2] === "listItem" && state.stack[state.stack.length - 3] === "list" && state.stack[state.stack.length - 4] === "listItem" && // That are each the first child.
+      state.indexStack[state.indexStack.length - 1] === 0 && state.indexStack[state.indexStack.length - 2] === 0 && state.indexStack[state.indexStack.length - 3] === 0
     ) {
       useDifferentMarker = true;
     }
@@ -661,13 +640,7 @@ function list(node, parent, state, info) {
       let index = -1;
       while (++index < node.children.length) {
         const item = node.children[index];
-        if (
-          item &&
-          item.type === "listItem" &&
-          item.children &&
-          item.children[0] &&
-          item.children[0].type === "thematicBreak"
-        ) {
+        if (item && item.type === "listItem" && item.children && item.children[0] && item.children[0].type === "thematicBreak") {
           useDifferentMarker = true;
           break;
         }
@@ -688,9 +661,7 @@ function checkListItemIndent(state) {
   const style = state.options.listItemIndent || "one";
   if (style !== "tab" && style !== "one" && style !== "mixed") {
     throw new Error(
-      "Cannot serialize items with `" +
-        style +
-        "` for `options.listItemIndent`, expected `tab`, `one`, or `mixed`",
+      "Cannot serialize items with `" + style + "` for `options.listItemIndent`, expected `tab`, `one`, or `mixed`"
     );
   }
   return style;
@@ -699,24 +670,20 @@ function listItem(node, parent, state, info) {
   const listItemIndent = checkListItemIndent(state);
   let bullet = state.bulletCurrent || checkBullet(state);
   if (parent && parent.type === "list" && parent.ordered) {
-    bullet =
-      (typeof parent.start === "number" && parent.start > -1 ? parent.start : 1) +
-      (state.options.incrementListMarker === false ? 0 : parent.children.indexOf(node)) +
-      bullet;
+    bullet = (typeof parent.start === "number" && parent.start > -1 ? parent.start : 1) + (state.options.incrementListMarker === false ? 0 : parent.children.indexOf(node)) + bullet;
   }
   let size = bullet.length + 1;
-  if (
-    listItemIndent === "tab" ||
-    (listItemIndent === "mixed" &&
-      ((parent && parent.type === "list" && parent.spread) || node.spread))
-  ) {
+  if (listItemIndent === "tab" || listItemIndent === "mixed" && (parent && parent.type === "list" && parent.spread || node.spread)) {
     size = Math.ceil(size / 4) * 4;
   }
   const tracker = state.createTracker(info);
   tracker.move(bullet + " ".repeat(size - bullet.length));
   tracker.shift(size);
   const exit = state.enter("listItem");
-  const value = state.indentLines(state.containerFlow(node, tracker.current()), map2);
+  const value = state.indentLines(
+    state.containerFlow(node, tracker.current()),
+    map2
+  );
   exit();
   return value;
   function map2(line, index, blank) {
@@ -735,7 +702,7 @@ function paragraph(node, _, state, info) {
   return value;
 }
 function root(node, _, state, info) {
-  const hasPhrasing = node.children.some(function (d) {
+  const hasPhrasing = node.children.some(function(d) {
     return phrasing(d);
   });
   const container = hasPhrasing ? state.containerPhrasing : state.containerFlow;
@@ -745,7 +712,7 @@ function checkStrong(state) {
   const marker = state.options.strong || "*";
   if (marker !== "*" && marker !== "_") {
     throw new Error(
-      "Cannot serialize strong with `" + marker + "` for `options.strong`, expected `*`, or `_`",
+      "Cannot serialize strong with `" + marker + "` for `options.strong`, expected `*`, or `_`"
     );
   }
   return marker;
@@ -760,11 +727,15 @@ function strong(node, _, state, info) {
     state.containerPhrasing(node, {
       after: marker,
       before,
-      ...tracker.current(),
-    }),
+      ...tracker.current()
+    })
   );
   const betweenHead = between.charCodeAt(0);
-  const open = encodeInfo(info.before.charCodeAt(info.before.length - 1), betweenHead, marker);
+  const open = encodeInfo(
+    info.before.charCodeAt(info.before.length - 1),
+    betweenHead,
+    marker
+  );
   if (open.inside) {
     between = encodeCharacterReference(betweenHead) + between.slice(1);
   }
@@ -777,7 +748,7 @@ function strong(node, _, state, info) {
   exit();
   state.attentionEncodeSurroundingInfo = {
     after: close.outside,
-    before: open.outside,
+    before: open.outside
   };
   return before + between + after;
 }
@@ -791,17 +762,13 @@ function checkRuleRepetition(state) {
   const repetition = state.options.ruleRepetition || 3;
   if (repetition < 3) {
     throw new Error(
-      "Cannot serialize rules with repetition `" +
-        repetition +
-        "` for `options.ruleRepetition`, expected `3` or more",
+      "Cannot serialize rules with repetition `" + repetition + "` for `options.ruleRepetition`, expected `3` or more"
     );
   }
   return repetition;
 }
 function thematicBreak(_, _1, state) {
-  const value = (checkRule(state) + (state.options.ruleSpaces ? " " : "")).repeat(
-    checkRuleRepetition(state),
-  );
+  const value = (checkRule(state) + (state.options.ruleSpaces ? " " : "")).repeat(checkRuleRepetition(state));
   return state.options.ruleSpaces ? value.slice(0, -1) : value;
 }
 const handle = {
@@ -824,6 +791,8 @@ const handle = {
   root,
   strong,
   text,
-  thematicBreak,
+  thematicBreak
 };
-export { handle as h };
+export {
+  handle as h
+};

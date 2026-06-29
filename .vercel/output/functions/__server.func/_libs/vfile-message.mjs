@@ -72,7 +72,7 @@ class VFileMessage extends Error {
       } else if ("type" in optionsOrParentOrPlace) {
         options = {
           ancestors: [optionsOrParentOrPlace],
-          place: optionsOrParentOrPlace.position,
+          place: optionsOrParentOrPlace.position
         };
       } else {
         options = { ...optionsOrParentOrPlace };
@@ -113,10 +113,7 @@ class VFileMessage extends Error {
     this.reason = this.message;
     this.ruleId = options.ruleId || void 0;
     this.source = options.source || void 0;
-    this.stack =
-      legacyCause && options.cause && typeof options.cause.stack === "string"
-        ? options.cause.stack
-        : "";
+    this.stack = legacyCause && options.cause && typeof options.cause.stack === "string" ? options.cause.stack : "";
     this.actual = void 0;
     this.expected = void 0;
     this.note = void 0;
@@ -136,4 +133,6 @@ VFileMessage.prototype.fatal = void 0;
 VFileMessage.prototype.place = void 0;
 VFileMessage.prototype.ruleId = void 0;
 VFileMessage.prototype.source = void 0;
-export { VFileMessage as V };
+export {
+  VFileMessage as V
+};

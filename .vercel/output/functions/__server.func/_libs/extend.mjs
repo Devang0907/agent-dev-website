@@ -19,10 +19,7 @@ function requireExtend() {
       return false;
     }
     var hasOwnConstructor = hasOwn.call(obj, "constructor");
-    var hasIsPrototypeOf =
-      obj.constructor &&
-      obj.constructor.prototype &&
-      hasOwn.call(obj.constructor.prototype, "isPrototypeOf");
+    var hasIsPrototypeOf = obj.constructor && obj.constructor.prototype && hasOwn.call(obj.constructor.prototype, "isPrototypeOf");
     if (obj.constructor && !hasOwnConstructor && !hasIsPrototypeOf) {
       return false;
     }
@@ -37,7 +34,7 @@ function requireExtend() {
         enumerable: true,
         configurable: true,
         value: options.newValue,
-        writable: true,
+        writable: true
       });
     } else {
       target[options.name] = options.newValue;
@@ -64,7 +61,7 @@ function requireExtend() {
       target = arguments[1] || {};
       i = 2;
     }
-    if (target == null || (typeof target !== "object" && typeof target !== "function")) {
+    if (target == null || typeof target !== "object" && typeof target !== "function") {
       target = {};
     }
     for (; i < length; ++i) {
@@ -95,4 +92,6 @@ function requireExtend() {
 }
 var extendExports = requireExtend();
 const extend = /* @__PURE__ */ getDefaultExportFromCjs(extendExports);
-export { extend as e };
+export {
+  extend as e
+};

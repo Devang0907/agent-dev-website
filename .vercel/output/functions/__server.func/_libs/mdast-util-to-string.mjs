@@ -1,8 +1,7 @@
 const emptyOptions = {};
 function toString(value, options) {
   const settings = emptyOptions;
-  const includeImageAlt =
-    typeof settings.includeImageAlt === "boolean" ? settings.includeImageAlt : true;
+  const includeImageAlt = typeof settings.includeImageAlt === "boolean" ? settings.includeImageAlt : true;
   const includeHtml = typeof settings.includeHtml === "boolean" ? settings.includeHtml : true;
   return one(value, includeImageAlt, includeHtml);
 }
@@ -34,4 +33,6 @@ function all(values, includeImageAlt, includeHtml) {
 function node(value) {
   return Boolean(value && typeof value === "object");
 }
-export { toString as t };
+export {
+  toString as t
+};

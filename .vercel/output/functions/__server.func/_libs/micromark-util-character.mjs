@@ -40,5 +40,5 @@ export {
   asciiHexDigit as i,
   asciiDigit as j,
   markdownLineEnding as m,
-  unicodeWhitespace as u,
+  unicodeWhitespace as u
 };

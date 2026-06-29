@@ -1,5 +1,5 @@
 import { c as convert } from "./unist-util-is.mjs";
-const phrasing =
+const phrasing = (
   /** @type {(node?: unknown) => node is Exclude<PhrasingContent, Html>} */
   convert([
     "break",
@@ -22,6 +22,9 @@ const phrasing =
     "strong",
     "text",
     // Enabled by `mdast-util-directive`:
-    "textDirective",
-  ]);
-export { phrasing as p };
+    "textDirective"
+  ])
+);
+export {
+  phrasing as p
+};

@@ -13,17 +13,12 @@ function factoryLabel(effects, ok, nok, type, markerType, stringType) {
     return atBreak;
   }
   function atBreak(code) {
-    if (
-      size > 999 ||
-      code === null ||
-      code === 91 ||
-      (code === 93 && !seen) || // To do: remove in the future once we’ve switched from
-      // `micromark-extension-footnote` to `micromark-extension-gfm-footnote`,
-      // which doesn’t need this.
-      // Hidden footnotes hook.
-      /* c8 ignore next 3 */
-      (code === 94 && !size && "_hiddenFootnoteSupport" in self.parser.constructs)
-    ) {
+    if (size > 999 || code === null || code === 91 || code === 93 && !seen || // To do: remove in the future once we’ve switched from
+    // `micromark-extension-footnote` to `micromark-extension-gfm-footnote`,
+    // which doesn’t need this.
+    // Hidden footnotes hook.
+    /* c8 ignore next 3 */
+    code === 94 && !size && "_hiddenFootnoteSupport" in self.parser.constructs) {
       return nok(code);
     }
     if (code === 93) {
@@ -41,7 +36,7 @@ function factoryLabel(effects, ok, nok, type, markerType, stringType) {
       return atBreak;
     }
     effects.enter("chunkString", {
-      contentType: "string",
+      contentType: "string"
     });
     return labelInside(code);
   }
@@ -63,4 +58,6 @@ function factoryLabel(effects, ok, nok, type, markerType, stringType) {
     return labelInside(code);
   }
 }
-export { factoryLabel as f };
+export {
+  factoryLabel as f
+};

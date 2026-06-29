@@ -12,16 +12,16 @@ function requireUtilities() {
   var NO_HYPHEN_REGEX = /^[^-]+$/;
   var VENDOR_PREFIX_REGEX = /^-(webkit|moz|ms|o|khtml)-/;
   var MS_VENDOR_PREFIX_REGEX = /^-(ms)-/;
-  var skipCamelCase = function (property) {
+  var skipCamelCase = function(property) {
     return !property || NO_HYPHEN_REGEX.test(property) || CUSTOM_PROPERTY_REGEX.test(property);
   };
-  var capitalize = function (match, character) {
+  var capitalize = function(match, character) {
     return character.toUpperCase();
   };
-  var trimHyphen = function (match, prefix) {
+  var trimHyphen = function(match, prefix) {
     return "".concat(prefix, "-");
   };
-  var camelCase = function (property, options) {
+  var camelCase = function(property, options) {
     if (options === void 0) {
       options = {};
     }
@@ -44,11 +44,9 @@ var hasRequiredCjs;
 function requireCjs() {
   if (hasRequiredCjs) return cjs;
   hasRequiredCjs = 1;
-  var __importDefault =
-    (cjs && cjs.__importDefault) ||
-    function (mod) {
-      return mod && mod.__esModule ? mod : { default: mod };
-    };
+  var __importDefault = cjs && cjs.__importDefault || function(mod) {
+    return mod && mod.__esModule ? mod : { "default": mod };
+  };
   var style_to_object_1 = __importDefault(requireCjs$1());
   var utilities_1 = requireUtilities();
   function StyleToJS(style, options) {
@@ -56,7 +54,7 @@ function requireCjs() {
     if (!style || typeof style !== "string") {
       return output;
     }
-    (0, style_to_object_1.default)(style, function (property, value) {
+    (0, style_to_object_1.default)(style, function(property, value) {
       if (property && value) {
         output[(0, utilities_1.camelCase)(property, options)] = value;
       }
@@ -69,4 +67,6 @@ function requireCjs() {
 }
 var cjsExports = requireCjs();
 const styleToJs = /* @__PURE__ */ getDefaultExportFromCjs(cjsExports);
-export { styleToJs as s };
+export {
+  styleToJs as s
+};

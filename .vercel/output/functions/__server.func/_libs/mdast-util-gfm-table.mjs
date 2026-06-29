@@ -7,15 +7,15 @@ function gfmTableFromMarkdown() {
       table: enterTable,
       tableData: enterCell,
       tableHeader: enterCell,
-      tableRow: enterRow,
+      tableRow: enterRow
     },
     exit: {
       codeText: exitCodeText,
       table: exitTable,
       tableData: exit,
       tableHeader: exit,
-      tableRow: exit,
-    },
+      tableRow: exit
+    }
   };
 }
 function enterTable(token) {
@@ -23,12 +23,12 @@ function enterTable(token) {
   this.enter(
     {
       type: "table",
-      align: align.map(function (d) {
+      align: align.map(function(d) {
         return d === "none" ? null : d;
       }),
-      children: [],
+      children: []
     },
-    token,
+    token
   );
   this.data.inTable = true;
 }
@@ -81,14 +81,14 @@ function gfmTableToMarkdown(options) {
       // This is a stricter version than the built in check for lists, thematic
       // breaks, and setex heading underlines though:
       // <https://github.com/syntax-tree/mdast-util-to-markdown/blob/51a2038/lib/unsafe.js#L57>
-      { atBreak: true, character: "-", after: "[:|-]" },
+      { atBreak: true, character: "-", after: "[:|-]" }
     ],
     handlers: {
       inlineCode: inlineCodeWithTable,
       table: handleTable,
       tableCell: handleTableCell,
-      tableRow: handleTableRow,
-    },
+      tableRow: handleTableRow
+    }
   };
   function handleTable(node, _, state, info) {
     return serializeData(handleTableAsData(node, state, info), node.align);
@@ -104,7 +104,7 @@ function gfmTableToMarkdown(options) {
     const value = state.containerPhrasing(node, {
       ...info,
       before: around,
-      after: around,
+      after: around
     });
     subexit();
     exit2();
@@ -118,7 +118,7 @@ function gfmTableToMarkdown(options) {
       // @ts-expect-error: `markdown-table` types should support `null`.
       padding,
       // @ts-expect-error: `markdown-table` types should support `null`.
-      stringLength,
+      stringLength
     });
   }
   function handleTableAsData(node, state, info) {
@@ -151,4 +151,7 @@ function gfmTableToMarkdown(options) {
     return value;
   }
 }
-export { gfmTableToMarkdown as a, gfmTableFromMarkdown as g };
+export {
+  gfmTableToMarkdown as a,
+  gfmTableFromMarkdown as g
+};

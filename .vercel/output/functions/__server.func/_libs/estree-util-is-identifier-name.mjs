@@ -6,4 +6,6 @@ function name(name2, options) {
   const re = settings.jsx ? nameReJsx : nameRe;
   return re.test(name2);
 }
-export { name as n };
+export {
+  name as n
+};

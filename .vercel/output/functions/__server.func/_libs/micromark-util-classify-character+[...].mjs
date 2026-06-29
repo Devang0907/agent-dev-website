@@ -1,8 +1,4 @@
-import {
-  c as markdownLineEndingOrSpace,
-  u as unicodeWhitespace,
-  d as unicodePunctuation,
-} from "./micromark-util-character.mjs";
+import { c as markdownLineEndingOrSpace, u as unicodeWhitespace, d as unicodePunctuation } from "./micromark-util-character.mjs";
 function classifyCharacter(code) {
   if (code === null || markdownLineEndingOrSpace(code) || unicodeWhitespace(code)) {
     return 1;
@@ -11,4 +7,6 @@ function classifyCharacter(code) {
     return 2;
   }
 }
-export { classifyCharacter as c };
+export {
+  classifyCharacter as c
+};

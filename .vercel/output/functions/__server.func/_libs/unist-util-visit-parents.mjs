@@ -18,20 +18,20 @@ function visitParents(tree, test, visitor, reverse) {
   const step = reverse ? -1 : 1;
   factory(tree, void 0, [])();
   function factory(node, index, parents) {
-    const value =
+    const value = (
       /** @type {Record<string, unknown>} */
-      node && typeof node === "object" ? node : {};
+      node && typeof node === "object" ? node : {}
+    );
     if (typeof value.type === "string") {
-      const name =
+      const name = (
         // `hast`
-        typeof value.tagName === "string"
-          ? value.tagName
-          : // `xast`
-            typeof value.name === "string"
-            ? value.name
-            : void 0;
+        typeof value.tagName === "string" ? value.tagName : (
+          // `xast`
+          typeof value.name === "string" ? value.name : void 0
+        )
+      );
       Object.defineProperty(visit, "name", {
-        value: "node (" + color(node.type + (name ? "<" + name + ">" : "")) + ")",
+        value: "node (" + color(node.type + (name ? "<" + name + ">" : "")) + ")"
       });
     }
     return visit;
@@ -47,9 +47,10 @@ function visitParents(tree, test, visitor, reverse) {
         }
       }
       if ("children" in node && node.children) {
-        const nodeAsParent =
+        const nodeAsParent = (
           /** @type {UnistParent} */
-          node;
+          node
+        );
         if (nodeAsParent.children && result[0] !== SKIP) {
           offset = (reverse ? nodeAsParent.children.length : -1) + step;
           grandparents = parents.concat(nodeAsParent);
@@ -76,4 +77,8 @@ function toResult(value) {
   }
   return value === null || value === void 0 ? empty : [value];
 }
-export { EXIT as E, SKIP as S, visitParents as v };
+export {
+  EXIT as E,
+  SKIP as S,
+  visitParents as v
+};

@@ -3,4 +3,6 @@ function headingRank(node) {
   const code = name.length === 2 && name.charCodeAt(0) === 104 ? name.charCodeAt(1) : 0;
   return code > 48 && code < 55 ? code - 48 : void 0;
 }
-export { headingRank as h };
+export {
+  headingRank as h
+};

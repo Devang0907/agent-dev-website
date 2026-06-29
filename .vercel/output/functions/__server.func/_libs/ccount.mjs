@@ -11,4 +11,6 @@ function ccount(value, character) {
   }
   return count;
 }
-export { ccount as c };
+export {
+  ccount as c
+};

@@ -10,4 +10,6 @@ function resolveAll(constructs, events, context) {
   }
   return events;
 }
-export { resolveAll as r };
+export {
+  resolveAll as r
+};

@@ -18,4 +18,6 @@ function all(node) {
   }
   return result.join("");
 }
-export { toString as t };
+export {
+  toString as t
+};
