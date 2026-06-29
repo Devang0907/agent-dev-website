@@ -1,6 +1,6 @@
 import { j as jsxRuntimeExports, r as reactExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
-import { S as SiteNav, a as SiteFooter } from "./site-nav-GBb0vVVS.mjs";
+import { S as SiteNav, a as SiteFooter } from "./site-nav-0QQ3cKbP.mjs";
 import "../_libs/tanstack__router-core.mjs";
 import "../_libs/tanstack__history.mjs";
 import "../_libs/cookie-es.mjs";
@@ -82,6 +82,188 @@ const SHOWCASE_TABS = [{
   cta: "View integrations",
   href: "/docs#skills"
 }];
+const TERMINAL_DEMOS = {
+  boss: {
+    badge: "BOSS · Build",
+    badgeClass: "text-purple-400",
+    children: /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/50", children: "$ " }),
+      "agent --boss",
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-primary", children: "◆" }),
+      " agent",
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/40", children: "free/llama-3.3-70b · BOSS" }),
+      "\n\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-primary", children: "›" }),
+      " refactor auth module and run tests",
+      "\n\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-purple-400", children: "boss" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "delegate → explore worker" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-400", children: "grep" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "auth middleware patterns" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-purple-400", children: "boss" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "delegate → implement worker" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-400", children: "edit" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "src/auth.ts" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/40", children: "(+24 -11)" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-purple-400", children: "boss" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "delegate → shell worker" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-400", children: "bash" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "npm test" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: " ✓ 42 passed" }),
+      "\n\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/80", children: "Auth refactor complete. Trace: " }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-yellow-300", children: "/trace" })
+    ] })
+  },
+  tools: {
+    badge: "Build · 20 tools",
+    badgeClass: "text-sky-400",
+    children: /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/50", children: "$ " }),
+      "agent",
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-primary", children: "◆" }),
+      " agent",
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/40", children: "claude-sonnet-4 · Build" }),
+      "\n\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-primary", children: "›" }),
+      " audit API routes and fix type errors",
+      "\n\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-400", children: "grep" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: '"any" src/api/**/*.ts' }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-400", children: "read" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "src/api/users.ts" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-400", children: "edit" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "src/api/users.ts" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/40", children: "(+12 -4)" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-400", children: "git" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "diff --stat" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-yellow-300", children: "approve?" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "bash npm run typecheck" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: " ✓ approved" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-400", children: "bash" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "npm run typecheck" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: " ✓ 0 errors" }),
+      "\n\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/80", children: "Fixed 3 files. Ready to commit." })
+    ] })
+  },
+  telegram: {
+    badge: "Telegram · Build",
+    badgeClass: "text-blue-400",
+    children: /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/50", children: "$ " }),
+      "agent --telegram",
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-primary", children: "◆" }),
+      " agent",
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/40", children: "gateway listening · Build" }),
+      "\n\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-400", children: "telegram" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "@you: run tests then deploy staging" }),
+      "\n\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-400", children: "bash" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "npm test" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: " ✓ 42 passed" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-yellow-300", children: "approve?" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "bash npm run deploy:staging" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-400", children: "telegram" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "inline ✅ approved from phone" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-400", children: "bash" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "npm run deploy:staging" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: " ✓ deployed staging.agent.dev" }),
+      "\n\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-400", children: "telegram" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "agent: staging is live 🚀" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/40", children: "daily task scheduled · 09:00 UTC" })
+    ] })
+  },
+  mcp: {
+    badge: "Build · MCP",
+    badgeClass: "text-emerald-400",
+    children: /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/50", children: "$ " }),
+      "agent",
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-primary", children: "◆" }),
+      " agent",
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/40", children: "gpt-4.1 · Build" }),
+      "\n\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-primary", children: "›" }),
+      " check deploy status and load project skills",
+      "\n\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-emerald-400", children: "mcp" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "vercel → list_deployments" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-emerald-400", children: "skill" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "vercel-agent-skills/deploy" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-400", children: "read" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: ".vercel/project.json" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-emerald-400", children: "mcp" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "filesystem → read AGENTS.md" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-emerald-400", children: "skill" }),
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "cursor-rules → inject rules" }),
+      "\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: " ✓ 2 MCP servers · 4 skills loaded" }),
+      "\n\n",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/80", children: "Production " }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-emerald-400", children: "READY" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/80", children: " · agent-dev-a3f91c" })
+    ] })
+  }
+};
 const PROVIDERS = [{
   name: "OpenAI",
   logo: "/logos/openai.svg",
@@ -136,7 +318,7 @@ function FeatureSpotlight() {
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative min-h-[320px] overflow-hidden rounded-[20px] sm:min-h-[380px]", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: "/new%20bg%202.png", alt: "", className: "absolute inset-0 h-full w-full object-cover" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-linear-to-t from-black/25 via-transparent to-sky-200/20" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-x-4 bottom-4 sm:inset-x-6 sm:bottom-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "rounded-2xl bg-white/92 p-2 shadow-lg backdrop-blur-md", children: /* @__PURE__ */ jsxRuntimeExports.jsx(TerminalDemo, { compact: true }) }) })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-x-4 bottom-4 sm:inset-x-6 sm:bottom-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "rounded-2xl bg-white/92 p-2 shadow-lg backdrop-blur-md animate-in fade-in duration-300", children: /* @__PURE__ */ jsxRuntimeExports.jsx(TerminalDemo, { compact: true, variant: active }) }, active) })
         ] })
       ] })
     ] })
@@ -159,8 +341,10 @@ function CopyCmd({
   ] }) });
 }
 function TerminalDemo({
-  compact = false
+  compact = false,
+  variant = "boss"
 }) {
+  const demo = TERMINAL_DEMOS[variant];
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `overflow-hidden bg-terminal text-terminal-foreground ${compact ? "rounded-xl" : "rounded-[18px] sm:rounded-[20px]"}`, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between border-b border-white/10 px-3 py-2", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1.5", children: [
@@ -169,50 +353,10 @@ function TerminalDemo({
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "h-2.5 w-2.5 rounded-full bg-green-400/80" })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] text-white/40", children: "~/projects/app — agent-dev" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] text-purple-400", children: "BOSS · Build" })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `text-[10px] ${demo.badgeClass}`, children: demo.badge })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("pre", { className: `terminal-mono overflow-x-auto leading-relaxed ${compact ? "px-4 py-4 text-[10px]" : "px-6 py-6 text-[12px]"}`, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/50", children: "$ " }),
-      "agent --boss",
-      "\n",
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-primary", children: "◆" }),
-      " agent",
-      " ",
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/40", children: "free/llama-3.3-70b · BOSS" }),
-      "\n\n",
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-primary", children: "›" }),
-      " refactor auth module and run tests",
-      "\n\n",
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-purple-400", children: "boss" }),
-      " ",
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "delegate → explore worker" }),
-      "\n",
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-400", children: "grep" }),
-      " ",
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "auth middleware patterns" }),
-      "\n",
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-purple-400", children: "boss" }),
-      " ",
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "delegate → implement worker" }),
-      "\n",
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-400", children: "edit" }),
-      " ",
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "src/auth.ts" }),
-      " ",
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/40", children: "(+24 -11)" }),
-      "\n",
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-purple-400", children: "boss" }),
-      " ",
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "delegate → shell worker" }),
-      "\n",
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-400", children: "verify" }),
-      " ",
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "npm test" }),
-      "\n",
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: " ✓ 42 passed" }),
-      "\n\n",
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/80", children: "Auth refactor complete. Trace: " }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-yellow-300", children: "/trace" }),
+      demo.children,
       "\n\n",
       /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-primary", children: "›" }),
       " ",

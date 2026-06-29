@@ -1,5 +1,5 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
-import { L as Link } from "../_libs/tanstack__react-router.mjs";
+import { d as useRouterState, L as Link } from "../_libs/tanstack__react-router.mjs";
 import { c as clsx } from "../_libs/clsx.mjs";
 import { t as twMerge } from "../_libs/tailwind-merge.mjs";
 function cn(...inputs) {
@@ -83,35 +83,49 @@ function SiteFooter() {
   ] }) });
 }
 const SCROLL_THRESHOLD = 24;
-const NAV_LINKS = /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-  /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/docs", className: "transition-colors hover:opacity-100", children: "docs" }),
-  /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#install", className: "transition-colors hover:opacity-100", children: "install" }),
-  /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#features", className: "transition-colors hover:opacity-100", children: "features" }),
-  /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "a",
-    {
-      href: "https://github.com/Devang0907/agent-dev",
-      target: "_blank",
-      rel: "noreferrer",
-      className: "transition-colors hover:opacity-100",
-      children: "github ↗"
-    }
-  ),
-  /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "a",
-    {
-      href: "https://github.com/Devang0907/agent-dev/issues/new",
-      target: "_blank",
-      rel: "noreferrer",
-      className: "transition-colors hover:opacity-100",
-      children: "feedback ↗"
-    }
-  )
-] });
+function NavLinks({ tone }) {
+  const isOnDocs = useRouterState({
+    select: (state) => state.location.pathname.startsWith("/docs")
+  });
+  const linkClass = (active) => cn(
+    "transition-colors",
+    tone === "light" ? active ? "font-medium text-foreground" : "hover:opacity-100" : active ? "font-medium text-primary-foreground" : "hover:text-primary-foreground"
+  );
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/docs", className: linkClass(isOnDocs), children: "docs" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#install", className: linkClass(false), children: "install" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#features", className: linkClass(false), children: "features" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "a",
+      {
+        href: "https://github.com/Devang0907/agent-dev",
+        target: "_blank",
+        rel: "noreferrer",
+        className: linkClass(false),
+        children: "github ↗"
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "a",
+      {
+        href: "https://github.com/Devang0907/agent-dev/issues/new",
+        target: "_blank",
+        rel: "noreferrer",
+        className: linkClass(false),
+        children: "feedback ↗"
+      }
+    )
+  ] });
+}
 function SiteNav({ variant = "default" }) {
   const [scrolled, setScrolled] = reactExports.useState(false);
+  const isOnDocs = useRouterState({
+    select: (state) => state.location.pathname.startsWith("/docs")
+  });
   const isLanding = variant === "landing";
   const isCompact = scrolled || !isLanding;
+  const showHeroNav = isLanding && !scrolled && !isOnDocs;
+  const showLightCompactNav = isOnDocs;
   reactExports.useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > SCROLL_THRESHOLD);
@@ -134,7 +148,7 @@ function SiteNav({ variant = "default" }) {
             "transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
             isCompact ? "editorial-shell" : "w-full px-4 sm:px-6 lg:px-10"
           ),
-          children: isLanding && !scrolled ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative flex h-[72px] items-center justify-between", children: [
+          children: showHeroNav ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative flex h-[72px] items-center justify-between", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs(
               Link,
               {
@@ -146,7 +160,42 @@ function SiteNav({ variant = "default" }) {
                 ]
               }
             ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { className: "editorial-shadow absolute left-1/2 hidden -translate-x-1/2 items-center gap-5 rounded-full border border-white/60 bg-white/90 px-6 py-2.5 text-[11px] uppercase tracking-[0.08em] text-foreground/70 backdrop-blur-md lg:flex", children: NAV_LINKS }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { className: "editorial-shadow absolute left-1/2 hidden -translate-x-1/2 items-center gap-5 rounded-full border border-white/60 bg-white/90 px-6 py-2.5 text-[11px] uppercase tracking-[0.08em] text-foreground/70 backdrop-blur-md lg:flex", children: /* @__PURE__ */ jsxRuntimeExports.jsx(NavLinks, { tone: "light" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "a",
+                {
+                  href: "https://github.com/Devang0907/agent-dev/issues/new",
+                  target: "_blank",
+                  rel: "noreferrer",
+                  className: "inline-flex h-9 items-center justify-center rounded-full border border-border px-3 text-[11px] uppercase tracking-[0.08em] text-foreground/80 transition-colors hover:bg-secondary lg:hidden",
+                  children: "feedback"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "a",
+                {
+                  href: "https://www.npmjs.com/package/@devang0907/agent-dev",
+                  target: "_blank",
+                  rel: "noreferrer",
+                  className: "inline-flex h-10 items-center rounded-full border border-foreground/15 bg-white/90 px-4 text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground backdrop-blur-sm transition-transform hover:scale-[1.02]",
+                  children: "try agent-dev"
+                }
+              )
+            ] })
+          ] }) : showLightCompactNav ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "editorial-shadow flex h-[68px] items-center justify-between rounded-full border border-white/60 bg-white/90 px-5 text-foreground backdrop-blur-md sm:px-8", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              Link,
+              {
+                to: "/",
+                className: "flex items-center gap-2 text-sm font-semibold tracking-tight text-foreground",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(BrandMark, {}),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "agent-dev" })
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { className: "hidden items-center gap-6 text-[11px] uppercase tracking-[0.08em] text-foreground/70 lg:flex", children: /* @__PURE__ */ jsxRuntimeExports.jsx(NavLinks, { tone: "light" }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "a",
@@ -181,31 +230,7 @@ function SiteNav({ variant = "default" }) {
                   /* @__PURE__ */ jsxRuntimeExports.jsx(BrandMark, { inverted: true }),
                   /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "agent-dev" })
                 ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("nav", { className: "hidden items-center gap-6 text-[11px] uppercase tracking-[0.08em] text-primary-foreground/70 lg:flex", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/docs", className: "transition-colors hover:text-primary-foreground", children: "docs" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#install", className: "transition-colors hover:text-primary-foreground", children: "install" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#features", className: "transition-colors hover:text-primary-foreground", children: "features" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "a",
-                    {
-                      href: "https://github.com/Devang0907/agent-dev",
-                      target: "_blank",
-                      rel: "noreferrer",
-                      className: "transition-colors hover:text-primary-foreground",
-                      children: "github ↗"
-                    }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "a",
-                    {
-                      href: "https://github.com/Devang0907/agent-dev/issues/new",
-                      target: "_blank",
-                      rel: "noreferrer",
-                      className: "transition-colors hover:text-primary-foreground",
-                      children: "feedback ↗"
-                    }
-                  )
-                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { className: "hidden items-center gap-6 text-[11px] uppercase tracking-[0.08em] text-primary-foreground/70 lg:flex", children: /* @__PURE__ */ jsxRuntimeExports.jsx(NavLinks, { tone: "dark" }) }),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx(
                     "a",

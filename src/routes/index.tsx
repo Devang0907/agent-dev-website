@@ -137,6 +137,155 @@ const SHOWCASE_TABS = [
   },
 ] as const;
 
+type ShowcaseTabId = (typeof SHOWCASE_TABS)[number]["id"];
+
+const TERMINAL_DEMOS: Record<
+  ShowcaseTabId,
+  { badge: string; badgeClass: string; children: React.ReactNode }
+> = {
+  boss: {
+    badge: "BOSS · Build",
+    badgeClass: "text-purple-400",
+    children: (
+      <>
+        <span className="text-white/50">$ </span>agent --boss{"\n"}
+        <span className="text-primary">◆</span> agent{" "}
+        <span className="text-white/40">free/llama-3.3-70b · BOSS</span>
+        {"\n\n"}
+        <span className="text-primary">›</span> refactor auth module and run tests{"\n\n"}
+        <span className="text-purple-400">boss</span>{" "}
+        <span className="text-white/60">delegate → explore worker</span>
+        {"\n"}
+        <span className="text-green-400">grep</span>{" "}
+        <span className="text-white/60">auth middleware patterns</span>
+        {"\n"}
+        <span className="text-purple-400">boss</span>{" "}
+        <span className="text-white/60">delegate → implement worker</span>
+        {"\n"}
+        <span className="text-green-400">edit</span>{" "}
+        <span className="text-white/60">src/auth.ts</span>{" "}
+        <span className="text-white/40">(+24 -11)</span>
+        {"\n"}
+        <span className="text-purple-400">boss</span>{" "}
+        <span className="text-white/60">delegate → shell worker</span>
+        {"\n"}
+        <span className="text-green-400">bash</span>{" "}
+        <span className="text-white/60">npm test</span>
+        {"\n"}
+        <span className="text-white/60"> ✓ 42 passed</span>
+        {"\n\n"}
+        <span className="text-white/80">Auth refactor complete. Trace: </span>
+        <span className="text-yellow-300">/trace</span>
+      </>
+    ),
+  },
+  tools: {
+    badge: "Build · 20 tools",
+    badgeClass: "text-sky-400",
+    children: (
+      <>
+        <span className="text-white/50">$ </span>agent{"\n"}
+        <span className="text-primary">◆</span> agent{" "}
+        <span className="text-white/40">claude-sonnet-4 · Build</span>
+        {"\n\n"}
+        <span className="text-primary">›</span> audit API routes and fix type errors{"\n\n"}
+        <span className="text-green-400">grep</span>{" "}
+        <span className="text-white/60">"any" src/api/**/*.ts</span>
+        {"\n"}
+        <span className="text-green-400">read</span>{" "}
+        <span className="text-white/60">src/api/users.ts</span>
+        {"\n"}
+        <span className="text-green-400">edit</span>{" "}
+        <span className="text-white/60">src/api/users.ts</span>{" "}
+        <span className="text-white/40">(+12 -4)</span>
+        {"\n"}
+        <span className="text-green-400">git</span>{" "}
+        <span className="text-white/60">diff --stat</span>
+        {"\n"}
+        <span className="text-yellow-300">approve?</span>{" "}
+        <span className="text-white/60">bash npm run typecheck</span>
+        {"\n"}
+        <span className="text-white/60"> ✓ approved</span>
+        {"\n"}
+        <span className="text-green-400">bash</span>{" "}
+        <span className="text-white/60">npm run typecheck</span>
+        {"\n"}
+        <span className="text-white/60"> ✓ 0 errors</span>
+        {"\n\n"}
+        <span className="text-white/80">Fixed 3 files. Ready to commit.</span>
+      </>
+    ),
+  },
+  telegram: {
+    badge: "Telegram · Build",
+    badgeClass: "text-blue-400",
+    children: (
+      <>
+        <span className="text-white/50">$ </span>agent --telegram{"\n"}
+        <span className="text-primary">◆</span> agent{" "}
+        <span className="text-white/40">gateway listening · Build</span>
+        {"\n\n"}
+        <span className="text-blue-400">telegram</span>{" "}
+        <span className="text-white/60">@you: run tests then deploy staging</span>
+        {"\n\n"}
+        <span className="text-green-400">bash</span>{" "}
+        <span className="text-white/60">npm test</span>
+        {"\n"}
+        <span className="text-white/60"> ✓ 42 passed</span>
+        {"\n"}
+        <span className="text-yellow-300">approve?</span>{" "}
+        <span className="text-white/60">bash npm run deploy:staging</span>
+        {"\n"}
+        <span className="text-blue-400">telegram</span>{" "}
+        <span className="text-white/60">inline ✅ approved from phone</span>
+        {"\n"}
+        <span className="text-green-400">bash</span>{" "}
+        <span className="text-white/60">npm run deploy:staging</span>
+        {"\n"}
+        <span className="text-white/60"> ✓ deployed staging.agent.dev</span>
+        {"\n\n"}
+        <span className="text-blue-400">telegram</span>{" "}
+        <span className="text-white/60">agent: staging is live 🚀</span>
+        {"\n"}
+        <span className="text-white/40">daily task scheduled · 09:00 UTC</span>
+      </>
+    ),
+  },
+  mcp: {
+    badge: "Build · MCP",
+    badgeClass: "text-emerald-400",
+    children: (
+      <>
+        <span className="text-white/50">$ </span>agent{"\n"}
+        <span className="text-primary">◆</span> agent{" "}
+        <span className="text-white/40">gpt-4.1 · Build</span>
+        {"\n\n"}
+        <span className="text-primary">›</span> check deploy status and load project skills{"\n\n"}
+        <span className="text-emerald-400">mcp</span>{" "}
+        <span className="text-white/60">vercel → list_deployments</span>
+        {"\n"}
+        <span className="text-emerald-400">skill</span>{" "}
+        <span className="text-white/60">vercel-agent-skills/deploy</span>
+        {"\n"}
+        <span className="text-green-400">read</span>{" "}
+        <span className="text-white/60">.vercel/project.json</span>
+        {"\n"}
+        <span className="text-emerald-400">mcp</span>{" "}
+        <span className="text-white/60">filesystem → read AGENTS.md</span>
+        {"\n"}
+        <span className="text-emerald-400">skill</span>{" "}
+        <span className="text-white/60">cursor-rules → inject rules</span>
+        {"\n"}
+        <span className="text-white/60"> ✓ 2 MCP servers · 4 skills loaded</span>
+        {"\n\n"}
+        <span className="text-white/80">Production </span>
+        <span className="text-emerald-400">READY</span>
+        <span className="text-white/80"> · agent-dev-a3f91c</span>
+      </>
+    ),
+  },
+};
+
 const PROVIDERS = [
   { name: "OpenAI", logo: "/logos/openai.svg", color: "#10A37F" },
   { name: "Anthropic", logo: "/logos/anthropic.svg", color: "#CC785C" },
@@ -226,7 +375,7 @@ function FeatureSpotlight() {
             <div className="absolute inset-0 bg-linear-to-t from-black/25 via-transparent to-sky-200/20" />
             <div className="absolute inset-x-4 bottom-4 sm:inset-x-6 sm:bottom-6">
               <div className="rounded-2xl bg-white/92 p-2 shadow-lg backdrop-blur-md">
-                <TerminalDemo compact />
+                <TerminalDemo compact variant={active} />
               </div>
             </div>
           </div>
@@ -267,55 +416,38 @@ function CopyCmd({ cmd, variant = "default" }: { cmd: string; variant?: "default
   );
 }
 
-function TerminalDemo({ compact = false }: { compact?: boolean }) {
+function TerminalDemo({
+  compact = false,
+  variant = "boss",
+}: {
+  compact?: boolean;
+  variant?: ShowcaseTabId;
+}) {
+  const demo = TERMINAL_DEMOS[variant];
+
   return (
     <div
-      className={`overflow-hidden bg-terminal text-terminal-foreground ${
-        compact ? "rounded-xl" : "rounded-[18px] sm:rounded-[20px]"
+      className={`flex flex-col overflow-hidden bg-terminal text-terminal-foreground ${
+        compact ? "h-[330px] rounded-xl" : "rounded-[18px] sm:rounded-[20px]"
       }`}
     >
-      <div className="flex items-center justify-between border-b border-white/10 px-3 py-2">
+      <div className="flex h-9 shrink-0 items-center justify-between border-b border-white/10 px-3">
         <div className="flex gap-1.5">
           <span className="h-2.5 w-2.5 rounded-full bg-red-400/80" />
           <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/80" />
           <span className="h-2.5 w-2.5 rounded-full bg-green-400/80" />
         </div>
         <span className="text-[10px] text-white/40">~/projects/app — agent-dev</span>
-        <span className="text-[10px] text-purple-400">BOSS · Build</span>
+        <span className={`text-[10px] ${demo.badgeClass}`}>{demo.badge}</span>
       </div>
       <pre
-        className={`terminal-mono overflow-x-auto leading-relaxed ${
-          compact ? "px-4 py-4 text-[10px]" : "px-6 py-6 text-[12px]"
+        className={`terminal-mono overflow-hidden ${
+          compact
+            ? "h-[294px] px-4 py-4 text-[10px] leading-relaxed"
+            : "overflow-x-auto px-6 py-6 text-[12px] leading-relaxed"
         }`}
       >
-        <span className="text-white/50">$ </span>agent --boss{"\n"}
-        <span className="text-primary">◆</span> agent{" "}
-        <span className="text-white/40">free/llama-3.3-70b · BOSS</span>
-        {"\n\n"}
-        <span className="text-primary">›</span> refactor auth module and run tests{"\n\n"}
-        <span className="text-purple-400">boss</span>{" "}
-        <span className="text-white/60">delegate → explore worker</span>
-        {"\n"}
-        <span className="text-green-400">grep</span>{" "}
-        <span className="text-white/60">auth middleware patterns</span>
-        {"\n"}
-        <span className="text-purple-400">boss</span>{" "}
-        <span className="text-white/60">delegate → implement worker</span>
-        {"\n"}
-        <span className="text-green-400">edit</span>{" "}
-        <span className="text-white/60">src/auth.ts</span>{" "}
-        <span className="text-white/40">(+24 -11)</span>
-        {"\n"}
-        <span className="text-purple-400">boss</span>{" "}
-        <span className="text-white/60">delegate → shell worker</span>
-        {"\n"}
-        <span className="text-green-400">verify</span>{" "}
-        <span className="text-white/60">npm test</span>
-        {"\n"}
-        <span className="text-white/60"> ✓ 42 passed</span>
-        {"\n\n"}
-        <span className="text-white/80">Auth refactor complete. Trace: </span>
-        <span className="text-yellow-300">/trace</span>
+        {demo.children}
         {"\n\n"}
         <span className="text-primary">›</span> <span className="blink" />
       </pre>
