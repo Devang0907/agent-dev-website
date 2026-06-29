@@ -458,111 +458,225 @@ function TerminalDemo({
 }
 
 function Install() {
+  const [method, setMethod] = useState<"npm" | "source">("npm");
+
+  const installLines =
+    method === "npm"
+      ? ["$ npm i -g @devang0907/agent-dev", "$ agent"]
+      : [
+          "$ git clone https://github.com/Devang0907/agent-dev.git",
+          "$ cd agent-dev && npm install",
+          "$ npm run dev",
+        ];
+
   return (
-    <LandingSection
-      id="install"
-      title="Quick start"
-      subtitle="Install from npm or clone the repo. Set one API key and you're ready to ship from the terminal."
-    >
-      <div className="hero-frame ref-sky-bg editorial-shadow overflow-hidden p-4 sm:p-10">
-        <div className="grid gap-5 lg:grid-cols-2">
-          <TerminalCodeBlock
-            title="from source"
-            lines={[
-              "$ git clone https://github.com/Devang0907/agent-dev.git",
-              "$ cd agent-dev && npm install",
-              "$ npm run dev",
-            ]}
-          />
-          <TerminalCodeBlock
-            title="global install"
-            lines={["$ npm i -g @devang0907/agent-dev", "$ agent"]}
-          />
-        </div>
-        <div className="mt-5 overflow-hidden rounded-2xl bg-terminal text-terminal-foreground shadow-lg">
-          <div className="border-b border-white/10 px-4 py-2.5">
-            <span className="text-[10px] uppercase tracking-[0.08em] text-white/40">
-              API keys · Node.js 20+
-            </span>
+    <section id="install" className="scroll-mt-24 py-8 sm:scroll-mt-28 sm:py-14">
+      <div className="hero-frame ref-sky-bg editorial-shadow overflow-hidden">
+        <div className="grid gap-8 p-5 sm:gap-10 sm:p-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-12 lg:p-12">
+          <div className="flex flex-col justify-center lg:pr-4">
+            <p className="editorial-label text-foreground/50">Get started</p>
+            <h2 className="ref-section-title mt-3 text-foreground">Quick start</h2>
+            <p className="mt-4 text-sm leading-relaxed text-foreground/65 sm:text-base">
+              Install in under a minute. Set one API key, open your project, and start
+              coding with the agent in your terminal.
+            </p>
+
+            <ol className="mt-6 space-y-4">
+              {[
+                {
+                  step: "01",
+                  title: "Install",
+                  body: "Global npm install or clone the repo for local development.",
+                },
+                {
+                  step: "02",
+                  title: "Configure",
+                  body: "Export at least one provider key — OpenRouter works out of the box.",
+                },
+                {
+                  step: "03",
+                  title: "Launch",
+                  body: "Run agent in any project folder. Requires Node.js 20+.",
+                },
+              ].map((item) => (
+                <li key={item.step} className="flex gap-4">
+                  <span className="editorial-label mt-0.5 shrink-0 text-foreground/35">{item.step}</span>
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">{item.title}</p>
+                    <p className="mt-0.5 text-sm leading-relaxed text-foreground/55">{item.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+
+            <div className="mt-8 w-full sm:w-auto">
+              <CopyCmd cmd="npm i -g @devang0907/agent-dev" variant="hero" />
+            </div>
           </div>
-          <pre className="terminal-mono overflow-x-auto px-5 py-5 text-xs leading-relaxed text-white/75">
-            {`export OPENROUTER_API_KEY=sk-or-...   # free models (default)
-export OPENAI_API_KEY=sk-...          # ChatGPT
-export ANTHROPIC_API_KEY=sk-ant-...   # Claude
-export GROQ_API_KEY=gsk_...           # Groq
-export GEMINI_API_KEY=...             # Google Gemini`}
-          </pre>
+
+          <div className="flex flex-col gap-4">
+            <div className="rounded-2xl border border-white/70 bg-white/65 p-4 backdrop-blur-sm sm:rounded-[20px] sm:p-5">
+              <div className="flex gap-4 border-b border-black/8 pb-3">
+                <button
+                  type="button"
+                  onClick={() => setMethod("npm")}
+                  className={`border-b-2 pb-2 text-left transition-colors ${
+                    method === "npm"
+                      ? "border-foreground text-foreground"
+                      : "border-transparent text-foreground/45 hover:text-foreground/70"
+                  }`}
+                >
+                  <span className="block text-sm font-medium">Global install</span>
+                  <span className="mt-0.5 block text-[11px] text-foreground/50">Recommended</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMethod("source")}
+                  className={`border-b-2 pb-2 text-left transition-colors ${
+                    method === "source"
+                      ? "border-foreground text-foreground"
+                      : "border-transparent text-foreground/45 hover:text-foreground/70"
+                  }`}
+                >
+                  <span className="block text-sm font-medium">From source</span>
+                  <span className="mt-0.5 block text-[11px] text-foreground/50">Contributors</span>
+                </button>
+              </div>
+
+              <div className="mt-4">
+                <TerminalCodeBlock
+                  title={method === "npm" ? "terminal" : "from source"}
+                  lines={installLines}
+                  copyText={installLines.join("\n")}
+                />
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-white/70 bg-white/65 p-4 backdrop-blur-sm sm:rounded-[20px] sm:p-5">
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-sm font-semibold text-foreground">API keys</p>
+                  <p className="mt-0.5 text-xs text-foreground/55">Add to ~/.bashrc or ~/.zshrc</p>
+                </div>
+                <span className="editorial-label shrink-0 text-foreground/40">Step 02</span>
+              </div>
+              <TerminalCodeBlock
+                title="environment"
+                lines={[
+                  "export OPENROUTER_API_KEY=sk-or-...   # free models",
+                  "export OPENAI_API_KEY=sk-...          # ChatGPT",
+                  "export ANTHROPIC_API_KEY=sk-ant-...   # Claude",
+                  "export GROQ_API_KEY=gsk_...           # Groq",
+                  "export GEMINI_API_KEY=...             # Gemini",
+                ]}
+                copyText={`export OPENROUTER_API_KEY=sk-or-...
+export OPENAI_API_KEY=sk-...
+export ANTHROPIC_API_KEY=sk-ant-...
+export GROQ_API_KEY=gsk_...
+export GEMINI_API_KEY=...`}
+              />
+            </div>
+          </div>
         </div>
       </div>
-    </LandingSection>
+    </section>
   );
 }
 
 const FEATURES = [
   {
     title: "Build · Plan · Boss",
-    desc: "Switch between full tool access, read-only exploration, or a boss orchestrator that delegates to specialized workers.",
+    desc: "Full tool access, read-only exploration, or a boss orchestrator that delegates to specialized workers.",
     href: "/docs#agent-modes",
+    tag: "Modes",
   },
   {
     title: "20 built-in tools",
-    desc: "Read, edit, grep, git, bash, browser, MCP, skills, and more — with approval gates for destructive actions.",
+    desc: "Read, edit, grep, git, bash, browser, MCP, and skills — with approval gates before anything destructive.",
     href: "/docs#tools",
+    tag: "Tools",
   },
   {
     title: "Bring your own model",
-    desc: "OpenRouter free tier, Claude, GPT, Groq, or Gemini. Switch models with /model or --model.",
+    desc: "OpenRouter free tier, Claude, GPT, Groq, or Gemini. Switch anytime with /model.",
     href: "/docs#providers",
+    tag: "Models",
   },
   {
     title: "Telegram gateway",
-    desc: "Chat from your phone with long-polling, inline approvals, reminders, and daily scheduled tasks.",
+    desc: "Chat from your phone with inline approvals, reminders, and daily scheduled tasks.",
     href: "/docs#telegram-gateway",
+    tag: "Mobile",
   },
   {
     title: "Skills & MCP",
-    desc: "Load Vercel Agent Skills and connect MCP servers for filesystem, APIs, and custom tools.",
+    desc: "Load Vercel Agent Skills and connect MCP servers for filesystems, APIs, and custom workflows.",
     href: "/docs#skills",
+    tag: "Extend",
   },
   {
     title: "Compaction & rules",
-    desc: "Auto-compact long sessions, inject project rules from AGENTS.md, and configure permission presets.",
+    desc: "Auto-compact long sessions, inject rules from AGENTS.md, and configure permission presets.",
     href: "/docs#context-compaction",
+    tag: "Context",
   },
-];
+] as const;
 
 function Features() {
   return (
-    <LandingSection
-      id="features"
-      title="Everything in one agent"
-      subtitle="From reading files to running tests — agent-dev keeps your workflow inside the terminal."
-    >
-      <div className="hero-frame editorial-shadow overflow-hidden bg-white/55 p-4 backdrop-blur-sm sm:p-10">
-        <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
-          {FEATURES.map((f) => (
-            <div
-              key={f.title}
-              className="rounded-2xl border border-black/6 bg-white/80 p-5 transition-colors hover:bg-white sm:rounded-[20px] sm:p-6"
+    <section id="features" className="scroll-mt-24 py-8 sm:scroll-mt-28 sm:py-14">
+      <div className="hero-frame ref-sky-bg editorial-shadow overflow-hidden">
+        <div className="grid gap-8 p-5 sm:gap-10 sm:p-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-12 lg:p-12">
+          <div className="flex flex-col justify-center lg:pr-4">
+            <p className="editorial-label text-foreground/50">Capabilities</p>
+            <h2 className="ref-section-title mt-3 text-foreground">Everything in one agent</h2>
+            <p className="mt-4 text-sm leading-relaxed text-foreground/65 sm:text-base">
+              One terminal session for reading code, running tests, delegating work, and shipping —
+              without leaving your shell.
+            </p>
+            <ul className="mt-6 space-y-2.5 text-sm text-foreground/60">
+              <li className="flex items-start gap-2.5">
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/40" />
+                20 tools with approval gates for destructive actions
+              </li>
+              <li className="flex items-start gap-2.5">
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/40" />
+                Boss orchestration for complex multi-step tasks
+              </li>
+              <li className="flex items-start gap-2.5">
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/40" />
+                MCP, skills, and Telegram when you need more reach
+              </li>
+            </ul>
+            <Link
+              to="/docs"
+              className="mt-8 inline-flex w-full items-center justify-center rounded-lg bg-foreground px-6 py-3 text-xs font-semibold uppercase tracking-[0.08em] text-background transition-opacity hover:opacity-90 sm:w-fit"
             >
-              <h3 className="text-sm font-semibold text-foreground">{f.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-foreground/60">{f.desc}</p>
+              Full documentation →
+            </Link>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            {FEATURES.map((f) => (
               <a
+                key={f.title}
                 href={f.href}
-                className="mt-5 inline-block text-[11px] font-medium uppercase tracking-[0.08em] text-foreground/70 transition-colors hover:text-foreground"
+                className="group flex flex-col rounded-2xl border border-white/70 bg-white/65 p-4 backdrop-blur-sm transition-all hover:border-white hover:bg-white hover:shadow-md sm:rounded-[20px] sm:p-5"
               >
-                read docs →
+                <span className="editorial-label text-foreground/40">{f.tag}</span>
+                <h3 className="mt-2 text-sm font-semibold text-foreground">{f.title}</h3>
+                <p className="mt-1.5 flex-1 text-xs leading-relaxed text-foreground/55 sm:text-sm sm:text-foreground/60">
+                  {f.desc}
+                </p>
+                <span className="mt-4 text-[10px] font-medium uppercase tracking-[0.08em] text-foreground/45 transition-colors group-hover:text-foreground">
+                  read docs →
+                </span>
               </a>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-        <p className="mt-8 text-center text-sm text-foreground/55">
-          <Link to="/docs" className="font-medium text-foreground transition-colors hover:text-foreground/80">
-            full documentation →
-          </Link>
-        </p>
       </div>
-    </LandingSection>
+    </section>
   );
 }
 
@@ -592,40 +706,42 @@ function CTA() {
   );
 }
 
-function LandingSection({
-  id,
+function TerminalCodeBlock({
   title,
-  subtitle,
-  children,
+  lines,
+  copyText,
 }: {
-  id: string;
   title: string;
-  subtitle?: string;
-  children: React.ReactNode;
+  lines: string[];
+  copyText?: string;
 }) {
-  return (
-    <section id={id} className="scroll-mt-24 py-8 sm:scroll-mt-28 sm:py-14">
-      <h2 className="ref-section-title text-foreground">{title}</h2>
-      {subtitle ? (
-        <p className="mt-4 max-w-2xl text-base leading-relaxed text-foreground/65">{subtitle}</p>
-      ) : null}
-      <div className="mt-8">{children}</div>
-    </section>
-  );
-}
+  const [copied, setCopied] = useState(false);
+  const textToCopy = copyText ?? lines.join("\n");
 
-function TerminalCodeBlock({ title, lines }: { title: string; lines: string[] }) {
   return (
-    <div className="overflow-hidden rounded-2xl bg-terminal text-terminal-foreground shadow-lg">
-      <div className="flex items-center justify-between border-b border-white/10 px-4 py-2.5">
+    <div className="overflow-hidden rounded-xl bg-terminal text-terminal-foreground shadow-lg sm:rounded-2xl">
+      <div className="flex items-center justify-between gap-2 border-b border-white/10 px-3 py-2 sm:px-4 sm:py-2.5">
         <span className="text-[10px] uppercase tracking-[0.08em] text-white/40">{title}</span>
-        <div className="flex gap-1.5">
-          <span className="h-2.5 w-2.5 rounded-full bg-red-400/80" />
-          <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/80" />
-          <span className="h-2.5 w-2.5 rounded-full bg-green-400/80" />
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              navigator.clipboard.writeText(textToCopy);
+              setCopied(true);
+              setTimeout(() => setCopied(false), 1400);
+            }}
+            className="text-[10px] uppercase tracking-[0.06em] text-white/35 transition-colors hover:text-white/70"
+          >
+            {copied ? "copied ✓" : "copy"}
+          </button>
+          <div className="flex gap-1.5">
+            <span className="h-2 w-2 rounded-full bg-red-400/80 sm:h-2.5 sm:w-2.5" />
+            <span className="h-2 w-2 rounded-full bg-yellow-400/80 sm:h-2.5 sm:w-2.5" />
+            <span className="h-2 w-2 rounded-full bg-green-400/80 sm:h-2.5 sm:w-2.5" />
+          </div>
         </div>
       </div>
-      <pre className="terminal-mono overflow-x-auto px-4 py-4 text-[11px] leading-relaxed sm:px-5 sm:py-5 sm:text-xs">
+      <pre className="terminal-mono overflow-x-auto px-3 py-3 text-[11px] leading-relaxed sm:px-4 sm:py-4 sm:text-xs">
         {lines.map((l) => (
           <div key={l}>{l}</div>
         ))}
