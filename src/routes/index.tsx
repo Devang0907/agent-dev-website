@@ -44,19 +44,14 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const ASCII = ` █████╗  ██████╗ ███████╗███╗   ██╗████████╗      ██████╗ ███████╗██╗   ██╗
-██╔══██╗██╔════╝ ██╔════╝████╗  ██║╚══██╔══╝      ██╔══██╗██╔════╝██║   ██║
-███████║██║  ███╗█████╗  ██╔██╗ ██║   ██║   █████╗██║  ██║█████╗  ██║   ██║
-██╔══██║██║   ██║██╔══╝  ██║╚██╗██║   ██║   ╚════╝██║  ██║██╔══╝  ╚██╗ ██╔╝
-██║  ██║╚██████╔╝███████╗██║ ╚████║   ██║         ██████╔╝███████╗ ╚████╔╝ 
-╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝         ╚═════╝ ╚══════╝  ╚═══╝  `;
-
 function Index() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <SiteNav />
-      <main className="mx-auto max-w-6xl px-5 sm:px-8">
-        <Hero />
+    <div className="min-h-screen bg-[#f3f2ee] text-foreground">
+      <SiteNav variant="landing" />
+      <Hero />
+      <FeatureSpotlight />
+      <main className="editorial-shell">
+        <ProvidersStrip />
         <Install />
         <Features />
         <CTA />
@@ -68,53 +63,142 @@ function Index() {
 
 function Hero() {
   return (
-    <section className="relative grid gap-10 py-16 sm:py-20 lg:grid-cols-[1.05fr_1fr] lg:gap-12">
-      <div className="absolute inset-0 -z-10 bg-grid opacity-60 [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)]" />
-      <div className="flex flex-col justify-center">
-        <pre className="hidden text-[8px] leading-tight text-primary sm:block sm:text-[10px]">
-          {ASCII}
-        </pre>
-        <div className="mt-6 inline-flex w-fit items-center gap-2 rounded-sm border border-border bg-card px-2.5 py-1 text-[11px] text-muted-foreground">
-          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-          Ink TUI · Telegram · Browser · Node 20+
-        </div>
-        <h1 className="mt-4 text-3xl font-bold leading-[1.1] tracking-tight sm:text-5xl">
-          AI in your terminal.
-          <br />
-          <span className="text-muted-foreground">Build, plan, or boss it.</span>
-        </h1>
-        <p className="mt-5 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-          <span className="text-foreground">agent-dev</span> is a minimal terminal coding agent.
-          Chat with an AI that reads and edits code, runs shell commands with approval, and ships
-          from your terminal — with optional boss orchestration for complex tasks.
-        </p>
-        <div className="mt-7 flex flex-wrap items-center gap-3">
-          <CopyCmd cmd="npm i -g @devang0907/agent-dev" />
-          <a
-            href="https://github.com/Devang0907/agent-dev"
-            target="_blank"
-            rel="noreferrer"
-            className="rounded-sm border border-border px-3 py-2 text-xs font-medium hover:bg-secondary"
-          >
-            view on github ↗
-          </a>
-        </div>
-        <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[11px] text-muted-foreground">
-          <span>● MIT licensed</span>
-          <span>● 20 built-in tools</span>
-          <span>● Telegram gateway</span>
-          <span>● Browser automation</span>
-          <span>● Build · Plan · Boss</span>
+    <section className="mx-3 mt-3 sm:mx-4 lg:mx-5">
+      <div className="hero-frame editorial-shadow relative min-h-[calc(100svh-0.75rem)] overflow-hidden">
+        <img
+          src="/new%20bg.png"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-linear-to-b from-white/25 via-transparent to-black/5" />
+
+        <div className="relative flex min-h-[calc(100svh-0.75rem)] flex-col items-center justify-center px-6 pb-16 pt-24 text-center sm:px-10 sm:pb-20 sm:pt-28">
+          <h1 className="nature-hero-title max-w-3xl text-foreground">
+            Autopilot for your terminal workflow.
+            <span className="block">Scale effortlessly.</span>
+          </h1>
+          <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-foreground/65 sm:text-lg">
+            <span className="font-medium text-foreground">agent-dev</span> reads and edits code,
+            runs shell commands with approval, and delegates complex tasks through boss
+            orchestration.
+          </p>
+          <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+            <CopyCmd cmd="npm i -g @devang0907/agent-dev" variant="hero" />
+            <a
+              href="https://github.com/Devang0907/agent-dev"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex h-11 items-center rounded-full border border-foreground/15 bg-white/60 px-5 text-xs font-medium uppercase tracking-[0.06em] text-foreground backdrop-blur-sm transition-colors hover:bg-white"
+            >
+              view on github ↗
+            </a>
+          </div>
         </div>
       </div>
-
-      <TerminalDemo />
     </section>
   );
 }
 
-function CopyCmd({ cmd }: { cmd: string }) {
+const SHOWCASE_TABS = [
+  {
+    id: "boss",
+    label: "Boss mode",
+    subtitle: "Smart delegation",
+    title: "Boss mode",
+    body: "Delegate exploration, implementation, and shell work to specialized workers while the boss orchestrator keeps context and approvals in one place.",
+    cta: "Read boss docs",
+    href: "/docs#agent-modes",
+  },
+  {
+    id: "tools",
+    label: "Built-in tools",
+    subtitle: "20 terminal tools",
+    title: "Built-in tools",
+    body: "Read, edit, grep, git, bash, browser, MCP, and skills — with approval gates before anything destructive runs in your repo.",
+    cta: "Explore tools",
+    href: "/docs#tools",
+  },
+  {
+    id: "telegram",
+    label: "Telegram",
+    subtitle: "Chat from anywhere",
+    title: "Telegram gateway",
+    body: "Approve commands from your phone, schedule daily tasks, and keep long-running agent sessions reachable outside the terminal.",
+    cta: "Setup Telegram",
+    href: "/docs#telegram-gateway",
+  },
+  {
+    id: "mcp",
+    label: "MCP & skills",
+    subtitle: "Extend the agent",
+    title: "MCP & skills",
+    body: "Connect MCP servers and load Vercel Agent Skills so agent-dev can reach filesystems, APIs, and custom workflows in your stack.",
+    cta: "View integrations",
+    href: "/docs#skills",
+  },
+] as const;
+
+function FeatureSpotlight() {
+  const [active, setActive] = useState<(typeof SHOWCASE_TABS)[number]["id"]>("boss");
+  const tab = SHOWCASE_TABS.find((t) => t.id === active) ?? SHOWCASE_TABS[0];
+
+  return (
+    <section className="mx-3 pt-10 pb-8 sm:mx-4 sm:pt-14 lg:mx-5">
+      <div className="hero-frame ref-sky-bg editorial-shadow overflow-hidden">
+        <div className="border-b border-black/8 px-4 pt-6 sm:px-8">
+          <div className="flex gap-6 overflow-x-auto pb-0 sm:gap-10">
+            {SHOWCASE_TABS.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setActive(item.id)}
+                className={`shrink-0 border-b-2 pb-4 text-left transition-colors ${
+                  active === item.id
+                    ? "border-foreground text-foreground"
+                    : "border-transparent text-foreground/45 hover:text-foreground/70"
+                }`}
+              >
+                <span className="block text-sm font-medium">{item.label}</span>
+                <span className="mt-0.5 block text-[11px] text-foreground/50">{item.subtitle}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid gap-8 p-6 sm:p-10 lg:grid-cols-2 lg:gap-12 lg:p-12">
+          <div className="flex flex-col justify-center">
+            <h2 className="ref-section-title text-foreground">{tab.title}</h2>
+            <p className="mt-5 max-w-md text-base leading-relaxed text-foreground/65">{tab.body}</p>
+            <a
+              href={tab.href}
+              className="mt-8 inline-flex w-fit items-center rounded-lg bg-foreground px-6 py-3 text-xs font-semibold uppercase tracking-[0.08em] text-background transition-opacity hover:opacity-90"
+            >
+              {tab.cta}
+            </a>
+          </div>
+
+          <div className="relative min-h-[320px] overflow-hidden rounded-[20px] sm:min-h-[380px]">
+            <img
+              src="/new%20bg%202.png"
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-linear-to-t from-black/25 via-transparent to-sky-200/20" />
+            <div className="absolute inset-x-4 bottom-4 sm:inset-x-6 sm:bottom-6">
+              <div className="rounded-2xl bg-white/92 p-2 shadow-lg backdrop-blur-md">
+                <TerminalDemo compact />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CopyCmd({ cmd, variant = "default" }: { cmd: string; variant?: "default" | "hero" }) {
   const [copied, setCopied] = useState(false);
+  const isHero = variant === "hero";
   return (
     <button
       onClick={() => {
@@ -122,20 +206,34 @@ function CopyCmd({ cmd }: { cmd: string }) {
         setCopied(true);
         setTimeout(() => setCopied(false), 1400);
       }}
-      className="group inline-flex items-center gap-3 rounded-sm border border-border bg-card px-3 py-2 text-xs hover:border-foreground/40"
+      className={
+        isHero
+          ? "group inline-flex h-11 items-center gap-2 rounded-lg bg-foreground px-6 text-xs font-semibold uppercase tracking-[0.08em] text-background transition-opacity hover:opacity-90"
+          : "group inline-flex h-11 items-center gap-3 rounded-full bg-foreground px-5 text-xs font-semibold uppercase tracking-[0.08em] text-background transition-transform hover:scale-[1.02]"
+      }
     >
-      <span className="text-primary">$</span>
-      <span className="font-medium">{cmd}</span>
-      <span className="ml-2 text-[10px] text-muted-foreground group-hover:text-foreground">
-        {copied ? "copied ✓" : "copy"}
-      </span>
+      {isHero ? (
+        <span>{copied ? "Copied ✓" : "Get started"}</span>
+      ) : (
+        <>
+          <span>$</span>
+          <span>{cmd}</span>
+          <span className="ml-2 text-[10px] text-background/60 group-hover:text-background">
+            {copied ? "copied ✓" : "copy"}
+          </span>
+        </>
+      )}
     </button>
   );
 }
 
-function TerminalDemo() {
+function TerminalDemo({ compact = false }: { compact?: boolean }) {
   return (
-    <div className="rounded-md border border-border bg-terminal text-terminal-foreground shadow-[0_30px_60px_-30px_rgba(0,0,0,0.4)]">
+    <div
+      className={`overflow-hidden bg-terminal text-terminal-foreground ${
+        compact ? "rounded-xl" : "rounded-[18px] sm:rounded-[20px]"
+      }`}
+    >
       <div className="flex items-center justify-between border-b border-white/10 px-3 py-2">
         <div className="flex gap-1.5">
           <span className="h-2.5 w-2.5 rounded-full bg-red-400/80" />
@@ -145,7 +243,11 @@ function TerminalDemo() {
         <span className="text-[10px] text-white/40">~/projects/app — agent-dev</span>
         <span className="text-[10px] text-purple-400">BOSS · Build</span>
       </div>
-      <pre className="overflow-x-auto px-4 py-4 text-[12px] leading-relaxed">
+      <pre
+        className={`terminal-mono overflow-x-auto leading-relaxed ${
+          compact ? "px-4 py-4 text-[10px]" : "px-6 py-6 text-[12px]"
+        }`}
+      >
         <span className="text-white/50">$ </span>agent --boss{"\n"}
         <span className="text-primary">◆</span> agent{" "}
         <span className="text-white/40">free/llama-3.3-70b · BOSS</span>
@@ -184,7 +286,7 @@ function TerminalDemo() {
 function Install() {
   return (
     <Section id="install" label="01" title="quick start">
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-6 lg:grid-cols-2">
         <CodeBlock
           title="from source"
           lines={[
@@ -193,16 +295,13 @@ function Install() {
             "$ npm run dev",
           ]}
         />
-        <CodeBlock
-          title="global install"
-          lines={["$ npm i -g @devang0907/agent-dev", "$ agent"]}
-        />
+        <CodeBlock title="global install" lines={["$ npm i -g @devang0907/agent-dev", "$ agent"]} />
       </div>
-      <div className="mt-4 rounded-md border border-border bg-card p-4 text-xs">
-        <div className="mb-2 text-muted-foreground">
+      <div className="editorial-card mt-6 p-6 text-xs">
+        <div className="editorial-label mb-3 text-muted-foreground">
           # set at least one API key · requires Node.js 20+
         </div>
-        <pre className="overflow-x-auto leading-relaxed">
+        <pre className="terminal-mono overflow-x-auto leading-relaxed text-muted-foreground">
           {`export OPENROUTER_API_KEY=sk-or-...   # free models (default)
 export OPENAI_API_KEY=sk-...          # ChatGPT
 export ANTHROPIC_API_KEY=sk-ant-...   # Claude
@@ -214,12 +313,28 @@ export GEMINI_API_KEY=...             # Google Gemini`}
   );
 }
 
+function ProvidersStrip() {
+  const providers = ["OpenAI", "Anthropic", "Google Gemini", "Meta Llama", "DeepSeek"];
+  return (
+    <section className="border-y border-border/60 py-12">
+      <p className="editorial-label mb-8 text-center text-muted-foreground">
+        powering autonomous development with
+      </p>
+      <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-sm font-semibold uppercase tracking-[0.08em] text-muted-foreground sm:gap-x-16">
+        {providers.map((provider) => (
+          <span key={provider}>{provider}</span>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 const FEATURES = [
   {
     title: "Build · Plan · Boss",
     desc: "Switch between full tool access, read-only exploration, or a boss orchestrator that delegates to specialized workers.",
     href: "/docs#agent-modes",
-    color: "text-purple-500 dark:text-purple-400",
+    color: "text-purple-500",
   },
   {
     title: "20 built-in tools",
@@ -231,7 +346,7 @@ const FEATURES = [
     title: "Bring your own model",
     desc: "OpenRouter free tier, Claude, GPT, Groq, or Gemini. Switch models with /model or --model.",
     href: "/docs#providers",
-    color: "text-sky-500 dark:text-sky-400",
+    color: "text-sky-500",
   },
   {
     title: "Telegram gateway",
@@ -243,7 +358,7 @@ const FEATURES = [
     title: "Skills & MCP",
     desc: "Load Vercel Agent Skills and connect MCP servers for filesystem, APIs, and custom tools.",
     href: "/docs#skills",
-    color: "text-sky-500 dark:text-sky-400",
+    color: "text-sky-500",
   },
   {
     title: "Compaction & rules",
@@ -256,12 +371,15 @@ const FEATURES = [
 function Features() {
   return (
     <Section id="features" label="02" title="features">
-      <div className="grid gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {FEATURES.map((f) => (
-          <div key={f.title} className="bg-card p-6">
+          <div key={f.title} className="editorial-card p-7">
             <h3 className={`text-sm font-bold ${f.color}`}>{f.title}</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.desc}</p>
-            <a href={f.href} className="mt-4 inline-block text-xs text-primary hover:underline">
+            <a
+              href={f.href}
+              className="mt-5 inline-block text-xs uppercase tracking-[0.08em] text-foreground hover:underline"
+            >
               read docs →
             </a>
           </div>
@@ -278,11 +396,11 @@ function Features() {
 
 function CTA() {
   return (
-    <section className="my-20 rounded-md border border-border bg-card p-8 sm:p-12">
+    <section className="editorial-card my-16 p-8 sm:p-12">
       <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">stop context-switching.</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <h2 className="editorial-section-title text-3xl">stop context-switching.</h2>
+          <p className="mt-3 text-sm text-muted-foreground">
             ship code without leaving the terminal.
           </p>
         </div>
@@ -304,10 +422,10 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section id={id} className="border-t border-dashed border-border py-12 sm:py-16">
+    <section id={id} className="editorial-section border-t border-border/60">
       <div className="mb-8 flex items-baseline gap-4">
-        <span className="text-xs text-muted-foreground">[{label}]</span>
-        <h2 className="text-xl font-bold tracking-tight sm:text-2xl">{title}</h2>
+        <span className="editorial-label text-muted-foreground">[{label}]</span>
+        <h2 className="editorial-section-title text-3xl sm:text-5xl">{title}</h2>
       </div>
       {children}
     </section>
@@ -316,9 +434,11 @@ function Section({
 
 function CodeBlock({ title, lines }: { title: string; lines: string[] }) {
   return (
-    <div className="rounded-md border border-border bg-card">
-      <div className="border-b border-border px-4 py-2 text-xs text-muted-foreground">{title}</div>
-      <pre className="overflow-x-auto px-4 py-4 text-xs leading-relaxed">
+    <div className="editorial-card overflow-hidden">
+      <div className="editorial-label border-b border-border/70 px-5 py-3 text-muted-foreground">
+        {title}
+      </div>
+      <pre className="terminal-mono overflow-x-auto px-5 py-5 text-xs leading-relaxed">
         {lines.map((l) => (
           <div key={l}>{l}</div>
         ))}

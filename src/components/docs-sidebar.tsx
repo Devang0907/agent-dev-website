@@ -46,7 +46,9 @@ function TocLink({
       onClick={() => onSelect(item.id)}
       className={cn(
         "docs-toc-link relative w-full rounded-sm text-left transition-colors",
-        nested ? "py-1 pl-3 pr-2 text-[11px] leading-snug" : "py-1.5 pl-3 pr-2 text-xs leading-snug",
+        nested
+          ? "py-1 pl-3 pr-2 text-[11px] leading-snug"
+          : "py-1.5 pl-3 pr-2 text-xs leading-snug",
         active
           ? "bg-primary/10 font-medium text-primary"
           : "text-muted-foreground hover:bg-secondary/70 hover:text-foreground",
@@ -85,7 +87,7 @@ export function DocsSidebar({ items }: DocsSidebarProps) {
           setActiveId(visible[0].target.id);
         }
       },
-      { rootMargin: "-88px 0px -55% 0px", threshold: 0 },
+      { rootMargin: "-120px 0px -55% 0px", threshold: 0 },
     );
 
     for (const heading of headings) {
@@ -98,7 +100,7 @@ export function DocsSidebar({ items }: DocsSidebarProps) {
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (!el) return;
-    const top = el.getBoundingClientRect().top + window.scrollY - 80;
+    const top = el.getBoundingClientRect().top + window.scrollY - 116;
     window.scrollTo({ top, behavior: "smooth" });
     setActiveId(id);
     history.replaceState(null, "", `#${id}`);
@@ -131,11 +133,11 @@ export function DocsSidebar({ items }: DocsSidebarProps) {
       </nav>
 
       <aside className="hidden lg:block">
-        <nav className="docs-toc-panel sticky top-[4.75rem] rounded-md border border-border bg-card">
+        <nav className="docs-toc-panel nav-sticky-top sticky rounded-md border border-border bg-card">
           <div className="border-b border-border px-4 py-2.5 text-[10px] uppercase tracking-wider text-muted-foreground">
             On this page
           </div>
-          <div className="docs-toc-scroll max-h-[calc(100vh-6.5rem)] overflow-y-auto px-2 py-2">
+          <div className="docs-toc-scroll max-h-[calc(100vh-var(--nav-offset)-1rem)] overflow-y-auto px-2 py-2">
             <ul className="space-y-3">
               {groups.map((group) => (
                 <li key={group.section.id}>
@@ -144,12 +146,7 @@ export function DocsSidebar({ items }: DocsSidebarProps) {
                     <ul className="mt-0.5 space-y-0.5 border-l border-border/80 pl-2">
                       {group.children.map((child) => (
                         <li key={child.id}>
-                          <TocLink
-                            item={child}
-                            activeId={activeId}
-                            nested
-                            onSelect={scrollTo}
-                          />
+                          <TocLink item={child} activeId={activeId} nested onSelect={scrollTo} />
                         </li>
                       ))}
                     </ul>

@@ -39,7 +39,10 @@ const components: Components = {
       );
     }
     return (
-      <code className="rounded-sm border border-border bg-secondary/60 px-1 py-0.5 text-[0.9em] text-foreground" {...props}>
+      <code
+        className="rounded-sm border border-border bg-secondary/60 px-1 py-0.5 text-[0.9em] text-foreground"
+        {...props}
+      >
         {children}
       </code>
     );
@@ -66,10 +69,7 @@ export function MarkdownDoc({ content, className }: MarkdownDocProps) {
     <article className={cn("docs-prose", className)}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
-        rehypePlugins={[
-          rehypeSlug,
-          [rehypeAutolinkHeadings, { behavior: "wrap" }],
-        ]}
+        rehypePlugins={[rehypeSlug, [rehypeAutolinkHeadings, { behavior: "wrap" }]]}
         components={components}
       >
         {content}

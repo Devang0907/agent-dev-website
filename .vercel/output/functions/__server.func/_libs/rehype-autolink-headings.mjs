@@ -7,7 +7,7 @@ const contentDefaults = {
   type: "element",
   tagName: "span",
   properties: { className: ["icon", "icon-link"] },
-  children: []
+  children: [],
 };
 const emptyOptions = {};
 function rehypeAutolinkHeadings(options) {
@@ -29,8 +29,8 @@ function rehypeAutolinkHeadings(options) {
       properties = { ariaHidden: "true", tabIndex: -1 };
     }
   }
-  return function(tree) {
-    visit(tree, "element", function(node, index, parent) {
+  return function (tree) {
+    visit(tree, "element", function (node, index, parent) {
       if (headingRank(node) && node.properties.id && is(node, index, parent)) {
         Object.assign(node.properties, toProperties(headingOroperties, node));
         return method(node, index, parent);
@@ -40,7 +40,7 @@ function rehypeAutolinkHeadings(options) {
   function inject(node) {
     const children = toChildren(content || contentDefaults, node);
     node.children[behavior === "prepend" ? "unshift" : "push"](
-      create(node, toProperties(properties, node), children)
+      create(node, toProperties(properties, node), children),
     );
     return [SKIP];
   }
@@ -72,8 +72,8 @@ function rehypeAutolinkHeadings(options) {
       create(
         node,
         toProperties(properties, node),
-        Array.isArray(after) ? [...before, ...after] : [...before, after]
-      )
+        Array.isArray(after) ? [...before, ...after] : [...before, after],
+      ),
     ];
     return [SKIP];
   }
@@ -89,7 +89,7 @@ function create(node, properties, children) {
     type: "element",
     tagName: "a",
     properties: { ...properties, href: "#" + node.properties.id },
-    children
+    children,
   };
 }
 function toChildren(value, node) {
@@ -104,6 +104,4 @@ function toProperties(value, node) {
   if (typeof value === "function") return value(node);
   return value ? clone(value) : {};
 }
-export {
-  rehypeAutolinkHeadings as r
-};
+export { rehypeAutolinkHeadings as r };

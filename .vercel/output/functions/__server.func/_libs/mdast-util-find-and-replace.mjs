@@ -15,11 +15,7 @@ function findAndReplace(tree, list, options) {
     while (++index < parents.length) {
       const parent = parents[index];
       const siblings = grandparent ? grandparent.children : void 0;
-      if (ignored(
-        parent,
-        siblings ? siblings.indexOf(parent) : void 0,
-        grandparent
-      )) {
+      if (ignored(parent, siblings ? siblings.indexOf(parent) : void 0, grandparent)) {
         return;
       }
       grandparent = parent;
@@ -44,7 +40,7 @@ function findAndReplace(tree, list, options) {
       const matchObject = {
         index: match.index,
         input: match.input,
-        stack: [...parents, node]
+        stack: [...parents, node],
       };
       let value = replace(...match, matchObject);
       if (typeof value === "string") {
@@ -56,7 +52,7 @@ function findAndReplace(tree, list, options) {
         if (start !== position) {
           nodes.push({
             type: "text",
-            value: node.value.slice(start, position)
+            value: node.value.slice(start, position),
           });
         }
         if (Array.isArray(value)) {
@@ -100,10 +96,10 @@ function toExpression(find) {
   return typeof find === "string" ? new RegExp(escapeStringRegexp(find), "g") : find;
 }
 function toFunction(replace) {
-  return typeof replace === "function" ? replace : function() {
-    return replace;
-  };
+  return typeof replace === "function"
+    ? replace
+    : function () {
+        return replace;
+      };
 }
-export {
-  findAndReplace as f
-};
+export { findAndReplace as f };

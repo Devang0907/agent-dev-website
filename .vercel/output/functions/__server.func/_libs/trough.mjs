@@ -31,9 +31,7 @@ function trough() {
   }
   function use(middelware) {
     if (typeof middelware !== "function") {
-      throw new TypeError(
-        "Expected `middelware` to be a function, not " + middelware
-      );
+      throw new TypeError("Expected `middelware` to be a function, not " + middelware);
     }
     fns.push(middelware);
     return pipeline;
@@ -51,10 +49,9 @@ function wrap(middleware, callback) {
     try {
       result = middleware.apply(this, parameters);
     } catch (error) {
-      const exception = (
+      const exception =
         /** @type {Error} */
-        error
-      );
+        error;
       if (fnExpectsCallback && called) {
         throw exception;
       }
@@ -80,6 +77,4 @@ function wrap(middleware, callback) {
     done(null, value);
   }
 }
-export {
-  trough as t
-};
+export { trough as t };

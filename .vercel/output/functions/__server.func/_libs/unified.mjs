@@ -3,7 +3,7 @@ import { e as extend } from "./extend.mjs";
 import { i as isPlainObject } from "./is-plain-obj.mjs";
 import { t as trough } from "./trough.mjs";
 import { V as VFile } from "./vfile.mjs";
-const CallableInstance = (
+const CallableInstance =
   /**
    * @type {new <Parameters extends Array<unknown>, Result>(property: string | symbol) => (...parameters: Parameters) => Result}
    */
@@ -13,23 +13,21 @@ const CallableInstance = (
    * @param {string | symbol} property
    * @returns {(...parameters: Array<unknown>) => unknown}
    */
-  (function(property) {
+  function (property) {
     const self = this;
     const constr = self.constructor;
-    const proto = (
+    const proto =
       /** @type {Record<string | symbol, Function>} */
       // Prototypes do exist.
       // type-coverage:ignore-next-line
-      constr.prototype
-    );
+      constr.prototype;
     const value = proto[property];
-    const apply = function() {
+    const apply = function () {
       return value.apply(apply, arguments);
     };
     Object.setPrototypeOf(apply, proto);
     return apply;
-  })
-);
+  };
 const own = {}.hasOwnProperty;
 class Processor extends CallableInstance {
   /**
@@ -59,10 +57,9 @@ class Processor extends CallableInstance {
    *   affect the ancestral processor.
    */
   copy() {
-    const destination = (
+    const destination =
       /** @type {Processor<ParseTree, HeadTree, TailTree, CompileTree, CompileResult>} */
-      new Processor()
-    );
+      new Processor();
     let index = -1;
     while (++index < this.attachers.length) {
       const attacher = this.attachers[index];
@@ -137,7 +134,7 @@ class Processor extends CallableInstance {
         this.namespace[key] = value;
         return this;
       }
-      return own.call(this.namespace, key) && this.namespace[key] || void 0;
+      return (own.call(this.namespace, key) && this.namespace[key]) || void 0;
     }
     if (key) {
       assertUnfrozen("data", this.frozen);
@@ -167,11 +164,10 @@ class Processor extends CallableInstance {
     if (this.frozen) {
       return this;
     }
-    const self = (
+    const self =
       /** @type {Processor} */
       /** @type {unknown} */
-      this
-    );
+      this;
     while (++this.freezeIndex < this.attachers.length) {
       const [attacher, ...options] = this.attachers[this.freezeIndex];
       if (options[0] === false) {
@@ -260,20 +256,18 @@ class Processor extends CallableInstance {
     return done ? executor(void 0, done) : new Promise(executor);
     function executor(resolve, reject) {
       const realFile = vfile(file);
-      const parseTree = (
+      const parseTree =
         /** @type {HeadTree extends undefined ? Node : HeadTree} */
         /** @type {unknown} */
-        self.parse(realFile)
-      );
-      self.run(parseTree, realFile, function(error, tree, file2) {
+        self.parse(realFile);
+      self.run(parseTree, realFile, function (error, tree, file2) {
         if (error || !tree || !file2) {
           return realDone(error);
         }
-        const compileTree = (
+        const compileTree =
           /** @type {CompileTree extends undefined ? Node : CompileTree} */
           /** @type {unknown} */
-          tree
-        );
+          tree;
         const compileResult = self.stringify(compileTree, file2);
         if (looksLikeAValue(compileResult)) {
           file2.value = compileResult;
@@ -283,7 +277,7 @@ class Processor extends CallableInstance {
         realDone(
           error,
           /** @type {VFileWithOutput<CompileResult>} */
-          file2
+          file2,
         );
       });
       function realDone(error, file2) {
@@ -394,10 +388,9 @@ class Processor extends CallableInstance {
       const realFile = vfile(file);
       transformers.run(tree, realFile, realDone);
       function realDone(error, outputTree, file2) {
-        const resultingTree = (
+        const resultingTree =
           /** @type {TailTree extends undefined ? Node : TailTree} */
-          outputTree || tree
-        );
+          outputTree || tree;
         if (error) {
           reject(error);
         } else if (resolve) {
@@ -535,7 +528,7 @@ class Processor extends CallableInstance {
     const attachers = this.attachers;
     const namespace = this.namespace;
     assertUnfrozen("use", this.frozen);
-    if (value === null || value === void 0) ;
+    if (value === null || value === void 0);
     else if (typeof value === "function") {
       addPlugin(value, parameters);
     } else if (typeof value === "object") {
@@ -553,10 +546,9 @@ class Processor extends CallableInstance {
         addPlugin(value2, []);
       } else if (typeof value2 === "object") {
         if (Array.isArray(value2)) {
-          const [plugin, ...parameters2] = (
+          const [plugin, ...parameters2] =
             /** @type {PluginTuple<Array<unknown>>} */
-            value2
-          );
+            value2;
           addPlugin(plugin, parameters2);
         } else {
           addPreset(value2);
@@ -568,7 +560,7 @@ class Processor extends CallableInstance {
     function addPreset(result) {
       if (!("plugins" in result) && !("settings" in result)) {
         throw new Error(
-          "Expected usable value but received an empty preset, which is probably a mistake: presets typically come with `plugins` and sometimes with `settings`, but this has neither"
+          "Expected usable value but received an empty preset, which is probably a mistake: presets typically come with `plugins` and sometimes with `settings`, but this has neither",
         );
       }
       addList(result.plugins);
@@ -578,7 +570,7 @@ class Processor extends CallableInstance {
     }
     function addList(plugins) {
       let index = -1;
-      if (plugins === null || plugins === void 0) ;
+      if (plugins === null || plugins === void 0);
       else if (Array.isArray(plugins)) {
         while (++index < plugins.length) {
           const thing = plugins[index];
@@ -624,7 +616,9 @@ function assertCompiler(name, value) {
 function assertUnfrozen(name, frozen) {
   if (frozen) {
     throw new Error(
-      "Cannot call `" + name + "` on a frozen processor.\nCreate a new processor first, by calling it: use `processor()` instead of `processor`."
+      "Cannot call `" +
+        name +
+        "` on a frozen processor.\nCreate a new processor first, by calling it: use `processor()` instead of `processor`.",
     );
   }
 }
@@ -635,27 +629,21 @@ function assertNode(node) {
 }
 function assertDone(name, asyncName, complete) {
   if (!complete) {
-    throw new Error(
-      "`" + name + "` finished async. Use `" + asyncName + "` instead"
-    );
+    throw new Error("`" + name + "` finished async. Use `" + asyncName + "` instead");
   }
 }
 function vfile(value) {
   return looksLikeAVFile(value) ? value : new VFile(value);
 }
 function looksLikeAVFile(value) {
-  return Boolean(
-    value && typeof value === "object" && "message" in value && "messages" in value
-  );
+  return Boolean(value && typeof value === "object" && "message" in value && "messages" in value);
 }
 function looksLikeAValue(value) {
   return typeof value === "string" || isUint8Array(value);
 }
 function isUint8Array(value) {
   return Boolean(
-    value && typeof value === "object" && "byteLength" in value && "byteOffset" in value
+    value && typeof value === "object" && "byteLength" in value && "byteOffset" in value,
   );
 }
-export {
-  unified as u
-};
+export { unified as u };

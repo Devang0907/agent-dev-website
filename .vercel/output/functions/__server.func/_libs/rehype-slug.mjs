@@ -7,15 +7,13 @@ const slugs = new BananaSlug();
 function rehypeSlug(options) {
   const settings = options || emptyOptions;
   const prefix = settings.prefix || "";
-  return function(tree) {
+  return function (tree) {
     slugs.reset();
-    visit(tree, "element", function(node) {
+    visit(tree, "element", function (node) {
       if (headingRank(node) && !node.properties.id) {
         node.properties.id = prefix + slugs.slug(toString(node));
       }
     });
   };
 }
-export {
-  rehypeSlug as r
-};
+export { rehypeSlug as r };

@@ -9,18 +9,6 @@ const urlAttributes = {
   manifest: ["html"],
   ping: ["a", "area"],
   poster: ["video"],
-  src: [
-    "audio",
-    "embed",
-    "iframe",
-    "img",
-    "input",
-    "script",
-    "source",
-    "track",
-    "video"
-  ]
+  src: ["audio", "embed", "iframe", "img", "input", "script", "source", "track", "video"],
 };
-export {
-  urlAttributes as u
-};
+export { urlAttributes as u };

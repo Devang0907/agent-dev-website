@@ -1,43 +1,50 @@
-import { a as asciiAlphanumeric, e as asciiAlpha, c as markdownLineEndingOrSpace, u as unicodeWhitespace, d as unicodePunctuation, f as asciiControl } from "./micromark-util-character.mjs";
+import {
+  a as asciiAlphanumeric,
+  e as asciiAlpha,
+  c as markdownLineEndingOrSpace,
+  u as unicodeWhitespace,
+  d as unicodePunctuation,
+  f as asciiControl,
+} from "./micromark-util-character.mjs";
 const wwwPrefix = {
   tokenize: tokenizeWwwPrefix,
-  partial: true
+  partial: true,
 };
 const domain = {
   tokenize: tokenizeDomain,
-  partial: true
+  partial: true,
 };
 const path = {
   tokenize: tokenizePath,
-  partial: true
+  partial: true,
 };
 const trail = {
   tokenize: tokenizeTrail,
-  partial: true
+  partial: true,
 };
 const emailDomainDotTrail = {
   tokenize: tokenizeEmailDomainDotTrail,
-  partial: true
+  partial: true,
 };
 const wwwAutolink = {
   name: "wwwAutolink",
   tokenize: tokenizeWwwAutolink,
-  previous: previousWww
+  previous: previousWww,
 };
 const protocolAutolink = {
   name: "protocolAutolink",
   tokenize: tokenizeProtocolAutolink,
-  previous: previousProtocol
+  previous: previousProtocol,
 };
 const emailAutolink = {
   name: "emailAutolink",
   tokenize: tokenizeEmailAutolink,
-  previous: previousEmail
+  previous: previousEmail,
 };
 const text = {};
 function gfmAutolinkLiteral() {
   return {
-    text
+    text,
   };
 }
 let code = 48;
@@ -61,7 +68,11 @@ function tokenizeEmailAutolink(effects, ok, nok) {
   let data;
   return start;
   function start(code2) {
-    if (!gfmAtext(code2) || !previousEmail.call(self, self.previous) || previousUnbalanced(self.events)) {
+    if (
+      !gfmAtext(code2) ||
+      !previousEmail.call(self, self.previous) ||
+      previousUnbalanced(self.events)
+    ) {
       return nok(code2);
     }
     effects.enter("literalAutolink");
@@ -108,12 +119,20 @@ function tokenizeWwwAutolink(effects, ok, nok) {
   const self = this;
   return wwwStart;
   function wwwStart(code2) {
-    if (code2 !== 87 && code2 !== 119 || !previousWww.call(self, self.previous) || previousUnbalanced(self.events)) {
+    if (
+      (code2 !== 87 && code2 !== 119) ||
+      !previousWww.call(self, self.previous) ||
+      previousUnbalanced(self.events)
+    ) {
       return nok(code2);
     }
     effects.enter("literalAutolink");
     effects.enter("literalAutolinkWww");
-    return effects.check(wwwPrefix, effects.attempt(domain, effects.attempt(path, wwwAfter), nok), nok)(code2);
+    return effects.check(
+      wwwPrefix,
+      effects.attempt(domain, effects.attempt(path, wwwAfter), nok),
+      nok,
+    )(code2);
   }
   function wwwAfter(code2) {
     effects.exit("literalAutolinkWww");
@@ -127,7 +146,11 @@ function tokenizeProtocolAutolink(effects, ok, nok) {
   let seen = false;
   return protocolStart;
   function protocolStart(code2) {
-    if ((code2 === 72 || code2 === 104) && previousProtocol.call(self, self.previous) && !previousUnbalanced(self.events)) {
+    if (
+      (code2 === 72 || code2 === 104) &&
+      previousProtocol.call(self, self.previous) &&
+      !previousUnbalanced(self.events)
+    ) {
       effects.enter("literalAutolink");
       effects.enter("literalAutolinkHttp");
       buffer += String.fromCodePoint(code2);
@@ -163,7 +186,13 @@ function tokenizeProtocolAutolink(effects, ok, nok) {
     return nok(code2);
   }
   function afterProtocol(code2) {
-    return code2 === null || asciiControl(code2) || markdownLineEndingOrSpace(code2) || unicodeWhitespace(code2) || unicodePunctuation(code2) ? nok(code2) : effects.attempt(domain, effects.attempt(path, protocolAfter), nok)(code2);
+    return code2 === null ||
+      asciiControl(code2) ||
+      markdownLineEndingOrSpace(code2) ||
+      unicodeWhitespace(code2) ||
+      unicodePunctuation(code2)
+      ? nok(code2)
+      : effects.attempt(domain, effects.attempt(path, protocolAfter), nok)(code2);
   }
   function protocolAfter(code2) {
     effects.exit("literalAutolinkHttp");
@@ -199,7 +228,12 @@ function tokenizeDomain(effects, ok, nok) {
     if (code2 === 46 || code2 === 95) {
       return effects.check(trail, domainAfter, domainAtPunctuation)(code2);
     }
-    if (code2 === null || markdownLineEndingOrSpace(code2) || unicodeWhitespace(code2) || code2 !== 45 && unicodePunctuation(code2)) {
+    if (
+      code2 === null ||
+      markdownLineEndingOrSpace(code2) ||
+      unicodeWhitespace(code2) ||
+      (code2 !== 45 && unicodePunctuation(code2))
+    ) {
       return domainAfter(code2);
     }
     seen = true;
@@ -236,7 +270,23 @@ function tokenizePath(effects, ok) {
     if (code2 === 41 && sizeClose < sizeOpen) {
       return pathAtPunctuation(code2);
     }
-    if (code2 === 33 || code2 === 34 || code2 === 38 || code2 === 39 || code2 === 41 || code2 === 42 || code2 === 44 || code2 === 46 || code2 === 58 || code2 === 59 || code2 === 60 || code2 === 63 || code2 === 93 || code2 === 95 || code2 === 126) {
+    if (
+      code2 === 33 ||
+      code2 === 34 ||
+      code2 === 38 ||
+      code2 === 39 ||
+      code2 === 41 ||
+      code2 === 42 ||
+      code2 === 44 ||
+      code2 === 46 ||
+      code2 === 58 ||
+      code2 === 59 ||
+      code2 === 60 ||
+      code2 === 63 ||
+      code2 === 93 ||
+      code2 === 95 ||
+      code2 === 126
+    ) {
       return effects.check(trail, ok, pathAtPunctuation)(code2);
     }
     if (code2 === null || markdownLineEndingOrSpace(code2) || unicodeWhitespace(code2)) {
@@ -256,7 +306,20 @@ function tokenizePath(effects, ok) {
 function tokenizeTrail(effects, ok, nok) {
   return trail2;
   function trail2(code2) {
-    if (code2 === 33 || code2 === 34 || code2 === 39 || code2 === 41 || code2 === 42 || code2 === 44 || code2 === 46 || code2 === 58 || code2 === 59 || code2 === 63 || code2 === 95 || code2 === 126) {
+    if (
+      code2 === 33 ||
+      code2 === 34 ||
+      code2 === 39 ||
+      code2 === 41 ||
+      code2 === 42 ||
+      code2 === 44 ||
+      code2 === 46 ||
+      code2 === 58 ||
+      code2 === 59 ||
+      code2 === 63 ||
+      code2 === 95 ||
+      code2 === 126
+    ) {
       effects.consume(code2);
       return trail2;
     }
@@ -271,14 +334,22 @@ function tokenizeTrail(effects, ok, nok) {
     if (
       // `<` is an end.
       code2 === 60 || // So is whitespace.
-      code2 === null || markdownLineEndingOrSpace(code2) || unicodeWhitespace(code2)
+      code2 === null ||
+      markdownLineEndingOrSpace(code2) ||
+      unicodeWhitespace(code2)
     ) {
       return ok(code2);
     }
     return nok(code2);
   }
   function trailBracketAfter(code2) {
-    if (code2 === null || code2 === 40 || code2 === 91 || markdownLineEndingOrSpace(code2) || unicodeWhitespace(code2)) {
+    if (
+      code2 === null ||
+      code2 === 40 ||
+      code2 === 91 ||
+      markdownLineEndingOrSpace(code2) ||
+      unicodeWhitespace(code2)
+    ) {
       return ok(code2);
     }
     return trail2(code2);
@@ -309,7 +380,16 @@ function tokenizeEmailDomainDotTrail(effects, ok, nok) {
   }
 }
 function previousWww(code2) {
-  return code2 === null || code2 === 40 || code2 === 42 || code2 === 95 || code2 === 91 || code2 === 93 || code2 === 126 || markdownLineEndingOrSpace(code2);
+  return (
+    code2 === null ||
+    code2 === 40 ||
+    code2 === 42 ||
+    code2 === 95 ||
+    code2 === 91 ||
+    code2 === 93 ||
+    code2 === 126 ||
+    markdownLineEndingOrSpace(code2)
+  );
 }
 function previousProtocol(code2) {
   return !asciiAlpha(code2);
@@ -339,6 +419,4 @@ function previousUnbalanced(events) {
   }
   return result;
 }
-export {
-  gfmAutolinkLiteral as g
-};
+export { gfmAutolinkLiteral as g };

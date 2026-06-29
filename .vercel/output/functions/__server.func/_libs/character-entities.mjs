@@ -2123,8 +2123,6 @@ const characterEntities = {
   zopf: "𝕫",
   zscr: "𝓏",
   zwj: "‍",
-  zwnj: "‌"
+  zwnj: "‌",
 };
-export {
-  characterEntities as c
-};
+export { characterEntities as c };

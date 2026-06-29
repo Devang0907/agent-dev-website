@@ -1,6 +1,8 @@
 function normalizeIdentifier(value) {
-  return value.replace(/[\t\n\r ]+/g, " ").replace(/^ | $/g, "").toLowerCase().toUpperCase();
+  return value
+    .replace(/[\t\n\r ]+/g, " ")
+    .replace(/^ | $/g, "")
+    .toLowerCase()
+    .toUpperCase();
 }
-export {
-  normalizeIdentifier as n
-};
+export { normalizeIdentifier as n };

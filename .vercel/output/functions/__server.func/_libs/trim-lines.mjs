@@ -7,10 +7,7 @@ function trimLines(value) {
   let last = 0;
   const lines = [];
   while (match) {
-    lines.push(
-      trimLine(source.slice(last, match.index), last > 0, true),
-      match[0]
-    );
+    lines.push(trimLine(source.slice(last, match.index), last > 0, true), match[0]);
     last = match.index + match[0].length;
     match = search.exec(source);
   }
@@ -36,6 +33,4 @@ function trimLine(value, start, end) {
   }
   return endIndex > startIndex ? value.slice(startIndex, endIndex) : "";
 }
-export {
-  trimLines as t
-};
+export { trimLines as t };

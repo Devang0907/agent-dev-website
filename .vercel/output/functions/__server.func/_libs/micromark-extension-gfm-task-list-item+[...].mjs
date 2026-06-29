@@ -1,14 +1,18 @@
 import { f as factorySpace } from "./micromark-factory-space.mjs";
-import { c as markdownLineEndingOrSpace, m as markdownLineEnding, b as markdownSpace } from "./micromark-util-character.mjs";
+import {
+  c as markdownLineEndingOrSpace,
+  m as markdownLineEnding,
+  b as markdownSpace,
+} from "./micromark-util-character.mjs";
 const tasklistCheck = {
   name: "tasklistCheck",
-  tokenize: tokenizeTasklistCheck
+  tokenize: tokenizeTasklistCheck,
 };
 function gfmTaskListItem() {
   return {
     text: {
-      [91]: tasklistCheck
-    }
+      [91]: tasklistCheck,
+    },
   };
 }
 function tokenizeTasklistCheck(effects, ok, nok) {
@@ -59,9 +63,13 @@ function tokenizeTasklistCheck(effects, ok, nok) {
       return ok(code);
     }
     if (markdownSpace(code)) {
-      return effects.check({
-        tokenize: spaceThenNonSpace
-      }, ok, nok)(code);
+      return effects.check(
+        {
+          tokenize: spaceThenNonSpace,
+        },
+        ok,
+        nok,
+      )(code);
     }
     return nok(code);
   }
@@ -72,6 +80,4 @@ function spaceThenNonSpace(effects, ok, nok) {
     return code === null ? nok(code) : ok(code);
   }
 }
-export {
-  gfmTaskListItem as g
-};
+export { gfmTaskListItem as g };

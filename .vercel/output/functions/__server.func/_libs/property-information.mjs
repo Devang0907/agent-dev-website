@@ -77,12 +77,11 @@ const types = /* @__PURE__ */ Object.freeze({
   commaSeparated,
   number,
   overloadedBoolean,
-  spaceSeparated
+  spaceSeparated,
 });
-const checks = (
+const checks =
   /** @type {ReadonlyArray<keyof typeof types>} */
-  Object.keys(types)
-);
+  Object.keys(types);
 class DefinedInfo extends Info {
   /**
    * @constructor
@@ -123,7 +122,7 @@ function create(definition) {
       property,
       definition.transform(definition.attributes || {}, property),
       value,
-      definition.space
+      definition.space,
     );
     if (definition.mustUseProperty && definition.mustUseProperty.includes(property)) {
       info.mustUseProperty = true;
@@ -184,11 +183,11 @@ const aria = create({
     ariaValueMin: number,
     ariaValueNow: number,
     ariaValueText: null,
-    role: null
+    role: null,
   },
   transform(_, property) {
     return property === "role" ? property : "aria-" + property.slice(4).toLowerCase();
-  }
+  },
 });
 function caseSensitiveTransform(attributes, attribute) {
   return attribute in attributes ? attributes[attribute] : attribute;
@@ -201,7 +200,7 @@ const html$1 = create({
     acceptcharset: "accept-charset",
     classname: "class",
     htmlfor: "for",
-    httpequiv: "http-equiv"
+    httpequiv: "http-equiv",
   },
   mustUseProperty: ["checked", "multiple", "muted", "selected"],
   properties: {
@@ -563,10 +562,10 @@ const html$1 = create({
     property: null,
     results: number,
     security: null,
-    unselectable: null
+    unselectable: null,
   },
   space: "html",
-  transform: caseInsensitiveTransform
+  transform: caseInsensitiveTransform,
 });
 const svg$1 = create({
   attributes: {
@@ -743,7 +742,7 @@ const svg$1 = create({
     xHeight: "x-height",
     // These were camelcased in Tiny. Now lowercased in SVG 2
     playbackOrder: "playbackorder",
-    timelineBegin: "timelinebegin"
+    timelineBegin: "timelinebegin",
   },
   properties: {
     about: commaOrSpaceSeparated,
@@ -1125,10 +1124,10 @@ const svg$1 = create({
     y2: null,
     yChannelSelector: null,
     z: null,
-    zoomAndPan: null
+    zoomAndPan: null,
   },
   space: "svg",
-  transform: caseSensitiveTransform
+  transform: caseSensitiveTransform,
 });
 const xlink = create({
   properties: {
@@ -1138,25 +1137,25 @@ const xlink = create({
     xLinkRole: null,
     xLinkShow: null,
     xLinkTitle: null,
-    xLinkType: null
+    xLinkType: null,
   },
   space: "xlink",
   transform(_, property) {
     return "xlink:" + property.slice(5).toLowerCase();
-  }
+  },
 });
 const xmlns = create({
   attributes: { xmlnsxlink: "xmlns:xlink" },
   properties: { xmlnsXLink: null, xmlns: null },
   space: "xmlns",
-  transform: caseInsensitiveTransform
+  transform: caseInsensitiveTransform,
 });
 const xml = create({
   properties: { xmlBase: null, xmlLang: null, xmlSpace: null },
   space: "xml",
   transform(_, property) {
     return "xml:" + property.slice(3).toLowerCase();
-  }
+  },
 });
 const hastToReact = {
   classId: "classID",
@@ -1175,7 +1174,7 @@ const hastToReact = {
   xLinkShow: "xlinkShow",
   xLinkTitle: "xlinkTitle",
   xLinkType: "xlinkType",
-  xmlnsXLink: "xmlnsXlink"
+  xmlnsXLink: "xmlnsXlink",
 };
 const cap = /[A-Z]/g;
 const dash = /-[a-z]/g;
@@ -1213,9 +1212,4 @@ function camelcase($0) {
 }
 const html = merge([aria, html$1, xlink, xmlns, xml], "html");
 const svg = merge([aria, svg$1, xlink, xmlns, xml], "svg");
-export {
-  hastToReact as a,
-  find as f,
-  html as h,
-  svg as s
-};
+export { hastToReact as a, find as f, html as h, svg as s };

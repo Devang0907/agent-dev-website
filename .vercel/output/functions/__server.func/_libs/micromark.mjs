@@ -2,14 +2,41 @@ import { c as combineExtensions } from "./micromark-util-combine-extensions+[...
 import { f as factorySpace } from "./micromark-factory-space.mjs";
 import { m as markdownLineEnding } from "./micromark-util-character.mjs";
 import { s as splice, p as push } from "./micromark-util-chunked.mjs";
-import { b as blankLine, c as content$1, d as definition, a as blockQuote, l as list, e as codeFenced, t as thematicBreak, s as setextUnderline, h as htmlFlow, f as headingAtx, g as codeIndented, i as attention, j as characterEscape, k as characterReference, m as codeText, n as labelEnd, o as hardBreakEscape, p as labelStartLink, q as autolink, r as htmlText, u as labelStartImage, v as lineEnding } from "./micromark-core-commonmark.mjs";
+import {
+  b as blankLine,
+  c as content$1,
+  d as definition,
+  a as blockQuote,
+  l as list,
+  e as codeFenced,
+  t as thematicBreak,
+  s as setextUnderline,
+  h as htmlFlow,
+  f as headingAtx,
+  g as codeIndented,
+  i as attention,
+  j as characterEscape,
+  k as characterReference,
+  m as codeText,
+  n as labelEnd,
+  o as hardBreakEscape,
+  p as labelStartLink,
+  q as autolink,
+  r as htmlText,
+  u as labelStartImage,
+  v as lineEnding,
+} from "./micromark-core-commonmark.mjs";
 import { r as resolveAll } from "./micromark-util-resolve-all.mjs";
 import { s as subtokenize } from "./micromark-util-subtokenize.mjs";
 const content = {
-  tokenize: initializeContent
+  tokenize: initializeContent,
 };
 function initializeContent(effects) {
-  const contentStart = effects.attempt(this.parser.constructs.contentInitial, afterContentStartConstruct, paragraphInitial);
+  const contentStart = effects.attempt(
+    this.parser.constructs.contentInitial,
+    afterContentStartConstruct,
+    paragraphInitial,
+  );
   let previous;
   return contentStart;
   function afterContentStartConstruct(code) {
@@ -29,7 +56,7 @@ function initializeContent(effects) {
   function lineStart(code) {
     const token = effects.enter("chunkText", {
       contentType: "text",
-      previous
+      previous,
     });
     if (previous) {
       previous.next = token;
@@ -54,10 +81,10 @@ function initializeContent(effects) {
   }
 }
 const document$1 = {
-  tokenize: initializeDocument
+  tokenize: initializeDocument,
 };
 const containerConstruct = {
-  tokenize: tokenizeContainer
+  tokenize: tokenizeContainer,
 };
 function initializeDocument(effects) {
   const self = this;
@@ -86,7 +113,10 @@ function initializeDocument(effects) {
       let indexBeforeFlow = indexBeforeExits;
       let point;
       while (indexBeforeFlow--) {
-        if (self.events[indexBeforeFlow][0] === "exit" && self.events[indexBeforeFlow][1].type === "chunkFlow") {
+        if (
+          self.events[indexBeforeFlow][0] === "exit" &&
+          self.events[indexBeforeFlow][1].type === "chunkFlow"
+        ) {
           point = self.events[indexBeforeFlow][1].end;
           break;
         }
@@ -95,7 +125,7 @@ function initializeDocument(effects) {
       let index = indexBeforeExits;
       while (index < self.events.length) {
         self.events[index][1].end = {
-          ...point
+          ...point,
         };
         index++;
       }
@@ -113,7 +143,9 @@ function initializeDocument(effects) {
       if (childFlow.currentConstruct && childFlow.currentConstruct.concrete) {
         return flowStart(code);
       }
-      self.interrupt = Boolean(childFlow.currentConstruct && !childFlow._gfmTableDynamicInterruptHack);
+      self.interrupt = Boolean(
+        childFlow.currentConstruct && !childFlow._gfmTableDynamicInterruptHack,
+      );
     }
     self.containerState = {};
     return effects.check(containerConstruct, thereIsANewContainer, thereIsNoNewContainer)(code);
@@ -148,7 +180,7 @@ function initializeDocument(effects) {
     effects.enter("chunkFlow", {
       _tokenizer: childFlow,
       contentType: "flow",
-      previous: childToken
+      previous: childToken,
     });
     return flowContinue(code);
   }
@@ -184,7 +216,7 @@ function initializeDocument(effects) {
           // The token starts before the line ending…
           childFlow.events[index][1].start.offset < lineStartOffset && // …and either is not ended yet…
           (!childFlow.events[index][1].end || // …or ends after it.
-          childFlow.events[index][1].end.offset > lineStartOffset)
+            childFlow.events[index][1].end.offset > lineStartOffset)
         ) {
           return;
         }
@@ -194,7 +226,10 @@ function initializeDocument(effects) {
       let seen;
       let point;
       while (indexBeforeFlow--) {
-        if (self.events[indexBeforeFlow][0] === "exit" && self.events[indexBeforeFlow][1].type === "chunkFlow") {
+        if (
+          self.events[indexBeforeFlow][0] === "exit" &&
+          self.events[indexBeforeFlow][1].type === "chunkFlow"
+        ) {
           if (seen) {
             point = self.events[indexBeforeFlow][1].end;
             break;
@@ -206,7 +241,7 @@ function initializeDocument(effects) {
       index = indexBeforeExits;
       while (index < self.events.length) {
         self.events[index][1].end = {
-          ...point
+          ...point,
         };
         index++;
       }
@@ -231,10 +266,15 @@ function initializeDocument(effects) {
   }
 }
 function tokenizeContainer(effects, ok, nok) {
-  return factorySpace(effects, effects.attempt(this.parser.constructs.document, ok, nok), "linePrefix", this.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4);
+  return factorySpace(
+    effects,
+    effects.attempt(this.parser.constructs.document, ok, nok),
+    "linePrefix",
+    this.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4,
+  );
 }
 const flow$1 = {
-  tokenize: initializeFlow
+  tokenize: initializeFlow,
 };
 function initializeFlow(effects) {
   const self = this;
@@ -243,7 +283,19 @@ function initializeFlow(effects) {
     blankLine,
     atBlankEnding,
     // Try to parse initial flow (essentially, only code).
-    effects.attempt(this.parser.constructs.flowInitial, afterConstruct, factorySpace(effects, effects.attempt(this.parser.constructs.flow, afterConstruct, effects.attempt(content$1, afterConstruct)), "linePrefix"))
+    effects.attempt(
+      this.parser.constructs.flowInitial,
+      afterConstruct,
+      factorySpace(
+        effects,
+        effects.attempt(
+          this.parser.constructs.flow,
+          afterConstruct,
+          effects.attempt(content$1, afterConstruct),
+        ),
+        "linePrefix",
+      ),
+    ),
   );
   return initial;
   function atBlankEnding(code) {
@@ -270,14 +322,14 @@ function initializeFlow(effects) {
   }
 }
 const resolver = {
-  resolveAll: createResolver()
+  resolveAll: createResolver(),
 };
 const string$1 = initializeFactory("string");
 const text$1 = initializeFactory("text");
 function initializeFactory(field) {
   return {
     resolveAll: createResolver(field === "text" ? resolveAllLineSuffixes : void 0),
-    tokenize: initializeText
+    tokenize: initializeText,
   };
   function initializeText(effects) {
     const self = this;
@@ -348,7 +400,10 @@ function createResolver(extraResolver) {
 function resolveAllLineSuffixes(events, context) {
   let eventIndex = 0;
   while (++eventIndex <= events.length) {
-    if ((eventIndex === events.length || events[eventIndex][1].type === "lineEnding") && events[eventIndex - 1][1].type === "data") {
+    if (
+      (eventIndex === events.length || events[eventIndex][1].type === "lineEnding") &&
+      events[eventIndex - 1][1].type === "data"
+    ) {
       const data = events[eventIndex - 1][1];
       const chunks = context.sliceStream(data);
       let index = chunks.length;
@@ -368,7 +423,7 @@ function resolveAllLineSuffixes(events, context) {
         } else if (chunk === -2) {
           tabs = true;
           size++;
-        } else if (chunk === -1) ;
+        } else if (chunk === -1);
         else {
           index++;
           break;
@@ -379,20 +434,21 @@ function resolveAllLineSuffixes(events, context) {
       }
       if (size) {
         const token = {
-          type: eventIndex === events.length || tabs || size < 2 ? "lineSuffix" : "hardBreakTrailing",
+          type:
+            eventIndex === events.length || tabs || size < 2 ? "lineSuffix" : "hardBreakTrailing",
           start: {
             _bufferIndex: index ? bufferIndex : data.start._bufferIndex + bufferIndex,
             _index: data.start._index + index,
             line: data.end.line,
             column: data.end.column - size,
-            offset: data.end.offset - size
+            offset: data.end.offset - size,
           },
           end: {
-            ...data.end
-          }
+            ...data.end,
+          },
         };
         data.end = {
-          ...token.start
+          ...token.start,
         };
         if (data.start.offset === data.end.offset) {
           Object.assign(data, token);
@@ -420,15 +476,15 @@ const document = {
   [55]: list,
   [56]: list,
   [57]: list,
-  [62]: blockQuote
+  [62]: blockQuote,
 };
 const contentInitial = {
-  [91]: definition
+  [91]: definition,
 };
 const flowInitial = {
   [-2]: codeIndented,
   [-1]: codeIndented,
-  [32]: codeIndented
+  [32]: codeIndented,
 };
 const flow = {
   [35]: headingAtx,
@@ -438,11 +494,11 @@ const flow = {
   [61]: setextUnderline,
   [95]: thematicBreak,
   [96]: codeFenced,
-  [126]: codeFenced
+  [126]: codeFenced,
 };
 const string = {
   [38]: characterReference,
-  [92]: characterEscape
+  [92]: characterEscape,
 };
 const text = {
   [-5]: lineEnding,
@@ -456,16 +512,16 @@ const text = {
   [92]: [hardBreakEscape, characterEscape],
   [93]: labelEnd,
   [95]: attention,
-  [96]: codeText
+  [96]: codeText,
 };
 const insideSpan = {
-  null: [attention, resolver]
+  null: [attention, resolver],
 };
 const attentionMarkers = {
-  null: [42, 95]
+  null: [42, 95],
 };
 const disable = {
-  null: []
+  null: [],
 };
 const defaultConstructs = /* @__PURE__ */ Object.freeze({
   __proto__: null,
@@ -477,15 +533,15 @@ const defaultConstructs = /* @__PURE__ */ Object.freeze({
   flowInitial,
   insideSpan,
   string,
-  text
+  text,
 });
 function createTokenizer(parser, initialize, from) {
   let point = {
     _bufferIndex: -1,
     _index: 0,
-    line: from && from.line || 1,
-    column: from && from.column || 1,
-    offset: from && from.offset || 0
+    line: (from && from.line) || 1,
+    column: (from && from.column) || 1,
+    offset: (from && from.offset) || 0,
   };
   const columnStart = {};
   const resolveAllConstructs = [];
@@ -498,8 +554,8 @@ function createTokenizer(parser, initialize, from) {
     enter,
     exit,
     interrupt: constructFactory(onsuccessfulcheck, {
-      interrupt: true
-    })
+      interrupt: true,
+    }),
   };
   const context = {
     code: null,
@@ -511,7 +567,7 @@ function createTokenizer(parser, initialize, from) {
     previous: null,
     sliceSerialize,
     sliceStream,
-    write
+    write,
   };
   let state = initialize.tokenize.call(context, effects);
   if (initialize.resolveAll) {
@@ -535,19 +591,13 @@ function createTokenizer(parser, initialize, from) {
     return sliceChunks(chunks, token);
   }
   function now() {
-    const {
-      _bufferIndex,
-      _index,
-      line,
-      column,
-      offset
-    } = point;
+    const { _bufferIndex, _index, line, column, offset } = point;
     return {
       _bufferIndex,
       _index,
       line,
       column,
-      offset
+      offset,
     };
   }
   function defineSkip(value) {
@@ -588,10 +638,12 @@ function createTokenizer(parser, initialize, from) {
       point._index++;
     } else {
       point._bufferIndex++;
-      if (point._bufferIndex === // Points w/ non-negative `_bufferIndex` reference
-      // strings.
-      /** @type {string} */
-      chunks[point._index].length) {
+      if (
+        point._bufferIndex === // Points w/ non-negative `_bufferIndex` reference
+        // strings.
+        /** @type {string} */
+        chunks[point._index].length
+      ) {
         point._bufferIndex = -1;
         point._index++;
       }
@@ -625,16 +677,16 @@ function createTokenizer(parser, initialize, from) {
       let constructIndex;
       let currentConstruct;
       let info;
-      return Array.isArray(constructs) ? (
-        /* c8 ignore next 1 */
-        handleListOfConstructs(constructs)
-      ) : "tokenize" in constructs ? (
-        // Looks like a construct.
-        handleListOfConstructs([
-          /** @type {Construct} */
-          constructs
-        ])
-      ) : handleMapOfConstructs(constructs);
+      return Array.isArray(constructs)
+        ? /* c8 ignore next 1 */
+          handleListOfConstructs(constructs)
+        : "tokenize" in constructs
+          ? // Looks like a construct.
+            handleListOfConstructs([
+              /** @type {Construct} */
+              constructs,
+            ])
+          : handleMapOfConstructs(constructs);
       function handleMapOfConstructs(map) {
         return start;
         function start(code) {
@@ -643,8 +695,8 @@ function createTokenizer(parser, initialize, from) {
           const list2 = [
             // To do: add more extension tests.
             /* c8 ignore next 2 */
-            ...Array.isArray(left) ? left : left ? [left] : [],
-            ...Array.isArray(all) ? all : all ? [all] : []
+            ...(Array.isArray(left) ? left : left ? [left] : []),
+            ...(Array.isArray(all) ? all : all ? [all] : []),
           ];
           return handleListOfConstructs(list2)(code);
         }
@@ -675,7 +727,7 @@ function createTokenizer(parser, initialize, from) {
             fields ? Object.assign(Object.create(context), fields) : context,
             effects,
             ok,
-            nok
+            nok,
           )(code);
         }
       }
@@ -697,7 +749,12 @@ function createTokenizer(parser, initialize, from) {
       resolveAllConstructs.push(construct);
     }
     if (construct.resolve) {
-      splice(context.events, from2, context.events.length - from2, construct.resolve(context.events.slice(from2), context));
+      splice(
+        context.events,
+        from2,
+        context.events.length - from2,
+        construct.resolve(context.events.slice(from2), context),
+      );
     }
     if (construct.resolveTo) {
       context.events = construct.resolveTo(context.events, context);
@@ -711,7 +768,7 @@ function createTokenizer(parser, initialize, from) {
     const startStack = Array.from(stack);
     return {
       from: startEventsIndex,
-      restore
+      restore,
     };
     function restore() {
       point = startPoint;
@@ -762,32 +819,33 @@ function serializeChunks(chunks, expandTabs) {
     let value;
     if (typeof chunk === "string") {
       value = chunk;
-    } else switch (chunk) {
-      case -5: {
-        value = "\r";
-        break;
+    } else
+      switch (chunk) {
+        case -5: {
+          value = "\r";
+          break;
+        }
+        case -4: {
+          value = "\n";
+          break;
+        }
+        case -3: {
+          value = "\r\n";
+          break;
+        }
+        case -2: {
+          value = expandTabs ? " " : "	";
+          break;
+        }
+        case -1: {
+          if (!expandTabs && atTab) continue;
+          value = " ";
+          break;
+        }
+        default: {
+          value = String.fromCharCode(chunk);
+        }
       }
-      case -4: {
-        value = "\n";
-        break;
-      }
-      case -3: {
-        value = "\r\n";
-        break;
-      }
-      case -2: {
-        value = expandTabs ? " " : "	";
-        break;
-      }
-      case -1: {
-        if (!expandTabs && atTab) continue;
-        value = " ";
-        break;
-      }
-      default: {
-        value = String.fromCharCode(chunk);
-      }
-    }
     atTab = chunk === -2;
     result.push(value);
   }
@@ -795,10 +853,9 @@ function serializeChunks(chunks, expandTabs) {
 }
 function parse(options) {
   const settings = options || {};
-  const constructs = (
+  const constructs =
     /** @type {FullNormalizedExtension} */
-    combineExtensions([defaultConstructs, ...settings.extensions || []])
-  );
+    combineExtensions([defaultConstructs, ...(settings.extensions || [])]);
   const parser = {
     constructs,
     content: create(content),
@@ -807,7 +864,7 @@ function parse(options) {
     flow: create(flow$1),
     lazy: {},
     string: create(string$1),
-    text: create(text$1)
+    text: create(text$1),
   };
   return parser;
   function create(initial) {
@@ -818,8 +875,7 @@ function parse(options) {
   }
 }
 function postprocess(events) {
-  while (!subtokenize(events)) {
-  }
+  while (!subtokenize(events)) {}
   return events;
 }
 const search = /[\0\t\n\r]/g;
@@ -836,7 +892,11 @@ function preprocess() {
     let startPosition;
     let endPosition;
     let code;
-    value = buffer + (typeof value === "string" ? value.toString() : new TextDecoder(encoding || void 0).decode(value));
+    value =
+      buffer +
+      (typeof value === "string"
+        ? value.toString()
+        : new TextDecoder(encoding || void 0).decode(value));
     startPosition = 0;
     buffer = "";
     if (start) {
@@ -899,8 +959,4 @@ function preprocess() {
     return chunks;
   }
 }
-export {
-  parse as a,
-  preprocess as b,
-  postprocess as p
-};
+export { parse as a, preprocess as b, postprocess as p };

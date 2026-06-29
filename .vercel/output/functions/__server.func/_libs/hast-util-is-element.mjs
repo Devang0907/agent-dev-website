@@ -1,4 +1,4 @@
-const convertElement = (
+const convertElement =
   // Note: overloads in JSDoc can’t yet use different `@template`s.
   /**
    * @type {(
@@ -12,7 +12,7 @@ const convertElement = (
    * @param {Test | null | undefined} [test]
    * @returns {Check}
    */
-  (function(test) {
+  function (test) {
     if (test === null || test === void 0) {
       return element;
     }
@@ -26,8 +26,7 @@ const convertElement = (
       return castFactory(test);
     }
     throw new Error("Expected function, string, or array as `test`");
-  })
-);
+  };
 function anyFactory(tests) {
   const checks = [];
   let index = -1;
@@ -53,23 +52,22 @@ function castFactory(testFunction) {
   return check;
   function check(value, index, parent) {
     return Boolean(
-      looksLikeAnElement(value) && testFunction.call(
-        this,
-        value,
-        typeof index === "number" ? index : void 0,
-        parent || void 0
-      )
+      looksLikeAnElement(value) &&
+      testFunction.call(this, value, typeof index === "number" ? index : void 0, parent || void 0),
     );
   }
 }
 function element(element2) {
   return Boolean(
-    element2 && typeof element2 === "object" && "type" in element2 && element2.type === "element" && "tagName" in element2 && typeof element2.tagName === "string"
+    element2 &&
+    typeof element2 === "object" &&
+    "type" in element2 &&
+    element2.type === "element" &&
+    "tagName" in element2 &&
+    typeof element2.tagName === "string",
   );
 }
 function looksLikeAnElement(value) {
   return value !== null && typeof value === "object" && "type" in value && "tagName" in value;
 }
-export {
-  convertElement as c
-};
+export { convertElement as c };

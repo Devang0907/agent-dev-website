@@ -22,7 +22,7 @@ function syntaxExtension(all, extension) {
         constructs(
           // @ts-expect-error Looks like a list.
           left[code],
-          Array.isArray(value) ? value : value ? [value] : []
+          Array.isArray(value) ? value : value ? [value] : [],
         );
       }
     }
@@ -36,6 +36,4 @@ function constructs(existing, list) {
   }
   splice(existing, 0, 0, before);
 }
-export {
-  combineExtensions as c
-};
+export { combineExtensions as c };

@@ -4,6 +4,4 @@ function escapeStringRegexp(string) {
   }
   return string.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&").replace(/-/g, "\\x2d");
 }
-export {
-  escapeStringRegexp as e
-};
+export { escapeStringRegexp as e };

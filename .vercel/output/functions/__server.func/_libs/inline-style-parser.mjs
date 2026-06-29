@@ -33,7 +33,7 @@ function requireCjs() {
     }
     function position() {
       var start = { line: lineno, column };
-      return function(node) {
+      return function (node) {
         node.position = new Position(start);
         whitespace();
         return node;
@@ -46,15 +46,13 @@ function requireCjs() {
     }
     Position.prototype.content = style;
     function error(msg) {
-      var err = new Error(
-        options.source + ":" + lineno + ":" + column + ": " + msg
-      );
+      var err = new Error(options.source + ":" + lineno + ":" + column + ": " + msg);
       err.reason = msg;
       err.filename = options.source;
       err.line = lineno;
       err.column = column;
       err.source = style;
-      if (options.silent) ;
+      if (options.silent);
       else {
         throw err;
       }
@@ -73,7 +71,7 @@ function requireCjs() {
     function comments(rules) {
       var c;
       rules = rules || [];
-      while (c = comment()) {
+      while ((c = comment())) {
         if (c !== false) {
           rules.push(c);
         }
@@ -84,7 +82,10 @@ function requireCjs() {
       var pos = position();
       if (FORWARD_SLASH != style.charAt(0) || ASTERISK != style.charAt(1)) return;
       var i = 2;
-      while (EMPTY_STRING != style.charAt(i) && (ASTERISK != style.charAt(i) || FORWARD_SLASH != style.charAt(i + 1))) {
+      while (
+        EMPTY_STRING != style.charAt(i) &&
+        (ASTERISK != style.charAt(i) || FORWARD_SLASH != style.charAt(i + 1))
+      ) {
         ++i;
       }
       i += 2;
@@ -98,7 +99,7 @@ function requireCjs() {
       column += 2;
       return pos({
         type: TYPE_COMMENT,
-        comment: str
+        comment: str,
       });
     }
     function declaration() {
@@ -111,7 +112,7 @@ function requireCjs() {
       var ret = pos({
         type: TYPE_DECLARATION,
         property: trim(prop[0].replace(COMMENT_REGEX, EMPTY_STRING)),
-        value: val ? trim(val[0].replace(COMMENT_REGEX, EMPTY_STRING)) : EMPTY_STRING
+        value: val ? trim(val[0].replace(COMMENT_REGEX, EMPTY_STRING)) : EMPTY_STRING,
       });
       match(SEMICOLON_REGEX);
       return ret;
@@ -120,7 +121,7 @@ function requireCjs() {
       var decls = [];
       comments(decls);
       var decl;
-      while (decl = declaration()) {
+      while ((decl = declaration())) {
         if (decl !== false) {
           decls.push(decl);
           comments(decls);
@@ -137,6 +138,4 @@ function requireCjs() {
   cjs = index;
   return cjs;
 }
-export {
-  requireCjs as r
-};
+export { requireCjs as r };

@@ -3,6 +3,4 @@ const own = {}.hasOwnProperty;
 function decodeNamedCharacterReference(value) {
   return own.call(characterEntities, value) ? characterEntities[value] : false;
 }
-export {
-  decodeNamedCharacterReference as d
-};
+export { decodeNamedCharacterReference as d };

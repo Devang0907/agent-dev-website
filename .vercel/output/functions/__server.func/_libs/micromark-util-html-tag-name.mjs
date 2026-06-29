@@ -60,10 +60,7 @@ const htmlBlockNames = [
   "title",
   "tr",
   "track",
-  "ul"
+  "ul",
 ];
 const htmlRawNames = ["pre", "script", "style", "textarea"];
-export {
-  htmlBlockNames as a,
-  htmlRawNames as h
-};
+export { htmlBlockNames as a, htmlRawNames as h };

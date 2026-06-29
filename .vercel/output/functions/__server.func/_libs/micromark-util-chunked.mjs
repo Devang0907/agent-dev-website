@@ -30,7 +30,4 @@ function push(list, items) {
   }
   return items;
 }
-export {
-  push as p,
-  splice as s
-};
+export { push as p, splice as s };

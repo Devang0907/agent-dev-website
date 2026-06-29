@@ -1,5 +1,9 @@
 import { f as factorySpace } from "./micromark-factory-space.mjs";
-import { m as markdownLineEnding, b as markdownSpace, c as markdownLineEndingOrSpace } from "./micromark-util-character.mjs";
+import {
+  m as markdownLineEnding,
+  b as markdownSpace,
+  c as markdownLineEndingOrSpace,
+} from "./micromark-util-character.mjs";
 class EditMap {
   /**
    * Create a new edit map.
@@ -37,7 +41,7 @@ class EditMap {
    * @returns {undefined}
    */
   consume(events) {
-    this.map.sort(function(a, b) {
+    this.map.sort(function (a, b) {
       return a[0] - b[0];
     });
     if (this.map.length === 0) {
@@ -108,9 +112,9 @@ function gfmTable() {
       null: {
         name: "table",
         tokenize: tokenizeTable,
-        resolveAll: resolveTable
-      }
-    }
+        resolveAll: resolveTable,
+      },
+    },
   };
 }
 function tokenizeTable(effects, ok, nok) {
@@ -123,8 +127,11 @@ function tokenizeTable(effects, ok, nok) {
     let index = self.events.length - 1;
     while (index > -1) {
       const type = self.events[index][1].type;
-      if (type === "lineEnding" || // Note: markdown-rs uses `whitespace` instead of `linePrefix`
-      type === "linePrefix") index--;
+      if (
+        type === "lineEnding" || // Note: markdown-rs uses `whitespace` instead of `linePrefix`
+        type === "linePrefix"
+      )
+        index--;
       else break;
     }
     const tail = index > -1 ? self.events[index][1].type : null;
@@ -204,7 +211,12 @@ function tokenizeTable(effects, ok, nok) {
     effects.enter("tableDelimiterRow");
     seen = false;
     if (markdownSpace(code)) {
-      return factorySpace(effects, headDelimiterBefore, "linePrefix", self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4)(code);
+      return factorySpace(
+        effects,
+        headDelimiterBefore,
+        "linePrefix",
+        self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4,
+      )(code);
     }
     return headDelimiterBefore(code);
   }
@@ -355,7 +367,7 @@ function resolveTable(events, context) {
           type: "table",
           start: Object.assign({}, token.start),
           // Note: correct end is set later.
-          end: Object.assign({}, token.end)
+          end: Object.assign({}, token.end),
         };
         map.add(index, 0, [["enter", currentTable, context]]);
       } else if (token.type === "tableRow" || token.type === "tableDelimiterRow") {
@@ -369,12 +381,17 @@ function resolveTable(events, context) {
             type: "tableBody",
             start: Object.assign({}, token.start),
             // Note: correct end is set later.
-            end: Object.assign({}, token.end)
+            end: Object.assign({}, token.end),
           };
           map.add(index, 0, [["enter", currentBody, context]]);
         }
         rowKind = token.type === "tableDelimiterRow" ? 2 : currentBody ? 3 : 1;
-      } else if (rowKind && (token.type === "data" || token.type === "tableDelimiterMarker" || token.type === "tableDelimiterFiller")) {
+      } else if (
+        rowKind &&
+        (token.type === "data" ||
+          token.type === "tableDelimiterMarker" ||
+          token.type === "tableDelimiterFiller")
+      ) {
         inFirstCellAwaitingPipe = false;
         if (cell[2] === 0) {
           if (lastCell[1] !== 0) {
@@ -408,7 +425,12 @@ function resolveTable(events, context) {
         currentCell = flushCell(map, context, cell, rowKind, index, currentCell);
       }
       rowKind = 0;
-    } else if (rowKind && (token.type === "data" || token.type === "tableDelimiterMarker" || token.type === "tableDelimiterFiller")) {
+    } else if (
+      rowKind &&
+      (token.type === "data" ||
+        token.type === "tableDelimiterMarker" ||
+        token.type === "tableDelimiterFiller")
+    ) {
       cell[3] = index;
     }
   }
@@ -437,7 +459,7 @@ function flushCell(map, context, range, rowKind, rowEnd, previousCell) {
     type: groupName,
     start: Object.assign({}, now),
     // Note: correct end is set later.
-    end: Object.assign({}, now)
+    end: Object.assign({}, now),
   };
   map.add(range[1], 0, [["enter", previousCell, context]]);
   if (range[2] !== 0) {
@@ -446,7 +468,7 @@ function flushCell(map, context, range, rowKind, rowEnd, previousCell) {
     const valueToken = {
       type: valueName,
       start: Object.assign({}, relatedStart),
-      end: Object.assign({}, relatedEnd)
+      end: Object.assign({}, relatedEnd),
     };
     map.add(range[2], 0, [["enter", valueToken, context]]);
     if (rowKind !== 2) {
@@ -486,6 +508,4 @@ function getPoint(events, index) {
   const side = event[0] === "enter" ? "start" : "end";
   return event[1][side];
 }
-export {
-  gfmTable as g
-};
+export { gfmTable as g };

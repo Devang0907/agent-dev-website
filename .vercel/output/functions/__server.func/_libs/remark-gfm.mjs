@@ -2,10 +2,9 @@ import { g as gfm } from "./micromark-extension-gfm.mjs";
 import { g as gfmFromMarkdown, a as gfmToMarkdown } from "./mdast-util-gfm.mjs";
 const emptyOptions = {};
 function remarkGfm(options) {
-  const self = (
+  const self =
     /** @type {Processor<Root>} */
-    this
-  );
+    this;
   const settings = options || emptyOptions;
   const data = self.data();
   const micromarkExtensions = data.micromarkExtensions || (data.micromarkExtensions = []);
@@ -15,6 +14,4 @@ function remarkGfm(options) {
   fromMarkdownExtensions.push(gfmFromMarkdown());
   toMarkdownExtensions.push(gfmToMarkdown(settings));
 }
-export {
-  remarkGfm as r
-};
+export { remarkGfm as r };

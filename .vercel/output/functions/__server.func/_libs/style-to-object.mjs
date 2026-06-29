@@ -4,9 +4,11 @@ var hasRequiredCjs;
 function requireCjs() {
   if (hasRequiredCjs) return cjs;
   hasRequiredCjs = 1;
-  var __importDefault = cjs && cjs.__importDefault || function(mod) {
-    return mod && mod.__esModule ? mod : { "default": mod };
-  };
+  var __importDefault =
+    (cjs && cjs.__importDefault) ||
+    function (mod) {
+      return mod && mod.__esModule ? mod : { default: mod };
+    };
   Object.defineProperty(cjs, "__esModule", { value: true });
   cjs.default = StyleToObject;
   const inline_style_parser_1 = __importDefault(requireCjs$1());
@@ -33,6 +35,4 @@ function requireCjs() {
   }
   return cjs;
 }
-export {
-  requireCjs as r
-};
+export { requireCjs as r };

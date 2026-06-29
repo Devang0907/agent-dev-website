@@ -1,7 +1,18 @@
 import { p as push, s as splice } from "./micromark-util-chunked.mjs";
 import { c as classifyCharacter } from "./micromark-util-classify-character+[...].mjs";
 import { r as resolveAll } from "./micromark-util-resolve-all.mjs";
-import { e as asciiAlpha, a as asciiAlphanumeric, f as asciiControl, g as asciiAtext, b as markdownSpace, m as markdownLineEnding, h as asciiPunctuation, i as asciiHexDigit, j as asciiDigit, c as markdownLineEndingOrSpace } from "./micromark-util-character.mjs";
+import {
+  e as asciiAlpha,
+  a as asciiAlphanumeric,
+  f as asciiControl,
+  g as asciiAtext,
+  b as markdownSpace,
+  m as markdownLineEnding,
+  h as asciiPunctuation,
+  i as asciiHexDigit,
+  j as asciiDigit,
+  c as markdownLineEndingOrSpace,
+} from "./micromark-util-character.mjs";
 import { f as factorySpace } from "./micromark-factory-space.mjs";
 import { d as decodeNamedCharacterReference } from "./decode-named-character-reference+[...].mjs";
 import { s as subtokenize } from "./micromark-util-subtokenize.mjs";
@@ -14,7 +25,7 @@ import { h as htmlRawNames, a as htmlBlockNames } from "./micromark-util-html-ta
 const attention = {
   name: "attention",
   resolveAll: resolveAllAttention,
-  tokenize: tokenizeAttention
+  tokenize: tokenizeAttention,
 };
 function resolveAllAttention(events, context) {
   let index = -1;
@@ -27,20 +38,43 @@ function resolveAllAttention(events, context) {
   let nextEvents;
   let offset;
   while (++index < events.length) {
-    if (events[index][0] === "enter" && events[index][1].type === "attentionSequence" && events[index][1]._close) {
+    if (
+      events[index][0] === "enter" &&
+      events[index][1].type === "attentionSequence" &&
+      events[index][1]._close
+    ) {
       open = index;
       while (open--) {
-        if (events[open][0] === "exit" && events[open][1].type === "attentionSequence" && events[open][1]._open && // If the markers are the same:
-        context.sliceSerialize(events[open][1]).charCodeAt(0) === context.sliceSerialize(events[index][1]).charCodeAt(0)) {
-          if ((events[open][1]._close || events[index][1]._open) && (events[index][1].end.offset - events[index][1].start.offset) % 3 && !((events[open][1].end.offset - events[open][1].start.offset + events[index][1].end.offset - events[index][1].start.offset) % 3)) {
+        if (
+          events[open][0] === "exit" &&
+          events[open][1].type === "attentionSequence" &&
+          events[open][1]._open && // If the markers are the same:
+          context.sliceSerialize(events[open][1]).charCodeAt(0) ===
+            context.sliceSerialize(events[index][1]).charCodeAt(0)
+        ) {
+          if (
+            (events[open][1]._close || events[index][1]._open) &&
+            (events[index][1].end.offset - events[index][1].start.offset) % 3 &&
+            !(
+              (events[open][1].end.offset -
+                events[open][1].start.offset +
+                events[index][1].end.offset -
+                events[index][1].start.offset) %
+              3
+            )
+          ) {
             continue;
           }
-          use = events[open][1].end.offset - events[open][1].start.offset > 1 && events[index][1].end.offset - events[index][1].start.offset > 1 ? 2 : 1;
+          use =
+            events[open][1].end.offset - events[open][1].start.offset > 1 &&
+            events[index][1].end.offset - events[index][1].start.offset > 1
+              ? 2
+              : 1;
           const start = {
-            ...events[open][1].end
+            ...events[open][1].end,
           };
           const end = {
-            ...events[index][1].start
+            ...events[index][1].start,
           };
           movePoint(start, -use);
           movePoint(end, use);
@@ -48,50 +82,73 @@ function resolveAllAttention(events, context) {
             type: use > 1 ? "strongSequence" : "emphasisSequence",
             start,
             end: {
-              ...events[open][1].end
-            }
+              ...events[open][1].end,
+            },
           };
           closingSequence = {
             type: use > 1 ? "strongSequence" : "emphasisSequence",
             start: {
-              ...events[index][1].start
+              ...events[index][1].start,
             },
-            end
+            end,
           };
           text = {
             type: use > 1 ? "strongText" : "emphasisText",
             start: {
-              ...events[open][1].end
+              ...events[open][1].end,
             },
             end: {
-              ...events[index][1].start
-            }
+              ...events[index][1].start,
+            },
           };
           group = {
             type: use > 1 ? "strong" : "emphasis",
             start: {
-              ...openingSequence.start
+              ...openingSequence.start,
             },
             end: {
-              ...closingSequence.end
-            }
+              ...closingSequence.end,
+            },
           };
           events[open][1].end = {
-            ...openingSequence.start
+            ...openingSequence.start,
           };
           events[index][1].start = {
-            ...closingSequence.end
+            ...closingSequence.end,
           };
           nextEvents = [];
           if (events[open][1].end.offset - events[open][1].start.offset) {
-            nextEvents = push(nextEvents, [["enter", events[open][1], context], ["exit", events[open][1], context]]);
+            nextEvents = push(nextEvents, [
+              ["enter", events[open][1], context],
+              ["exit", events[open][1], context],
+            ]);
           }
-          nextEvents = push(nextEvents, [["enter", group, context], ["enter", openingSequence, context], ["exit", openingSequence, context], ["enter", text, context]]);
-          nextEvents = push(nextEvents, resolveAll(context.parser.constructs.insideSpan.null, events.slice(open + 1, index), context));
-          nextEvents = push(nextEvents, [["exit", text, context], ["enter", closingSequence, context], ["exit", closingSequence, context], ["exit", group, context]]);
+          nextEvents = push(nextEvents, [
+            ["enter", group, context],
+            ["enter", openingSequence, context],
+            ["exit", openingSequence, context],
+            ["enter", text, context],
+          ]);
+          nextEvents = push(
+            nextEvents,
+            resolveAll(
+              context.parser.constructs.insideSpan.null,
+              events.slice(open + 1, index),
+              context,
+            ),
+          );
+          nextEvents = push(nextEvents, [
+            ["exit", text, context],
+            ["enter", closingSequence, context],
+            ["exit", closingSequence, context],
+            ["exit", group, context],
+          ]);
           if (events[index][1].end.offset - events[index][1].start.offset) {
             offset = 2;
-            nextEvents = push(nextEvents, [["enter", events[index][1], context], ["exit", events[index][1], context]]);
+            nextEvents = push(nextEvents, [
+              ["enter", events[index][1], context],
+              ["exit", events[index][1], context],
+            ]);
           } else {
             offset = 0;
           }
@@ -128,8 +185,8 @@ function tokenizeAttention(effects, ok) {
     }
     const token = effects.exit("attentionSequence");
     const after = classifyCharacter(code);
-    const open = !after || after === 2 && before || attentionMarkers.includes(code);
-    const close = !before || before === 2 && after || attentionMarkers.includes(previous2);
+    const open = !after || (after === 2 && before) || attentionMarkers.includes(code);
+    const close = !before || (before === 2 && after) || attentionMarkers.includes(previous2);
     token._open = Boolean(marker === 42 ? open : open && (before || !close));
     token._close = Boolean(marker === 42 ? close : close && (after || !open));
     return ok(code);
@@ -142,7 +199,7 @@ function movePoint(point, offset) {
 }
 const autolink = {
   name: "autolink",
-  tokenize: tokenizeAutolink
+  tokenize: tokenizeAutolink,
 };
 function tokenizeAutolink(effects, ok, nok) {
   let size = 0;
@@ -241,7 +298,7 @@ function tokenizeAutolink(effects, ok, nok) {
 }
 const blankLine = {
   partial: true,
-  tokenize: tokenizeBlankLine
+  tokenize: tokenizeBlankLine,
 };
 function tokenizeBlankLine(effects, ok, nok) {
   return start;
@@ -254,11 +311,11 @@ function tokenizeBlankLine(effects, ok, nok) {
 }
 const blockQuote = {
   continuation: {
-    tokenize: tokenizeBlockQuoteContinuation
+    tokenize: tokenizeBlockQuoteContinuation,
   },
   exit,
   name: "blockQuote",
-  tokenize: tokenizeBlockQuoteStart
+  tokenize: tokenizeBlockQuoteStart,
 };
 function tokenizeBlockQuoteStart(effects, ok, nok) {
   const self = this;
@@ -268,7 +325,7 @@ function tokenizeBlockQuoteStart(effects, ok, nok) {
       const state = self.containerState;
       if (!state.open) {
         effects.enter("blockQuote", {
-          _container: true
+          _container: true,
         });
         state.open = true;
       }
@@ -297,7 +354,12 @@ function tokenizeBlockQuoteContinuation(effects, ok, nok) {
   return contStart;
   function contStart(code) {
     if (markdownSpace(code)) {
-      return factorySpace(effects, contBefore, "linePrefix", self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4)(code);
+      return factorySpace(
+        effects,
+        contBefore,
+        "linePrefix",
+        self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4,
+      )(code);
     }
     return contBefore(code);
   }
@@ -310,7 +372,7 @@ function exit(effects) {
 }
 const characterEscape = {
   name: "characterEscape",
-  tokenize: tokenizeCharacterEscape
+  tokenize: tokenizeCharacterEscape,
 };
 function tokenizeCharacterEscape(effects, ok, nok) {
   return start;
@@ -334,7 +396,7 @@ function tokenizeCharacterEscape(effects, ok, nok) {
 }
 const characterReference = {
   name: "characterReference",
-  tokenize: tokenizeCharacterReference
+  tokenize: tokenizeCharacterReference,
 };
 function tokenizeCharacterReference(effects, ok, nok) {
   const self = this;
@@ -379,7 +441,10 @@ function tokenizeCharacterReference(effects, ok, nok) {
   function value(code) {
     if (code === 59 && size) {
       const token = effects.exit("characterReferenceValue");
-      if (test === asciiAlphanumeric && !decodeNamedCharacterReference(self.sliceSerialize(token))) {
+      if (
+        test === asciiAlphanumeric &&
+        !decodeNamedCharacterReference(self.sliceSerialize(token))
+      ) {
         return nok(code);
       }
       effects.enter("characterReferenceMarker");
@@ -397,18 +462,18 @@ function tokenizeCharacterReference(effects, ok, nok) {
 }
 const nonLazyContinuation = {
   partial: true,
-  tokenize: tokenizeNonLazyContinuation
+  tokenize: tokenizeNonLazyContinuation,
 };
 const codeFenced = {
   concrete: true,
   name: "codeFenced",
-  tokenize: tokenizeCodeFenced
+  tokenize: tokenizeCodeFenced,
 };
 function tokenizeCodeFenced(effects, ok, nok) {
   const self = this;
   const closeStart = {
     partial: true,
-    tokenize: tokenizeCloseStart
+    tokenize: tokenizeCloseStart,
   };
   let initialPrefix = 0;
   let sizeOpen = 0;
@@ -419,7 +484,8 @@ function tokenizeCodeFenced(effects, ok, nok) {
   }
   function beforeSequenceOpen(code) {
     const tail = self.events[self.events.length - 1];
-    initialPrefix = tail && tail[1].type === "linePrefix" ? tail[2].sliceSerialize(tail[1], true).length : 0;
+    initialPrefix =
+      tail && tail[1].type === "linePrefix" ? tail[2].sliceSerialize(tail[1], true).length : 0;
     marker = code;
     effects.enter("codeFenced");
     effects.enter("codeFencedFence");
@@ -436,16 +502,20 @@ function tokenizeCodeFenced(effects, ok, nok) {
       return nok(code);
     }
     effects.exit("codeFencedFenceSequence");
-    return markdownSpace(code) ? factorySpace(effects, infoBefore, "whitespace")(code) : infoBefore(code);
+    return markdownSpace(code)
+      ? factorySpace(effects, infoBefore, "whitespace")(code)
+      : infoBefore(code);
   }
   function infoBefore(code) {
     if (code === null || markdownLineEnding(code)) {
       effects.exit("codeFencedFence");
-      return self.interrupt ? ok(code) : effects.check(nonLazyContinuation, atNonLazyBreak, after)(code);
+      return self.interrupt
+        ? ok(code)
+        : effects.check(nonLazyContinuation, atNonLazyBreak, after)(code);
     }
     effects.enter("codeFencedFenceInfo");
     effects.enter("chunkString", {
-      contentType: "string"
+      contentType: "string",
     });
     return info(code);
   }
@@ -472,7 +542,7 @@ function tokenizeCodeFenced(effects, ok, nok) {
     }
     effects.enter("codeFencedFenceMeta");
     effects.enter("chunkString", {
-      contentType: "string"
+      contentType: "string",
     });
     return meta(code);
   }
@@ -498,7 +568,9 @@ function tokenizeCodeFenced(effects, ok, nok) {
     return contentStart;
   }
   function contentStart(code) {
-    return initialPrefix > 0 && markdownSpace(code) ? factorySpace(effects, beforeContentChunk, "linePrefix", initialPrefix + 1)(code) : beforeContentChunk(code);
+    return initialPrefix > 0 && markdownSpace(code)
+      ? factorySpace(effects, beforeContentChunk, "linePrefix", initialPrefix + 1)(code)
+      : beforeContentChunk(code);
   }
   function beforeContentChunk(code) {
     if (code === null || markdownLineEnding(code)) {
@@ -530,7 +602,14 @@ function tokenizeCodeFenced(effects, ok, nok) {
     }
     function start2(code) {
       effects2.enter("codeFencedFence");
-      return markdownSpace(code) ? factorySpace(effects2, beforeSequenceClose, "linePrefix", self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4)(code) : beforeSequenceClose(code);
+      return markdownSpace(code)
+        ? factorySpace(
+            effects2,
+            beforeSequenceClose,
+            "linePrefix",
+            self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4,
+          )(code)
+        : beforeSequenceClose(code);
     }
     function beforeSequenceClose(code) {
       if (code === marker) {
@@ -547,7 +626,9 @@ function tokenizeCodeFenced(effects, ok, nok) {
       }
       if (size >= sizeOpen) {
         effects2.exit("codeFencedFenceSequence");
-        return markdownSpace(code) ? factorySpace(effects2, sequenceCloseAfter, "whitespace")(code) : sequenceCloseAfter(code);
+        return markdownSpace(code)
+          ? factorySpace(effects2, sequenceCloseAfter, "whitespace")(code)
+          : sequenceCloseAfter(code);
       }
       return nok2(code);
     }
@@ -578,11 +659,11 @@ function tokenizeNonLazyContinuation(effects, ok, nok) {
 }
 const codeIndented = {
   name: "codeIndented",
-  tokenize: tokenizeCodeIndented
+  tokenize: tokenizeCodeIndented,
 };
 const furtherStart = {
   partial: true,
-  tokenize: tokenizeFurtherStart
+  tokenize: tokenizeFurtherStart,
 };
 function tokenizeCodeIndented(effects, ok, nok) {
   const self = this;
@@ -593,7 +674,11 @@ function tokenizeCodeIndented(effects, ok, nok) {
   }
   function afterPrefix(code) {
     const tail = self.events[self.events.length - 1];
-    return tail && tail[1].type === "linePrefix" && tail[2].sliceSerialize(tail[1], true).length >= 4 ? atBreak(code) : nok(code);
+    return tail &&
+      tail[1].type === "linePrefix" &&
+      tail[2].sliceSerialize(tail[1], true).length >= 4
+      ? atBreak(code)
+      : nok(code);
   }
   function atBreak(code) {
     if (code === null) {
@@ -635,21 +720,31 @@ function tokenizeFurtherStart(effects, ok, nok) {
   }
   function afterPrefix(code) {
     const tail = self.events[self.events.length - 1];
-    return tail && tail[1].type === "linePrefix" && tail[2].sliceSerialize(tail[1], true).length >= 4 ? ok(code) : markdownLineEnding(code) ? furtherStart2(code) : nok(code);
+    return tail &&
+      tail[1].type === "linePrefix" &&
+      tail[2].sliceSerialize(tail[1], true).length >= 4
+      ? ok(code)
+      : markdownLineEnding(code)
+        ? furtherStart2(code)
+        : nok(code);
   }
 }
 const codeText = {
   name: "codeText",
   previous,
   resolve: resolveCodeText,
-  tokenize: tokenizeCodeText
+  tokenize: tokenizeCodeText,
 };
 function resolveCodeText(events) {
   let tailExitIndex = events.length - 4;
   let headEnterIndex = 3;
   let index;
   let enter;
-  if ((events[headEnterIndex][1].type === "lineEnding" || events[headEnterIndex][1].type === "space") && (events[tailExitIndex][1].type === "lineEnding" || events[tailExitIndex][1].type === "space")) {
+  if (
+    (events[headEnterIndex][1].type === "lineEnding" ||
+      events[headEnterIndex][1].type === "space") &&
+    (events[tailExitIndex][1].type === "lineEnding" || events[tailExitIndex][1].type === "space")
+  ) {
     index = headEnterIndex;
     while (++index < tailExitIndex) {
       if (events[index][1].type === "codeTextData") {
@@ -752,11 +847,11 @@ function tokenizeCodeText(effects, ok, nok) {
 }
 const content = {
   resolve: resolveContent,
-  tokenize: tokenizeContent
+  tokenize: tokenizeContent,
 };
 const continuationConstruct = {
   partial: true,
-  tokenize: tokenizeContinuation
+  tokenize: tokenizeContinuation,
 };
 function resolveContent(events) {
   subtokenize(events);
@@ -768,7 +863,7 @@ function tokenizeContent(effects, ok) {
   function chunkStart(code) {
     effects.enter("content");
     previous2 = effects.enter("chunkContent", {
-      contentType: "content"
+      contentType: "content",
     });
     return chunkInside(code);
   }
@@ -792,7 +887,7 @@ function tokenizeContent(effects, ok) {
     effects.exit("chunkContent");
     previous2.next = effects.enter("chunkContent", {
       contentType: "content",
-      previous: previous2
+      previous: previous2,
     });
     previous2 = previous2.next;
     return chunkInside;
@@ -813,7 +908,12 @@ function tokenizeContinuation(effects, ok, nok) {
       return nok(code);
     }
     const tail = self.events[self.events.length - 1];
-    if (!self.parser.constructs.disable.null.includes("codeIndented") && tail && tail[1].type === "linePrefix" && tail[2].sliceSerialize(tail[1], true).length >= 4) {
+    if (
+      !self.parser.constructs.disable.null.includes("codeIndented") &&
+      tail &&
+      tail[1].type === "linePrefix" &&
+      tail[2].sliceSerialize(tail[1], true).length >= 4
+    ) {
       return ok(code);
     }
     return effects.interrupt(self.parser.constructs.flow, nok, ok)(code);
@@ -821,11 +921,11 @@ function tokenizeContinuation(effects, ok, nok) {
 }
 const definition = {
   name: "definition",
-  tokenize: tokenizeDefinition
+  tokenize: tokenizeDefinition,
 };
 const titleBefore = {
   partial: true,
-  tokenize: tokenizeTitleBefore
+  tokenize: tokenizeTitleBefore,
 };
 function tokenizeDefinition(effects, ok, nok) {
   const self = this;
@@ -844,11 +944,13 @@ function tokenizeDefinition(effects, ok, nok) {
       nok,
       "definitionLabel",
       "definitionLabelMarker",
-      "definitionLabelString"
+      "definitionLabelString",
     )(code);
   }
   function labelAfter(code) {
-    identifier = normalizeIdentifier(self.sliceSerialize(self.events[self.events.length - 1][1]).slice(1, -1));
+    identifier = normalizeIdentifier(
+      self.sliceSerialize(self.events[self.events.length - 1][1]).slice(1, -1),
+    );
     if (code === 58) {
       effects.enter("definitionMarker");
       effects.consume(code);
@@ -858,7 +960,9 @@ function tokenizeDefinition(effects, ok, nok) {
     return nok(code);
   }
   function markerAfter(code) {
-    return markdownLineEndingOrSpace(code) ? factoryWhitespace(effects, destinationBefore)(code) : destinationBefore(code);
+    return markdownLineEndingOrSpace(code)
+      ? factoryWhitespace(effects, destinationBefore)(code)
+      : destinationBefore(code);
   }
   function destinationBefore(code) {
     return factoryDestination(
@@ -870,14 +974,16 @@ function tokenizeDefinition(effects, ok, nok) {
       "definitionDestinationLiteral",
       "definitionDestinationLiteralMarker",
       "definitionDestinationRaw",
-      "definitionDestinationString"
+      "definitionDestinationString",
     )(code);
   }
   function destinationAfter(code) {
     return effects.attempt(titleBefore, after, after)(code);
   }
   function after(code) {
-    return markdownSpace(code) ? factorySpace(effects, afterWhitespace, "whitespace")(code) : afterWhitespace(code);
+    return markdownSpace(code)
+      ? factorySpace(effects, afterWhitespace, "whitespace")(code)
+      : afterWhitespace(code);
   }
   function afterWhitespace(code) {
     if (code === null || markdownLineEnding(code)) {
@@ -891,13 +997,24 @@ function tokenizeDefinition(effects, ok, nok) {
 function tokenizeTitleBefore(effects, ok, nok) {
   return titleBefore2;
   function titleBefore2(code) {
-    return markdownLineEndingOrSpace(code) ? factoryWhitespace(effects, beforeMarker)(code) : nok(code);
+    return markdownLineEndingOrSpace(code)
+      ? factoryWhitespace(effects, beforeMarker)(code)
+      : nok(code);
   }
   function beforeMarker(code) {
-    return factoryTitle(effects, titleAfter, nok, "definitionTitle", "definitionTitleMarker", "definitionTitleString")(code);
+    return factoryTitle(
+      effects,
+      titleAfter,
+      nok,
+      "definitionTitle",
+      "definitionTitleMarker",
+      "definitionTitleString",
+    )(code);
   }
   function titleAfter(code) {
-    return markdownSpace(code) ? factorySpace(effects, titleAfterOptionalWhitespace, "whitespace")(code) : titleAfterOptionalWhitespace(code);
+    return markdownSpace(code)
+      ? factorySpace(effects, titleAfterOptionalWhitespace, "whitespace")(code)
+      : titleAfterOptionalWhitespace(code);
   }
   function titleAfterOptionalWhitespace(code) {
     return code === null || markdownLineEnding(code) ? ok(code) : nok(code);
@@ -905,7 +1022,7 @@ function tokenizeTitleBefore(effects, ok, nok) {
 }
 const hardBreakEscape = {
   name: "hardBreakEscape",
-  tokenize: tokenizeHardBreakEscape
+  tokenize: tokenizeHardBreakEscape,
 };
 function tokenizeHardBreakEscape(effects, ok, nok) {
   return start;
@@ -925,7 +1042,7 @@ function tokenizeHardBreakEscape(effects, ok, nok) {
 const headingAtx = {
   name: "headingAtx",
   resolve: resolveHeadingAtx,
-  tokenize: tokenizeHeadingAtx
+  tokenize: tokenizeHeadingAtx,
 };
 function resolveHeadingAtx(events, context) {
   let contentEnd = events.length - 2;
@@ -938,22 +1055,31 @@ function resolveHeadingAtx(events, context) {
   if (contentEnd - 2 > contentStart && events[contentEnd][1].type === "whitespace") {
     contentEnd -= 2;
   }
-  if (events[contentEnd][1].type === "atxHeadingSequence" && (contentStart === contentEnd - 1 || contentEnd - 4 > contentStart && events[contentEnd - 2][1].type === "whitespace")) {
+  if (
+    events[contentEnd][1].type === "atxHeadingSequence" &&
+    (contentStart === contentEnd - 1 ||
+      (contentEnd - 4 > contentStart && events[contentEnd - 2][1].type === "whitespace"))
+  ) {
     contentEnd -= contentStart + 1 === contentEnd ? 2 : 4;
   }
   if (contentEnd > contentStart) {
     content2 = {
       type: "atxHeadingText",
       start: events[contentStart][1].start,
-      end: events[contentEnd][1].end
+      end: events[contentEnd][1].end,
     };
     text = {
       type: "chunkText",
       start: events[contentStart][1].start,
       end: events[contentEnd][1].end,
-      contentType: "text"
+      contentType: "text",
     };
-    splice(events, contentStart, contentEnd - contentStart + 1, [["enter", content2, context], ["enter", text, context], ["exit", text, context], ["exit", content2, context]]);
+    splice(events, contentStart, contentEnd - contentStart + 1, [
+      ["enter", content2, context],
+      ["enter", text, context],
+      ["exit", text, context],
+      ["exit", content2, context],
+    ]);
   }
   return events;
 }
@@ -1015,15 +1141,15 @@ const htmlFlow = {
   concrete: true,
   name: "htmlFlow",
   resolveTo: resolveToHtmlFlow,
-  tokenize: tokenizeHtmlFlow
+  tokenize: tokenizeHtmlFlow,
 };
 const blankLineBefore = {
   partial: true,
-  tokenize: tokenizeBlankLineBefore
+  tokenize: tokenizeBlankLineBefore,
 };
 const nonLazyContinuationStart = {
   partial: true,
-  tokenize: tokenizeNonLazyContinuationStart
+  tokenize: tokenizeNonLazyContinuationStart,
 };
 function resolveToHtmlFlow(events) {
   let index = events.length;
@@ -1140,7 +1266,11 @@ function tokenizeHtmlFlow(effects, ok, nok) {
         return self.interrupt ? ok(code) : continuation(code);
       }
       marker = 7;
-      return self.interrupt && !self.parser.lazy[self.now().line] ? nok(code) : closingTag ? completeClosingTagAfter(code) : completeAttributeNameBefore(code);
+      return self.interrupt && !self.parser.lazy[self.now().line]
+        ? nok(code)
+        : closingTag
+          ? completeClosingTagAfter(code)
+          : completeAttributeNameBefore(code);
     }
     if (code === 45 || asciiAlphanumeric(code)) {
       effects.consume(code);
@@ -1224,7 +1354,17 @@ function tokenizeHtmlFlow(effects, ok, nok) {
     return completeAttributeValueQuoted;
   }
   function completeAttributeValueUnquoted(code) {
-    if (code === null || code === 34 || code === 39 || code === 47 || code === 60 || code === 61 || code === 62 || code === 96 || markdownLineEndingOrSpace(code)) {
+    if (
+      code === null ||
+      code === 34 ||
+      code === 39 ||
+      code === 47 ||
+      code === 60 ||
+      code === 61 ||
+      code === 62 ||
+      code === 96 ||
+      markdownLineEndingOrSpace(code)
+    ) {
       return completeAttributeNameAfter(code);
     }
     effects.consume(code);
@@ -1286,7 +1426,11 @@ function tokenizeHtmlFlow(effects, ok, nok) {
     return continuation;
   }
   function continuationStart(code) {
-    return effects.check(nonLazyContinuationStart, continuationStartNonLazy, continuationAfter)(code);
+    return effects.check(
+      nonLazyContinuationStart,
+      continuationStartNonLazy,
+      continuationAfter,
+    )(code);
   }
   function continuationStartNonLazy(code) {
     effects.enter("lineEnding");
@@ -1390,7 +1534,7 @@ function tokenizeBlankLineBefore(effects, ok, nok) {
 }
 const htmlText = {
   name: "htmlText",
-  tokenize: tokenizeHtmlText
+  tokenize: tokenizeHtmlText,
 };
 function tokenizeHtmlText(effects, ok, nok) {
   const self = this;
@@ -1685,7 +1829,14 @@ function tokenizeHtmlText(effects, ok, nok) {
     return lineEndingAfter;
   }
   function lineEndingAfter(code) {
-    return markdownSpace(code) ? factorySpace(effects, lineEndingAfterPrefix, "linePrefix", self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4)(code) : lineEndingAfterPrefix(code);
+    return markdownSpace(code)
+      ? factorySpace(
+          effects,
+          lineEndingAfterPrefix,
+          "linePrefix",
+          self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4,
+        )(code)
+      : lineEndingAfterPrefix(code);
   }
   function lineEndingAfterPrefix(code) {
     effects.enter("htmlTextData");
@@ -1696,16 +1847,16 @@ const labelEnd = {
   name: "labelEnd",
   resolveAll: resolveAllLabelEnd,
   resolveTo: resolveToLabelEnd,
-  tokenize: tokenizeLabelEnd
+  tokenize: tokenizeLabelEnd,
 };
 const resourceConstruct = {
-  tokenize: tokenizeResource
+  tokenize: tokenizeResource,
 };
 const referenceFullConstruct = {
-  tokenize: tokenizeReferenceFull
+  tokenize: tokenizeReferenceFull,
 };
 const referenceCollapsedConstruct = {
-  tokenize: tokenizeReferenceCollapsed
+  tokenize: tokenizeReferenceCollapsed,
 };
 function resolveAllLabelEnd(events) {
   let index = -1;
@@ -1734,14 +1885,18 @@ function resolveToLabelEnd(events, context) {
   while (index--) {
     token = events[index][1];
     if (open) {
-      if (token.type === "link" || token.type === "labelLink" && token._inactive) {
+      if (token.type === "link" || (token.type === "labelLink" && token._inactive)) {
         break;
       }
       if (events[index][0] === "enter" && token.type === "labelLink") {
         token._inactive = true;
       }
     } else if (close) {
-      if (events[index][0] === "enter" && (token.type === "labelImage" || token.type === "labelLink") && !token._balanced) {
+      if (
+        events[index][0] === "enter" &&
+        (token.type === "labelImage" || token.type === "labelLink") &&
+        !token._balanced
+      ) {
         open = index;
         if (token.type !== "labelLink") {
           offset = 2;
@@ -1755,35 +1910,50 @@ function resolveToLabelEnd(events, context) {
   const group = {
     type: events[open][1].type === "labelLink" ? "link" : "image",
     start: {
-      ...events[open][1].start
+      ...events[open][1].start,
     },
     end: {
-      ...events[events.length - 1][1].end
-    }
+      ...events[events.length - 1][1].end,
+    },
   };
   const label = {
     type: "label",
     start: {
-      ...events[open][1].start
+      ...events[open][1].start,
     },
     end: {
-      ...events[close][1].end
-    }
+      ...events[close][1].end,
+    },
   };
   const text = {
     type: "labelText",
     start: {
-      ...events[open + offset + 2][1].end
+      ...events[open + offset + 2][1].end,
     },
     end: {
-      ...events[close - 2][1].start
-    }
+      ...events[close - 2][1].start,
+    },
   };
-  media = [["enter", group, context], ["enter", label, context]];
+  media = [
+    ["enter", group, context],
+    ["enter", label, context],
+  ];
   media = push(media, events.slice(open + 1, open + offset + 3));
   media = push(media, [["enter", text, context]]);
-  media = push(media, resolveAll(context.parser.constructs.insideSpan.null, events.slice(open + offset + 4, close - 3), context));
-  media = push(media, [["exit", text, context], events[close - 2], events[close - 1], ["exit", label, context]]);
+  media = push(
+    media,
+    resolveAll(
+      context.parser.constructs.insideSpan.null,
+      events.slice(open + offset + 4, close - 3),
+      context,
+    ),
+  );
+  media = push(media, [
+    ["exit", text, context],
+    events[close - 2],
+    events[close - 1],
+    ["exit", label, context],
+  ]);
   media = push(media, events.slice(close + 1));
   media = push(media, [["exit", group, context]]);
   splice(events, open, events.length, media);
@@ -1795,7 +1965,10 @@ function tokenizeLabelEnd(effects, ok, nok) {
   let labelStart;
   let defined;
   while (index--) {
-    if ((self.events[index][1].type === "labelImage" || self.events[index][1].type === "labelLink") && !self.events[index][1]._balanced) {
+    if (
+      (self.events[index][1].type === "labelImage" || self.events[index][1].type === "labelLink") &&
+      !self.events[index][1]._balanced
+    ) {
       labelStart = self.events[index][1];
       break;
     }
@@ -1808,10 +1981,14 @@ function tokenizeLabelEnd(effects, ok, nok) {
     if (labelStart._inactive) {
       return labelEndNok(code);
     }
-    defined = self.parser.defined.includes(normalizeIdentifier(self.sliceSerialize({
-      start: labelStart.end,
-      end: self.now()
-    })));
+    defined = self.parser.defined.includes(
+      normalizeIdentifier(
+        self.sliceSerialize({
+          start: labelStart.end,
+          end: self.now(),
+        }),
+      ),
+    );
     effects.enter("labelEnd");
     effects.enter("labelMarker");
     effects.consume(code);
@@ -1821,10 +1998,18 @@ function tokenizeLabelEnd(effects, ok, nok) {
   }
   function after(code) {
     if (code === 40) {
-      return effects.attempt(resourceConstruct, labelEndOk, defined ? labelEndOk : labelEndNok)(code);
+      return effects.attempt(
+        resourceConstruct,
+        labelEndOk,
+        defined ? labelEndOk : labelEndNok,
+      )(code);
     }
     if (code === 91) {
-      return effects.attempt(referenceFullConstruct, labelEndOk, defined ? referenceNotFull : labelEndNok)(code);
+      return effects.attempt(
+        referenceFullConstruct,
+        labelEndOk,
+        defined ? referenceNotFull : labelEndNok,
+      )(code);
     }
     return defined ? labelEndOk(code) : labelEndNok(code);
   }
@@ -1849,28 +2034,51 @@ function tokenizeResource(effects, ok, nok) {
     return resourceBefore;
   }
   function resourceBefore(code) {
-    return markdownLineEndingOrSpace(code) ? factoryWhitespace(effects, resourceOpen)(code) : resourceOpen(code);
+    return markdownLineEndingOrSpace(code)
+      ? factoryWhitespace(effects, resourceOpen)(code)
+      : resourceOpen(code);
   }
   function resourceOpen(code) {
     if (code === 41) {
       return resourceEnd(code);
     }
-    return factoryDestination(effects, resourceDestinationAfter, resourceDestinationMissing, "resourceDestination", "resourceDestinationLiteral", "resourceDestinationLiteralMarker", "resourceDestinationRaw", "resourceDestinationString", 32)(code);
+    return factoryDestination(
+      effects,
+      resourceDestinationAfter,
+      resourceDestinationMissing,
+      "resourceDestination",
+      "resourceDestinationLiteral",
+      "resourceDestinationLiteralMarker",
+      "resourceDestinationRaw",
+      "resourceDestinationString",
+      32,
+    )(code);
   }
   function resourceDestinationAfter(code) {
-    return markdownLineEndingOrSpace(code) ? factoryWhitespace(effects, resourceBetween)(code) : resourceEnd(code);
+    return markdownLineEndingOrSpace(code)
+      ? factoryWhitespace(effects, resourceBetween)(code)
+      : resourceEnd(code);
   }
   function resourceDestinationMissing(code) {
     return nok(code);
   }
   function resourceBetween(code) {
     if (code === 34 || code === 39 || code === 40) {
-      return factoryTitle(effects, resourceTitleAfter, nok, "resourceTitle", "resourceTitleMarker", "resourceTitleString")(code);
+      return factoryTitle(
+        effects,
+        resourceTitleAfter,
+        nok,
+        "resourceTitle",
+        "resourceTitleMarker",
+        "resourceTitleString",
+      )(code);
     }
     return resourceEnd(code);
   }
   function resourceTitleAfter(code) {
-    return markdownLineEndingOrSpace(code) ? factoryWhitespace(effects, resourceEnd)(code) : resourceEnd(code);
+    return markdownLineEndingOrSpace(code)
+      ? factoryWhitespace(effects, resourceEnd)(code)
+      : resourceEnd(code);
   }
   function resourceEnd(code) {
     if (code === 41) {
@@ -1887,10 +2095,22 @@ function tokenizeReferenceFull(effects, ok, nok) {
   const self = this;
   return referenceFull;
   function referenceFull(code) {
-    return factoryLabel.call(self, effects, referenceFullAfter, referenceFullMissing, "reference", "referenceMarker", "referenceString")(code);
+    return factoryLabel.call(
+      self,
+      effects,
+      referenceFullAfter,
+      referenceFullMissing,
+      "reference",
+      "referenceMarker",
+      "referenceString",
+    )(code);
   }
   function referenceFullAfter(code) {
-    return self.parser.defined.includes(normalizeIdentifier(self.sliceSerialize(self.events[self.events.length - 1][1]).slice(1, -1))) ? ok(code) : nok(code);
+    return self.parser.defined.includes(
+      normalizeIdentifier(self.sliceSerialize(self.events[self.events.length - 1][1]).slice(1, -1)),
+    )
+      ? ok(code)
+      : nok(code);
   }
   function referenceFullMissing(code) {
     return nok(code);
@@ -1919,7 +2139,7 @@ function tokenizeReferenceCollapsed(effects, ok, nok) {
 const labelStartImage = {
   name: "labelStartImage",
   resolveAll: labelEnd.resolveAll,
-  tokenize: tokenizeLabelStartImage
+  tokenize: tokenizeLabelStartImage,
 };
 function tokenizeLabelStartImage(effects, ok, nok) {
   const self = this;
@@ -1948,7 +2168,7 @@ function tokenizeLabelStartImage(effects, ok, nok) {
 const labelStartLink = {
   name: "labelStartLink",
   resolveAll: labelEnd.resolveAll,
-  tokenize: tokenizeLabelStartLink
+  tokenize: tokenizeLabelStartLink,
 };
 function tokenizeLabelStartLink(effects, ok, nok) {
   const self = this;
@@ -1967,7 +2187,7 @@ function tokenizeLabelStartLink(effects, ok, nok) {
 }
 const lineEnding = {
   name: "lineEnding",
-  tokenize: tokenizeLineEnding
+  tokenize: tokenizeLineEnding,
 };
 function tokenizeLineEnding(effects, ok) {
   return start;
@@ -1980,7 +2200,7 @@ function tokenizeLineEnding(effects, ok) {
 }
 const thematicBreak = {
   name: "thematicBreak",
-  tokenize: tokenizeThematicBreak
+  tokenize: tokenizeThematicBreak,
 };
 function tokenizeThematicBreak(effects, ok, nok) {
   let size = 0;
@@ -2017,38 +2237,47 @@ function tokenizeThematicBreak(effects, ok, nok) {
 }
 const list = {
   continuation: {
-    tokenize: tokenizeListContinuation
+    tokenize: tokenizeListContinuation,
   },
   exit: tokenizeListEnd,
   name: "list",
-  tokenize: tokenizeListStart
+  tokenize: tokenizeListStart,
 };
 const listItemPrefixWhitespaceConstruct = {
   partial: true,
-  tokenize: tokenizeListItemPrefixWhitespace
+  tokenize: tokenizeListItemPrefixWhitespace,
 };
 const indentConstruct = {
   partial: true,
-  tokenize: tokenizeIndent
+  tokenize: tokenizeIndent,
 };
 function tokenizeListStart(effects, ok, nok) {
   const self = this;
   const tail = self.events[self.events.length - 1];
-  let initialSize = tail && tail[1].type === "linePrefix" ? tail[2].sliceSerialize(tail[1], true).length : 0;
+  let initialSize =
+    tail && tail[1].type === "linePrefix" ? tail[2].sliceSerialize(tail[1], true).length : 0;
   let size = 0;
   return start;
   function start(code) {
-    const kind = self.containerState.type || (code === 42 || code === 43 || code === 45 ? "listUnordered" : "listOrdered");
-    if (kind === "listUnordered" ? !self.containerState.marker || code === self.containerState.marker : asciiDigit(code)) {
+    const kind =
+      self.containerState.type ||
+      (code === 42 || code === 43 || code === 45 ? "listUnordered" : "listOrdered");
+    if (
+      kind === "listUnordered"
+        ? !self.containerState.marker || code === self.containerState.marker
+        : asciiDigit(code)
+    ) {
       if (!self.containerState.type) {
         self.containerState.type = kind;
         effects.enter(kind, {
-          _container: true
+          _container: true,
         });
       }
       if (kind === "listUnordered") {
         effects.enter("listItemPrefix");
-        return code === 42 || code === 45 ? effects.check(thematicBreak, nok, atMarker)(code) : atMarker(code);
+        return code === 42 || code === 45
+          ? effects.check(thematicBreak, nok, atMarker)(code)
+          : atMarker(code);
       }
       if (!self.interrupt || code === 49) {
         effects.enter("listItemPrefix");
@@ -2063,7 +2292,12 @@ function tokenizeListStart(effects, ok, nok) {
       effects.consume(code);
       return inside;
     }
-    if ((!self.interrupt || size < 2) && (self.containerState.marker ? code === self.containerState.marker : code === 41 || code === 46)) {
+    if (
+      (!self.interrupt || size < 2) &&
+      (self.containerState.marker
+        ? code === self.containerState.marker
+        : code === 41 || code === 46)
+    ) {
       effects.exit("listItemValue");
       return atMarker(code);
     }
@@ -2078,7 +2312,7 @@ function tokenizeListStart(effects, ok, nok) {
       blankLine,
       // Can’t be empty when interrupting.
       self.interrupt ? nok : onBlank,
-      effects.attempt(listItemPrefixWhitespaceConstruct, endOfPrefix, otherPrefix)
+      effects.attempt(listItemPrefixWhitespaceConstruct, endOfPrefix, otherPrefix),
     );
   }
   function onBlank(code) {
@@ -2096,7 +2330,8 @@ function tokenizeListStart(effects, ok, nok) {
     return nok(code);
   }
   function endOfPrefix(code) {
-    self.containerState.size = initialSize + self.sliceSerialize(effects.exit("listItemPrefix"), true).length;
+    self.containerState.size =
+      initialSize + self.sliceSerialize(effects.exit("listItemPrefix"), true).length;
     return ok(code);
   }
 }
@@ -2105,7 +2340,8 @@ function tokenizeListContinuation(effects, ok, nok) {
   self.containerState._closeFlow = void 0;
   return effects.check(blankLine, onBlank, notBlank);
   function onBlank(code) {
-    self.containerState.furtherBlankLines = self.containerState.furtherBlankLines || self.containerState.initialBlankLine;
+    self.containerState.furtherBlankLines =
+      self.containerState.furtherBlankLines || self.containerState.initialBlankLine;
     return factorySpace(effects, ok, "listItemIndent", self.containerState.size + 1)(code);
   }
   function notBlank(code) {
@@ -2121,7 +2357,12 @@ function tokenizeListContinuation(effects, ok, nok) {
   function notInCurrentItem(code) {
     self.containerState._closeFlow = true;
     self.interrupt = void 0;
-    return factorySpace(effects, effects.attempt(list, ok, nok), "linePrefix", self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4)(code);
+    return factorySpace(
+      effects,
+      effects.attempt(list, ok, nok),
+      "linePrefix",
+      self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4,
+    )(code);
   }
 }
 function tokenizeIndent(effects, ok, nok) {
@@ -2129,7 +2370,11 @@ function tokenizeIndent(effects, ok, nok) {
   return factorySpace(effects, afterPrefix, "listItemIndent", self.containerState.size + 1);
   function afterPrefix(code) {
     const tail = self.events[self.events.length - 1];
-    return tail && tail[1].type === "listItemIndent" && tail[2].sliceSerialize(tail[1], true).length === self.containerState.size ? ok(code) : nok(code);
+    return tail &&
+      tail[1].type === "listItemIndent" &&
+      tail[2].sliceSerialize(tail[1], true).length === self.containerState.size
+      ? ok(code)
+      : nok(code);
   }
 }
 function tokenizeListEnd(effects) {
@@ -2137,16 +2382,23 @@ function tokenizeListEnd(effects) {
 }
 function tokenizeListItemPrefixWhitespace(effects, ok, nok) {
   const self = this;
-  return factorySpace(effects, afterPrefix, "listItemPrefixWhitespace", self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4 + 1);
+  return factorySpace(
+    effects,
+    afterPrefix,
+    "listItemPrefixWhitespace",
+    self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4 + 1,
+  );
   function afterPrefix(code) {
     const tail = self.events[self.events.length - 1];
-    return !markdownSpace(code) && tail && tail[1].type === "listItemPrefixWhitespace" ? ok(code) : nok(code);
+    return !markdownSpace(code) && tail && tail[1].type === "listItemPrefixWhitespace"
+      ? ok(code)
+      : nok(code);
   }
 }
 const setextUnderline = {
   name: "setextUnderline",
   resolveTo: resolveToSetextUnderline,
-  tokenize: tokenizeSetextUnderline
+  tokenize: tokenizeSetextUnderline,
 };
 function resolveToSetextUnderline(events, context) {
   let index = events.length;
@@ -2174,18 +2426,18 @@ function resolveToSetextUnderline(events, context) {
   const heading = {
     type: "setextHeading",
     start: {
-      ...events[content2][1].start
+      ...events[content2][1].start,
     },
     end: {
-      ...events[events.length - 1][1].end
-    }
+      ...events[events.length - 1][1].end,
+    },
   };
   events[text][1].type = "setextHeadingText";
   if (definition2) {
     events.splice(text, 0, ["enter", heading, context]);
     events.splice(definition2 + 1, 0, ["exit", events[content2][1], context]);
     events[content2][1].end = {
-      ...events[definition2][1].end
+      ...events[definition2][1].end,
     };
   } else {
     events[content2][1] = heading;
@@ -2201,7 +2453,11 @@ function tokenizeSetextUnderline(effects, ok, nok) {
     let index = self.events.length;
     let paragraph;
     while (index--) {
-      if (self.events[index][1].type !== "lineEnding" && self.events[index][1].type !== "linePrefix" && self.events[index][1].type !== "content") {
+      if (
+        self.events[index][1].type !== "lineEnding" &&
+        self.events[index][1].type !== "linePrefix" &&
+        self.events[index][1].type !== "content"
+      ) {
         paragraph = self.events[index][1].type === "paragraph";
         break;
       }
@@ -2255,5 +2511,5 @@ export {
   setextUnderline as s,
   thematicBreak as t,
   labelStartImage as u,
-  lineEnding as v
+  lineEnding as v,
 };

@@ -3,8 +3,12 @@ function isPlainObject(value) {
     return false;
   }
   const prototype = Object.getPrototypeOf(value);
-  return (prototype === null || prototype === Object.prototype || Object.getPrototypeOf(prototype) === null) && !(Symbol.toStringTag in value) && !(Symbol.iterator in value);
+  return (
+    (prototype === null ||
+      prototype === Object.prototype ||
+      Object.getPrototypeOf(prototype) === null) &&
+    !(Symbol.toStringTag in value) &&
+    !(Symbol.iterator in value)
+  );
 }
-export {
-  isPlainObject as i
-};
+export { isPlainObject as i };

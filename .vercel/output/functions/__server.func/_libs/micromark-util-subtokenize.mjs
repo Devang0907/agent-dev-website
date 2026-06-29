@@ -21,7 +21,13 @@ class SpliceBuffer {
    */
   get(index) {
     if (index < 0 || index >= this.left.length + this.right.length) {
-      throw new RangeError("Cannot access index `" + index + "` in a splice buffer of size `" + (this.left.length + this.right.length) + "`");
+      throw new RangeError(
+        "Cannot access index `" +
+          index +
+          "` in a splice buffer of size `" +
+          (this.left.length + this.right.length) +
+          "`",
+      );
     }
     if (index < this.left.length) return this.left[index];
     return this.right[this.right.length - index + this.left.length - 1];
@@ -61,9 +67,16 @@ class SpliceBuffer {
       return this.left.slice(start, stop);
     }
     if (start > this.left.length) {
-      return this.right.slice(this.right.length - stop + this.left.length, this.right.length - start + this.left.length).reverse();
+      return this.right
+        .slice(
+          this.right.length - stop + this.left.length,
+          this.right.length - start + this.left.length,
+        )
+        .reverse();
     }
-    return this.left.slice(start).concat(this.right.slice(this.right.length - stop + this.left.length).reverse());
+    return this.left
+      .slice(start)
+      .concat(this.right.slice(this.right.length - stop + this.left.length).reverse());
   }
   /**
    * Mimics the behavior of Array.prototype.splice() except for the change of
@@ -169,12 +182,20 @@ class SpliceBuffer {
    *   Nothing.
    */
   setCursor(n) {
-    if (n === this.left.length || n > this.left.length && this.right.length === 0 || n < 0 && this.left.length === 0) return;
+    if (
+      n === this.left.length ||
+      (n > this.left.length && this.right.length === 0) ||
+      (n < 0 && this.left.length === 0)
+    )
+      return;
     if (n < this.left.length) {
       const removed = this.left.splice(n, Number.POSITIVE_INFINITY);
       chunkedPush(this.right, removed.reverse());
     } else {
-      const removed = this.right.splice(this.left.length + this.right.length - n, Number.POSITIVE_INFINITY);
+      const removed = this.right.splice(
+        this.left.length + this.right.length - n,
+        Number.POSITIVE_INFINITY,
+      );
       chunkedPush(this.left, removed.reverse());
     }
   }
@@ -206,7 +227,11 @@ function subtokenize(eventsArray) {
       index = jumps[index];
     }
     event = events.get(index);
-    if (index && event[1].type === "chunkFlow" && events.get(index - 1)[1].type === "listItemPrefix") {
+    if (
+      index &&
+      event[1].type === "chunkFlow" &&
+      events.get(index - 1)[1].type === "listItemPrefix"
+    ) {
       subevents = event[1]._tokenizer.events;
       otherIndex = 0;
       if (otherIndex < subevents.length && subevents[otherIndex][1].type === "lineEndingBlank") {
@@ -243,14 +268,14 @@ function subtokenize(eventsArray) {
             otherEvent[1].type = "lineEnding";
             lineIndex = otherIndex;
           }
-        } else if (otherEvent[1].type === "linePrefix" || otherEvent[1].type === "listItemIndent") ;
+        } else if (otherEvent[1].type === "linePrefix" || otherEvent[1].type === "listItemIndent");
         else {
           break;
         }
       }
       if (lineIndex) {
         event[1].end = {
-          ...events.get(lineIndex)[1].start
+          ...events.get(lineIndex)[1].start,
         };
         parameters = events.slice(lineIndex, index);
         parameters.unshift(event);
@@ -284,8 +309,7 @@ function subcontent(events, eventIndex) {
   let start = 0;
   const breaks = [start];
   while (current) {
-    while (events.get(++startPosition)[1] !== current) {
-    }
+    while (events.get(++startPosition)[1] !== current) {}
     startPositions.push(startPosition);
     if (!current._tokenizer) {
       stream = context.sliceStream(current);
@@ -310,7 +334,10 @@ function subcontent(events, eventIndex) {
   while (++index < childEvents.length) {
     if (
       // Find a void token that includes a break.
-      childEvents[index][0] === "exit" && childEvents[index - 1][0] === "enter" && childEvents[index][1].type === childEvents[index - 1][1].type && childEvents[index][1].start.line !== childEvents[index][1].end.line
+      childEvents[index][0] === "exit" &&
+      childEvents[index - 1][0] === "enter" &&
+      childEvents[index][1].type === childEvents[index - 1][1].type &&
+      childEvents[index][1].start.line !== childEvents[index][1].end.line
     ) {
       start = index + 1;
       breaks.push(start);
@@ -341,6 +368,4 @@ function subcontent(events, eventIndex) {
   }
   return gaps;
 }
-export {
-  subtokenize as s
-};
+export { subtokenize as s };

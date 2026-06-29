@@ -11,14 +11,14 @@ function gfmAutolinkLiteralFromMarkdown() {
       literalAutolink: enterLiteralAutolink,
       literalAutolinkEmail: enterLiteralAutolinkValue,
       literalAutolinkHttp: enterLiteralAutolinkValue,
-      literalAutolinkWww: enterLiteralAutolinkValue
+      literalAutolinkWww: enterLiteralAutolinkValue,
     },
     exit: {
       literalAutolink: exitLiteralAutolink,
       literalAutolinkEmail: exitLiteralAutolinkEmail,
       literalAutolinkHttp: exitLiteralAutolinkHttp,
-      literalAutolinkWww: exitLiteralAutolinkWww
-    }
+      literalAutolinkWww: exitLiteralAutolinkWww,
+    },
   };
 }
 function gfmAutolinkLiteralToMarkdown() {
@@ -29,23 +29,23 @@ function gfmAutolinkLiteralToMarkdown() {
         before: "[+\\-.\\w]",
         after: "[\\-.\\w]",
         inConstruct,
-        notInConstruct
+        notInConstruct,
       },
       {
         character: ".",
         before: "[Ww]",
         after: "[\\-.\\w]",
         inConstruct,
-        notInConstruct
+        notInConstruct,
       },
       {
         character: ":",
         before: "[ps]",
         after: "\\/",
         inConstruct,
-        notInConstruct
-      }
-    ]
+        notInConstruct,
+      },
+    ],
   };
 }
 function enterLiteralAutolink(token) {
@@ -74,9 +74,9 @@ function transformGfmAutolinkLiterals(tree) {
     tree,
     [
       [/(https?:\/\/|www(?=\.))([-.\w]+)([^ \t\r\n]*)/gi, findUrl],
-      [new RegExp("(?<=^|\\s|\\p{P}|\\p{S})([-.\\w+]+)@([-\\w]+(?:\\.[-\\w]+)+)", "gu"), findEmail]
+      [new RegExp("(?<=^|\\s|\\p{P}|\\p{S})([-.\\w+]+)@([-\\w]+(?:\\.[-\\w]+)+)", "gu"), findEmail],
     ],
-    { ignore: ["link", "linkReference"] }
+    { ignore: ["link", "linkReference"] },
   );
 }
 function findUrl(_, protocol, domain, path, match) {
@@ -98,7 +98,7 @@ function findUrl(_, protocol, domain, path, match) {
     type: "link",
     title: null,
     url: prefix + protocol + parts[0],
-    children: [{ type: "text", value: protocol + parts[0] }]
+    children: [{ type: "text", value: protocol + parts[0] }],
   };
   if (parts[1]) {
     return [result, { type: "text", value: parts[1] }];
@@ -117,12 +117,18 @@ function findEmail(_, atext, label, match) {
     type: "link",
     title: null,
     url: "mailto:" + atext + "@" + label,
-    children: [{ type: "text", value: atext + "@" + label }]
+    children: [{ type: "text", value: atext + "@" + label }],
   };
 }
 function isCorrectDomain(domain) {
   const parts = domain.split(".");
-  if (parts.length < 2 || parts[parts.length - 1] && (/_/.test(parts[parts.length - 1]) || !/[a-zA-Z\d]/.test(parts[parts.length - 1])) || parts[parts.length - 2] && (/_/.test(parts[parts.length - 2]) || !/[a-zA-Z\d]/.test(parts[parts.length - 2]))) {
+  if (
+    parts.length < 2 ||
+    (parts[parts.length - 1] &&
+      (/_/.test(parts[parts.length - 1]) || !/[a-zA-Z\d]/.test(parts[parts.length - 1]))) ||
+    (parts[parts.length - 2] &&
+      (/_/.test(parts[parts.length - 2]) || !/[a-zA-Z\d]/.test(parts[parts.length - 2])))
+  ) {
     return false;
   }
   return true;
@@ -147,10 +153,9 @@ function splitUrl(url) {
 }
 function previous(match, email) {
   const code = match.input.charCodeAt(match.index - 1);
-  return (match.index === 0 || unicodeWhitespace(code) || unicodePunctuation(code)) && // If it’s an email, the previous character should not be a slash.
-  (!email || code !== 47);
+  return (
+    (match.index === 0 || unicodeWhitespace(code) || unicodePunctuation(code)) && // If it’s an email, the previous character should not be a slash.
+    (!email || code !== 47)
+  );
 }
-export {
-  gfmAutolinkLiteralToMarkdown as a,
-  gfmAutolinkLiteralFromMarkdown as g
-};
+export { gfmAutolinkLiteralToMarkdown as a, gfmAutolinkLiteralFromMarkdown as g };

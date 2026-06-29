@@ -8,7 +8,7 @@ function blockquote(state, node) {
     type: "element",
     tagName: "blockquote",
     properties: {},
-    children: state.wrap(state.all(node), true)
+    children: state.wrap(state.all(node), true),
   };
   state.patch(node, result);
   return state.applyData(node, result);
@@ -29,7 +29,7 @@ function code(state, node) {
     type: "element",
     tagName: "code",
     properties,
-    children: [{ type: "text", value }]
+    children: [{ type: "text", value }],
   };
   if (node.meta) {
     result.data = { meta: node.meta };
@@ -45,7 +45,7 @@ function strikethrough(state, node) {
     type: "element",
     tagName: "del",
     properties: {},
-    children: state.all(node)
+    children: state.all(node),
   };
   state.patch(node, result);
   return state.applyData(node, result);
@@ -55,13 +55,14 @@ function emphasis(state, node) {
     type: "element",
     tagName: "em",
     properties: {},
-    children: state.all(node)
+    children: state.all(node),
   };
   state.patch(node, result);
   return state.applyData(node, result);
 }
 function footnoteReference(state, node) {
-  const clobberPrefix = typeof state.options.clobberPrefix === "string" ? state.options.clobberPrefix : "user-content-";
+  const clobberPrefix =
+    typeof state.options.clobberPrefix === "string" ? state.options.clobberPrefix : "user-content-";
   const id = String(node.identifier).toUpperCase();
   const safeId = normalizeUri(id.toLowerCase());
   const index = state.footnoteOrder.indexOf(id);
@@ -83,16 +84,16 @@ function footnoteReference(state, node) {
       href: "#" + clobberPrefix + "fn-" + safeId,
       id: clobberPrefix + "fnref-" + safeId + (reuseCounter > 1 ? "-" + reuseCounter : ""),
       dataFootnoteRef: true,
-      ariaDescribedBy: ["footnote-label"]
+      ariaDescribedBy: ["footnote-label"],
     },
-    children: [{ type: "text", value: String(counter) }]
+    children: [{ type: "text", value: String(counter) }],
   };
   state.patch(node, link2);
   const sup = {
     type: "element",
     tagName: "sup",
     properties: {},
-    children: [link2]
+    children: [link2],
   };
   state.patch(node, sup);
   return state.applyData(node, sup);
@@ -102,7 +103,7 @@ function heading(state, node) {
     type: "element",
     tagName: "h" + node.depth,
     properties: {},
-    children: state.all(node)
+    children: state.all(node),
   };
   state.patch(node, result);
   return state.applyData(node, result);
@@ -174,7 +175,7 @@ function inlineCode(state, node) {
     type: "element",
     tagName: "code",
     properties: {},
-    children: [text2]
+    children: [text2],
   };
   state.patch(node, result);
   return state.applyData(node, result);
@@ -193,7 +194,7 @@ function linkReference(state, node) {
     type: "element",
     tagName: "a",
     properties,
-    children: state.all(node)
+    children: state.all(node),
   };
   state.patch(node, result);
   return state.applyData(node, result);
@@ -207,7 +208,7 @@ function link(state, node) {
     type: "element",
     tagName: "a",
     properties,
-    children: state.all(node)
+    children: state.all(node),
   };
   state.patch(node, result);
   return state.applyData(node, result);
@@ -233,7 +234,7 @@ function listItem(state, node, parent) {
       type: "element",
       tagName: "input",
       properties: { type: "checkbox", checked: node.checked, disabled: true },
-      children: []
+      children: [],
     });
     properties.className = ["task-list-item"];
   }
@@ -282,7 +283,13 @@ function list(state, node) {
   }
   while (++index < results.length) {
     const child = results[index];
-    if (child.type === "element" && child.tagName === "li" && child.properties && Array.isArray(child.properties.className) && child.properties.className.includes("task-list-item")) {
+    if (
+      child.type === "element" &&
+      child.tagName === "li" &&
+      child.properties &&
+      Array.isArray(child.properties.className) &&
+      child.properties.className.includes("task-list-item")
+    ) {
       properties.className = ["contains-task-list"];
       break;
     }
@@ -291,7 +298,7 @@ function list(state, node) {
     type: "element",
     tagName: node.ordered ? "ol" : "ul",
     properties,
-    children: state.wrap(results, true)
+    children: state.wrap(results, true),
   };
   state.patch(node, result);
   return state.applyData(node, result);
@@ -301,7 +308,7 @@ function paragraph(state, node) {
     type: "element",
     tagName: "p",
     properties: {},
-    children: state.all(node)
+    children: state.all(node),
   };
   state.patch(node, result);
   return state.applyData(node, result);
@@ -316,7 +323,7 @@ function strong(state, node) {
     type: "element",
     tagName: "strong",
     properties: {},
-    children: state.all(node)
+    children: state.all(node),
   };
   state.patch(node, result);
   return state.applyData(node, result);
@@ -330,7 +337,7 @@ function table(state, node) {
       type: "element",
       tagName: "thead",
       properties: {},
-      children: state.wrap([firstRow], true)
+      children: state.wrap([firstRow], true),
     };
     state.patch(node.children[0], head);
     tableContent.push(head);
@@ -340,7 +347,7 @@ function table(state, node) {
       type: "element",
       tagName: "tbody",
       properties: {},
-      children: state.wrap(rows, true)
+      children: state.wrap(rows, true),
     };
     const start = pointStart(node.children[1]);
     const end = pointEnd(node.children[node.children.length - 1]);
@@ -351,7 +358,7 @@ function table(state, node) {
     type: "element",
     tagName: "table",
     properties: {},
-    children: state.wrap(tableContent, true)
+    children: state.wrap(tableContent, true),
   };
   state.patch(node, result);
   return state.applyData(node, result);
@@ -383,7 +390,7 @@ function tableRow(state, node, parent) {
     type: "element",
     tagName: "tr",
     properties: {},
-    children: state.wrap(cells, true)
+    children: state.wrap(cells, true),
   };
   state.patch(node, result);
   return state.applyData(node, result);
@@ -394,7 +401,7 @@ function tableCell(state, node) {
     tagName: "td",
     // Assume body cell.
     properties: {},
-    children: state.all(node)
+    children: state.all(node),
   };
   state.patch(node, result);
   return state.applyData(node, result);
@@ -409,7 +416,7 @@ function thematicBreak(state, node) {
     type: "element",
     tagName: "hr",
     properties: {},
-    children: []
+    children: [],
   };
   state.patch(node, result);
   return state.applyData(node, result);
@@ -442,7 +449,7 @@ const handlers = {
   toml: ignore,
   yaml: ignore,
   definition: ignore,
-  footnoteDefinition: ignore
+  footnoteDefinition: ignore,
 };
 function ignore() {
   return void 0;
@@ -454,29 +461,32 @@ function defaultFootnoteBackContent(_, rereferenceIndex) {
       type: "element",
       tagName: "sup",
       properties: {},
-      children: [{ type: "text", value: String(rereferenceIndex) }]
+      children: [{ type: "text", value: String(rereferenceIndex) }],
     });
   }
   return result;
 }
 function defaultFootnoteBackLabel(referenceIndex, rereferenceIndex) {
-  return "Back to reference " + (referenceIndex + 1) + (rereferenceIndex > 1 ? "-" + rereferenceIndex : "");
+  return (
+    "Back to reference " +
+    (referenceIndex + 1) +
+    (rereferenceIndex > 1 ? "-" + rereferenceIndex : "")
+  );
 }
 function footer(state) {
-  const clobberPrefix = typeof state.options.clobberPrefix === "string" ? state.options.clobberPrefix : "user-content-";
+  const clobberPrefix =
+    typeof state.options.clobberPrefix === "string" ? state.options.clobberPrefix : "user-content-";
   const footnoteBackContent = state.options.footnoteBackContent || defaultFootnoteBackContent;
   const footnoteBackLabel = state.options.footnoteBackLabel || defaultFootnoteBackLabel;
   const footnoteLabel = state.options.footnoteLabel || "Footnotes";
   const footnoteLabelTagName = state.options.footnoteLabelTagName || "h2";
   const footnoteLabelProperties = state.options.footnoteLabelProperties || {
-    className: ["sr-only"]
+    className: ["sr-only"],
   };
   const listItems = [];
   let referenceIndex = -1;
   while (++referenceIndex < state.footnoteOrder.length) {
-    const definition = state.footnoteById.get(
-      state.footnoteOrder[referenceIndex]
-    );
+    const definition = state.footnoteById.get(state.footnoteOrder[referenceIndex]);
     if (!definition) {
       continue;
     }
@@ -490,7 +500,10 @@ function footer(state) {
       if (backReferences.length > 0) {
         backReferences.push({ type: "text", value: " " });
       }
-      let children = typeof footnoteBackContent === "string" ? footnoteBackContent : footnoteBackContent(referenceIndex, rereferenceIndex);
+      let children =
+        typeof footnoteBackContent === "string"
+          ? footnoteBackContent
+          : footnoteBackContent(referenceIndex, rereferenceIndex);
       if (typeof children === "string") {
         children = { type: "text", value: children };
       }
@@ -498,12 +511,20 @@ function footer(state) {
         type: "element",
         tagName: "a",
         properties: {
-          href: "#" + clobberPrefix + "fnref-" + safeId + (rereferenceIndex > 1 ? "-" + rereferenceIndex : ""),
+          href:
+            "#" +
+            clobberPrefix +
+            "fnref-" +
+            safeId +
+            (rereferenceIndex > 1 ? "-" + rereferenceIndex : ""),
           dataFootnoteBackref: "",
-          ariaLabel: typeof footnoteBackLabel === "string" ? footnoteBackLabel : footnoteBackLabel(referenceIndex, rereferenceIndex),
-          className: ["data-footnote-backref"]
+          ariaLabel:
+            typeof footnoteBackLabel === "string"
+              ? footnoteBackLabel
+              : footnoteBackLabel(referenceIndex, rereferenceIndex),
+          className: ["data-footnote-backref"],
         },
-        children: Array.isArray(children) ? children : [children]
+        children: Array.isArray(children) ? children : [children],
       });
     }
     const tail = content[content.length - 1];
@@ -522,7 +543,7 @@ function footer(state) {
       type: "element",
       tagName: "li",
       properties: { id: clobberPrefix + "fn-" + safeId },
-      children: state.wrap(content, true)
+      children: state.wrap(content, true),
     };
     state.patch(definition, listItem2);
     listItems.push(listItem2);
@@ -540,19 +561,19 @@ function footer(state) {
         tagName: footnoteLabelTagName,
         properties: {
           ...structuredClone(footnoteLabelProperties),
-          id: "footnote-label"
+          id: "footnote-label",
         },
-        children: [{ type: "text", value: footnoteLabel }]
+        children: [{ type: "text", value: footnoteLabel }],
       },
       { type: "text", value: "\n" },
       {
         type: "element",
         tagName: "ol",
         properties: {},
-        children: state.wrap(listItems, true)
+        children: state.wrap(listItems, true),
       },
-      { type: "text", value: "\n" }
-    ]
+      { type: "text", value: "\n" },
+    ],
   };
 }
 const own = {}.hasOwnProperty;
@@ -574,9 +595,9 @@ function createState(tree, options) {
     one,
     options: settings,
     patch,
-    wrap
+    wrap,
   };
-  visit(tree, function(node) {
+  visit(tree, function (node) {
     if (node.type === "definition" || node.type === "footnoteDefinition") {
       const map = node.type === "definition" ? definitionById : footnoteById;
       const id = String(node.identifier).toUpperCase();
@@ -662,12 +683,15 @@ function applyData(from, to) {
 }
 function defaultUnknownHandler(state, node) {
   const data = node.data || {};
-  const result = "value" in node && !(own.call(data, "hProperties") || own.call(data, "hChildren")) ? { type: "text", value: node.value } : {
-    type: "element",
-    tagName: "div",
-    properties: {},
-    children: state.all(node)
-  };
+  const result =
+    "value" in node && !(own.call(data, "hProperties") || own.call(data, "hChildren"))
+      ? { type: "text", value: node.value }
+      : {
+          type: "element",
+          tagName: "div",
+          properties: {},
+          children: state.all(node),
+        };
   state.patch(node, result);
   return state.applyData(node, result);
 }
@@ -699,12 +723,12 @@ function toHast(tree, options) {
   const state = createState(tree, options);
   const node = state.one(tree, void 0);
   const foot = footer(state);
-  const result = Array.isArray(node) ? { type: "root", children: node } : node || { type: "root", children: [] };
+  const result = Array.isArray(node)
+    ? { type: "root", children: node }
+    : node || { type: "root", children: [] };
   if (foot) {
     result.children.push({ type: "text", value: "\n" }, foot);
   }
   return result;
 }
-export {
-  toHast as t
-};
+export { toHast as t };

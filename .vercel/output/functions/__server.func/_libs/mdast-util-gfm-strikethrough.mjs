@@ -4,14 +4,14 @@ const constructsWithoutStrikethrough = [
   "destinationRaw",
   "reference",
   "titleQuote",
-  "titleApostrophe"
+  "titleApostrophe",
 ];
 handleDelete.peek = peekDelete;
 function gfmStrikethroughFromMarkdown() {
   return {
     canContainEols: ["delete"],
     enter: { strikethrough: enterStrikethrough },
-    exit: { strikethrough: exitStrikethrough }
+    exit: { strikethrough: exitStrikethrough },
   };
 }
 function gfmStrikethroughToMarkdown() {
@@ -20,10 +20,10 @@ function gfmStrikethroughToMarkdown() {
       {
         character: "~",
         inConstruct: "phrasing",
-        notInConstruct: constructsWithoutStrikethrough
-      }
+        notInConstruct: constructsWithoutStrikethrough,
+      },
     ],
-    handlers: { delete: handleDelete }
+    handlers: { delete: handleDelete },
   };
 }
 function enterStrikethrough(token) {
@@ -39,7 +39,7 @@ function handleDelete(node, _, state, info) {
   value += state.containerPhrasing(node, {
     ...tracker.current(),
     before: value,
-    after: "~"
+    after: "~",
   });
   value += tracker.move("~~");
   exit();
@@ -48,7 +48,4 @@ function handleDelete(node, _, state, info) {
 function peekDelete() {
   return "~";
 }
-export {
-  gfmStrikethroughToMarkdown as a,
-  gfmStrikethroughFromMarkdown as g
-};
+export { gfmStrikethroughToMarkdown as a, gfmStrikethroughFromMarkdown as g };

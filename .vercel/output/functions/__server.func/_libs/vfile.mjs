@@ -4,21 +4,18 @@ import minpath from "node:path";
 import { fileURLToPath } from "node:url";
 function isUrl(fileUrlOrPath) {
   return Boolean(
-    fileUrlOrPath !== null && typeof fileUrlOrPath === "object" && "href" in fileUrlOrPath && fileUrlOrPath.href && "protocol" in fileUrlOrPath && fileUrlOrPath.protocol && // @ts-expect-error: indexing is fine.
-    fileUrlOrPath.auth === void 0
+    fileUrlOrPath !== null &&
+    typeof fileUrlOrPath === "object" &&
+    "href" in fileUrlOrPath &&
+    fileUrlOrPath.href &&
+    "protocol" in fileUrlOrPath &&
+    fileUrlOrPath.protocol && // @ts-expect-error: indexing is fine.
+    fileUrlOrPath.auth === void 0,
   );
 }
-const order = (
+const order =
   /** @type {const} */
-  [
-    "history",
-    "path",
-    "basename",
-    "stem",
-    "extname",
-    "dirname"
-  ]
-);
+  ["history", "path", "basename", "stem", "extname", "dirname"];
 class VFile {
   /**
    * Create a new virtual file.
@@ -406,7 +403,7 @@ class VFile {
       // @ts-expect-error: the overloads are fine.
       causeOrReason,
       optionsOrParentOrPlace,
-      origin
+      origin,
     );
     if (this.path) {
       message.name = this.path + ":" + message.name;
@@ -442,9 +439,7 @@ class VFile {
 }
 function assertPart(part, name) {
   if (part && part.includes(minpath.sep)) {
-    throw new Error(
-      "`" + name + "` cannot be a path: did not expect `" + minpath.sep + "`"
-    );
+    throw new Error("`" + name + "` cannot be a path: did not expect `" + minpath.sep + "`");
   }
 }
 function assertNonEmpty(part, name) {
@@ -459,9 +454,7 @@ function assertPath(path, name) {
 }
 function isUint8Array(value) {
   return Boolean(
-    value && typeof value === "object" && "byteLength" in value && "byteOffset" in value
+    value && typeof value === "object" && "byteLength" in value && "byteOffset" in value,
   );
 }
-export {
-  VFile as V
-};
+export { VFile as V };

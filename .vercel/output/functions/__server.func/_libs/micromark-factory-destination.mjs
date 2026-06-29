@@ -1,5 +1,19 @@
-import { f as asciiControl, m as markdownLineEnding, c as markdownLineEndingOrSpace } from "./micromark-util-character.mjs";
-function factoryDestination(effects, ok, nok, type, literalType, literalMarkerType, rawType, stringType, max) {
+import {
+  f as asciiControl,
+  m as markdownLineEnding,
+  c as markdownLineEndingOrSpace,
+} from "./micromark-util-character.mjs";
+function factoryDestination(
+  effects,
+  ok,
+  nok,
+  type,
+  literalType,
+  literalMarkerType,
+  rawType,
+  stringType,
+  max,
+) {
   const limit = max || Number.POSITIVE_INFINITY;
   let balance = 0;
   return start;
@@ -19,7 +33,7 @@ function factoryDestination(effects, ok, nok, type, literalType, literalMarkerTy
     effects.enter(rawType);
     effects.enter(stringType);
     effects.enter("chunkString", {
-      contentType: "string"
+      contentType: "string",
     });
     return raw(code);
   }
@@ -34,7 +48,7 @@ function factoryDestination(effects, ok, nok, type, literalType, literalMarkerTy
     }
     effects.enter(stringType);
     effects.enter("chunkString", {
-      contentType: "string"
+      contentType: "string",
     });
     return enclosed(code);
   }
@@ -89,6 +103,4 @@ function factoryDestination(effects, ok, nok, type, literalType, literalMarkerTy
     return raw(code);
   }
 }
-export {
-  factoryDestination as f
-};
+export { factoryDestination as f };

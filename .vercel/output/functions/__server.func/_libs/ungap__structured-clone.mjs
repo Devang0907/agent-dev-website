@@ -27,8 +27,7 @@ const deserializer = ($, _) => {
     return out;
   };
   const unpair = (index) => {
-    if ($.has(index))
-      return $.get(index);
+    if ($.has(index)) return $.get(index);
     const [type, value] = _[index];
     switch (type) {
       case PRIMITIVE:
@@ -36,14 +35,12 @@ const deserializer = ($, _) => {
         return as(value, index);
       case ARRAY: {
         const arr = as([], index);
-        for (const index2 of value)
-          arr.push(unpair(index2));
+        for (const index2 of value) arr.push(unpair(index2));
         return arr;
       }
       case OBJECT: {
         const object = as({}, index);
-        for (const [key, index2] of value)
-          object[unpair(key)] = unpair(index2);
+        for (const [key, index2] of value) object[unpair(key)] = unpair(index2);
         return object;
       }
       case DATE:
@@ -54,14 +51,12 @@ const deserializer = ($, _) => {
       }
       case MAP: {
         const map = as(/* @__PURE__ */ new Map(), index);
-        for (const [key, index2] of value)
-          map.set(unpair(key), unpair(index2));
+        for (const [key, index2] of value) map.set(unpair(key), unpair(index2));
         return map;
       }
       case SET: {
         const set = as(/* @__PURE__ */ new Set(), index);
-        for (const index2 of value)
-          set.add(unpair(index2));
+        for (const index2 of value) set.add(unpair(index2));
         return set;
       }
       case ERROR: {
@@ -89,8 +84,7 @@ const { toString } = {};
 const { keys } = Object;
 const typeOf = (value) => {
   const type = typeof value;
-  if (type !== "object" || !value)
-    return [PRIMITIVE, type];
+  if (type !== "object" || !value) return [PRIMITIVE, type];
   const asString = toString.call(value).slice(8, -1);
   switch (asString) {
     case "Array":
@@ -108,13 +102,12 @@ const typeOf = (value) => {
     case "DataView":
       return [ARRAY, asString];
   }
-  if (asString.includes("Array"))
-    return [ARRAY, asString];
-  if (asString.includes("Error"))
-    return [ERROR, asString];
+  if (asString.includes("Array")) return [ARRAY, asString];
+  if (asString.includes("Error")) return [ERROR, asString];
   return [OBJECT, asString];
 };
-const shouldSkip = ([TYPE, type]) => TYPE === PRIMITIVE && (type === "function" || type === "symbol");
+const shouldSkip = ([TYPE, type]) =>
+  TYPE === PRIMITIVE && (type === "function" || type === "symbol");
 const serializer = (strict, json, $, _) => {
   const as = (out, value) => {
     const index = _.push(out) - 1;
@@ -122,8 +115,7 @@ const serializer = (strict, json, $, _) => {
     return index;
   };
   const pair = (value) => {
-    if ($.has(value))
-      return $.get(value);
+    if ($.has(value)) return $.get(value);
     let [TYPE, type] = typeOf(value);
     switch (TYPE) {
       case PRIMITIVE: {
@@ -135,8 +127,7 @@ const serializer = (strict, json, $, _) => {
             break;
           case "function":
           case "symbol":
-            if (strict)
-              throw new TypeError("unable to serialize " + type);
+            if (strict) throw new TypeError("unable to serialize " + type);
             entry = null;
             break;
           case "undefined":
@@ -156,8 +147,7 @@ const serializer = (strict, json, $, _) => {
         }
         const arr = [];
         const index = as([TYPE, arr], value);
-        for (const entry of value)
-          arr.push(pair(entry));
+        for (const entry of value) arr.push(pair(entry));
         return index;
       }
       case OBJECT: {
@@ -171,8 +161,7 @@ const serializer = (strict, json, $, _) => {
               return as([type, value.valueOf()], value);
           }
         }
-        if (json && "toJSON" in value)
-          return pair(value.toJSON());
+        if (json && "toJSON" in value) return pair(value.toJSON());
         const entries = [];
         const index = as([TYPE, entries], value);
         for (const key of keys(value)) {
@@ -200,8 +189,7 @@ const serializer = (strict, json, $, _) => {
         const entries = [];
         const index = as([TYPE, entries], value);
         for (const entry of value) {
-          if (strict || !shouldSkip(typeOf(entry)))
-            entries.push(pair(entry));
+          if (strict || !shouldSkip(typeOf(entry))) entries.push(pair(entry));
         }
         return index;
       }
@@ -213,12 +201,14 @@ const serializer = (strict, json, $, _) => {
 };
 const serialize = (value, { json, lossy } = {}) => {
   const _ = [];
-  return serializer(!(json || lossy), !!json, /* @__PURE__ */ new Map(), _)(value), _;
+  return (serializer(!(json || lossy), !!json, /* @__PURE__ */ new Map(), _)(value), _);
 };
-const structuredClone$1 = typeof structuredClone === "function" ? (
-  /* c8 ignore start */
-  (any, options) => options && ("json" in options || "lossy" in options) ? deserialize(serialize(any, options)) : structuredClone(any)
-) : (any, options) => deserialize(serialize(any, options));
-export {
-  structuredClone$1 as s
-};
+const structuredClone$1 =
+  typeof structuredClone === "function"
+    ? /* c8 ignore start */
+      (any, options) =>
+        options && ("json" in options || "lossy" in options)
+          ? deserialize(serialize(any, options))
+          : structuredClone(any)
+    : (any, options) => deserialize(serialize(any, options));
+export { structuredClone$1 as s };

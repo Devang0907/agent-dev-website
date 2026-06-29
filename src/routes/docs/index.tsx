@@ -33,7 +33,7 @@ function DocsPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <SiteNav />
-      <main className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
+      <main className="editorial-shell nav-offset pb-10 sm:pb-14">
         <div className="mb-8 border-b border-dashed border-border pb-8">
           <p className="text-xs text-muted-foreground">[docs]</p>
           <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">documentation</h1>

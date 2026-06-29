@@ -97,6 +97,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap",
+      },
       // Tab icon — place your logo in public/ (see filenames below)
       { rel: "icon", href: "/favicon.ico", sizes: "any" },
       { rel: "icon", type: "image/png", href: "/favicon.png" },
@@ -125,6 +129,11 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  useEffect(() => {
+    document.documentElement.classList.remove("dark");
+    localStorage.removeItem("theme");
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

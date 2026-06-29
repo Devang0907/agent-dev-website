@@ -19,6 +19,4 @@ function visit(tree, testOrVisitor, visitorOrReverse, maybeReverse) {
     return visitor(node, index, parent);
   }
 }
-export {
-  visit as v
-};
+export { visit as v };
