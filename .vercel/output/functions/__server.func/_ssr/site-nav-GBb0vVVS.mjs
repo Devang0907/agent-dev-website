@@ -13,31 +13,31 @@ function BrandMark({ className, inverted = false }) {
       src: LOGO_SRC,
       alt: "",
       "aria-hidden": true,
-      className: cn("h-4 w-4 shrink-0 object-contain", inverted && "invert", className)
+      className: cn("h-7 w-7 shrink-0 object-contain", inverted && "invert", className)
     }
   );
 }
 function SiteFooter() {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("footer", { className: "mt-16 border-t border-border/60 bg-card/70", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "editorial-shell py-14", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid gap-10 border-b border-border/60 pb-10 md:grid-cols-4", children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("footer", { className: "mx-3 mt-4 pb-10 sm:mx-4 lg:mx-5", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "hero-frame border border-black/6 bg-white/50 px-8 py-12 backdrop-blur-sm sm:px-12 sm:py-14", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid gap-10 border-b border-black/8 pb-10 md:grid-cols-4", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "md:col-span-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm font-semibold", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2.5 text-sm font-semibold text-foreground", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(BrandMark, {}),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "agent-dev" })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-4 max-w-md text-sm leading-relaxed text-muted-foreground", children: "The terminal coding agent for autonomous development workflows. Open source, scriptable, and built to keep coding fast inside your terminal." }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "editorial-label mt-4 text-muted-foreground", children: "MIT licensed · built with Ink" })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-4 max-w-md text-sm leading-relaxed text-foreground/60", children: "The terminal coding agent for autonomous development workflows. Open source, scriptable, and built to keep coding fast inside your terminal." }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "editorial-label mt-4 text-foreground/45", children: "MIT licensed · built with Ink" })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "editorial-label mb-4 text-muted-foreground", children: "Product" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "editorial-label mb-4 text-foreground/45", children: "Product" }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2 text-sm", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#install", className: "block text-muted-foreground hover:text-foreground", children: "install" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#features", className: "block text-muted-foreground hover:text-foreground", children: "features" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/docs", className: "block text-muted-foreground hover:text-foreground", children: "docs" })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#install", className: "block text-foreground/60 transition-colors hover:text-foreground", children: "install" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#features", className: "block text-foreground/60 transition-colors hover:text-foreground", children: "features" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/docs", className: "block text-foreground/60 transition-colors hover:text-foreground", children: "docs" })
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "editorial-label mb-4 text-muted-foreground", children: "Community" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "editorial-label mb-4 text-foreground/45", children: "Community" }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2 text-sm", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(
             "a",
@@ -45,7 +45,7 @@ function SiteFooter() {
               href: "https://github.com/Devang0907/agent-dev",
               target: "_blank",
               rel: "noreferrer",
-              className: "block text-muted-foreground hover:text-foreground",
+              className: "block text-foreground/60 transition-colors hover:text-foreground",
               children: "github"
             }
           ),
@@ -55,7 +55,7 @@ function SiteFooter() {
               href: "https://www.npmjs.com/package/@devang0907/agent-dev",
               target: "_blank",
               rel: "noreferrer",
-              className: "block text-muted-foreground hover:text-foreground",
+              className: "block text-foreground/60 transition-colors hover:text-foreground",
               children: "npm"
             }
           ),
@@ -65,20 +65,20 @@ function SiteFooter() {
               href: "https://github.com/Devang0907/agent-dev/issues/new",
               target: "_blank",
               rel: "noreferrer",
-              className: "block text-muted-foreground hover:text-foreground",
+              className: "block text-foreground/60 transition-colors hover:text-foreground",
               children: "feedback"
             }
           )
         ] })
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-6 flex flex-col gap-3 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-6 flex flex-col gap-3 text-xs text-foreground/50 sm:flex-row sm:items-center sm:justify-between", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { children: [
         "© ",
         (/* @__PURE__ */ new Date()).getFullYear(),
         " agent-dev. Built for terminal-first development."
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "editorial-label text-muted-foreground", children: "Open source · ship from terminal" })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "editorial-label text-foreground/45", children: "Open source · ship from terminal" })
     ] })
   ] }) });
 }

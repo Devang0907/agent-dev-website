@@ -50,7 +50,7 @@ function Index() {
       <SiteNav variant="landing" />
       <Hero />
       <FeatureSpotlight />
-      <main className="editorial-shell">
+      <main className="mx-3 space-y-4 sm:mx-4 lg:mx-5">
         <Install />
         <Features />
         <CTA />
@@ -325,31 +325,42 @@ function TerminalDemo({ compact = false }: { compact?: boolean }) {
 
 function Install() {
   return (
-    <Section id="install" label="01" title="quick start">
-      <div className="grid gap-6 lg:grid-cols-2">
-        <CodeBlock
-          title="from source"
-          lines={[
-            "$ git clone https://github.com/Devang0907/agent-dev.git",
-            "$ cd agent-dev && npm install",
-            "$ npm run dev",
-          ]}
-        />
-        <CodeBlock title="global install" lines={["$ npm i -g @devang0907/agent-dev", "$ agent"]} />
-      </div>
-      <div className="editorial-card mt-6 p-6 text-xs">
-        <div className="editorial-label mb-3 text-muted-foreground">
-          # set at least one API key · requires Node.js 20+
+    <LandingSection
+      id="install"
+      title="Quick start"
+      subtitle="Install from npm or clone the repo. Set one API key and you're ready to ship from the terminal."
+    >
+      <div className="hero-frame ref-sky-bg editorial-shadow overflow-hidden p-6 sm:p-10">
+        <div className="grid gap-5 lg:grid-cols-2">
+          <TerminalCodeBlock
+            title="from source"
+            lines={[
+              "$ git clone https://github.com/Devang0907/agent-dev.git",
+              "$ cd agent-dev && npm install",
+              "$ npm run dev",
+            ]}
+          />
+          <TerminalCodeBlock
+            title="global install"
+            lines={["$ npm i -g @devang0907/agent-dev", "$ agent"]}
+          />
         </div>
-        <pre className="terminal-mono overflow-x-auto leading-relaxed text-muted-foreground">
-          {`export OPENROUTER_API_KEY=sk-or-...   # free models (default)
+        <div className="mt-5 overflow-hidden rounded-2xl bg-terminal text-terminal-foreground shadow-lg">
+          <div className="border-b border-white/10 px-4 py-2.5">
+            <span className="text-[10px] uppercase tracking-[0.08em] text-white/40">
+              API keys · Node.js 20+
+            </span>
+          </div>
+          <pre className="terminal-mono overflow-x-auto px-5 py-5 text-xs leading-relaxed text-white/75">
+            {`export OPENROUTER_API_KEY=sk-or-...   # free models (default)
 export OPENAI_API_KEY=sk-...          # ChatGPT
 export ANTHROPIC_API_KEY=sk-ant-...   # Claude
 export GROQ_API_KEY=gsk_...           # Groq
 export GEMINI_API_KEY=...             # Google Gemini`}
-        </pre>
+          </pre>
+        </div>
       </div>
-    </Section>
+    </LandingSection>
   );
 }
 
@@ -358,109 +369,125 @@ const FEATURES = [
     title: "Build · Plan · Boss",
     desc: "Switch between full tool access, read-only exploration, or a boss orchestrator that delegates to specialized workers.",
     href: "/docs#agent-modes",
-    color: "text-purple-500",
   },
   {
     title: "20 built-in tools",
     desc: "Read, edit, grep, git, bash, browser, MCP, skills, and more — with approval gates for destructive actions.",
     href: "/docs#tools",
-    color: "text-primary",
   },
   {
     title: "Bring your own model",
     desc: "OpenRouter free tier, Claude, GPT, Groq, or Gemini. Switch models with /model or --model.",
     href: "/docs#providers",
-    color: "text-sky-500",
   },
   {
     title: "Telegram gateway",
     desc: "Chat from your phone with long-polling, inline approvals, reminders, and daily scheduled tasks.",
     href: "/docs#telegram-gateway",
-    color: "text-primary",
   },
   {
     title: "Skills & MCP",
     desc: "Load Vercel Agent Skills and connect MCP servers for filesystem, APIs, and custom tools.",
     href: "/docs#skills",
-    color: "text-sky-500",
   },
   {
     title: "Compaction & rules",
     desc: "Auto-compact long sessions, inject project rules from AGENTS.md, and configure permission presets.",
     href: "/docs#context-compaction",
-    color: "text-muted-foreground",
   },
 ];
 
 function Features() {
   return (
-    <Section id="features" label="02" title="features">
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {FEATURES.map((f) => (
-          <div key={f.title} className="editorial-card p-7">
-            <h3 className={`text-sm font-bold ${f.color}`}>{f.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.desc}</p>
-            <a
-              href={f.href}
-              className="mt-5 inline-block text-xs uppercase tracking-[0.08em] text-foreground hover:underline"
+    <LandingSection
+      id="features"
+      title="Everything in one agent"
+      subtitle="From reading files to running tests — agent-dev keeps your workflow inside the terminal."
+    >
+      <div className="hero-frame editorial-shadow overflow-hidden bg-white/55 p-6 backdrop-blur-sm sm:p-10">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {FEATURES.map((f) => (
+            <div
+              key={f.title}
+              className="rounded-[20px] border border-black/6 bg-white/80 p-6 transition-colors hover:bg-white"
             >
-              read docs →
-            </a>
-          </div>
-        ))}
+              <h3 className="text-sm font-semibold text-foreground">{f.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-foreground/60">{f.desc}</p>
+              <a
+                href={f.href}
+                className="mt-5 inline-block text-[11px] font-medium uppercase tracking-[0.08em] text-foreground/70 transition-colors hover:text-foreground"
+              >
+                read docs →
+              </a>
+            </div>
+          ))}
+        </div>
+        <p className="mt-8 text-center text-sm text-foreground/55">
+          <Link to="/docs" className="font-medium text-foreground transition-colors hover:text-foreground/80">
+            full documentation →
+          </Link>
+        </p>
       </div>
-      <p className="mt-6 text-center text-sm text-muted-foreground">
-        <Link to="/docs" className="text-primary hover:underline">
-          full documentation →
-        </Link>
-      </p>
-    </Section>
+    </LandingSection>
   );
 }
 
 function CTA() {
   return (
-    <section className="editorial-card my-16 p-8 sm:p-12">
-      <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
-        <div>
-          <h2 className="editorial-section-title text-3xl">stop context-switching.</h2>
-          <p className="mt-3 text-sm text-muted-foreground">
-            ship code without leaving the terminal.
-          </p>
+    <section className="pb-12 pt-4 sm:pb-16">
+      <div className="hero-frame editorial-shadow relative min-h-[260px] overflow-hidden sm:min-h-[300px]">
+        <img
+          src="/hero-sky-landscape.jpg"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-linear-to-r from-white/85 via-white/70 to-white/40" />
+        <div className="relative flex h-full min-h-[260px] flex-col items-start justify-center gap-6 p-8 sm:min-h-[300px] sm:flex-row sm:items-center sm:justify-between sm:p-12">
+          <div>
+            <h2 className="ref-section-title text-foreground">Stop context-switching.</h2>
+            <p className="mt-3 max-w-md text-base leading-relaxed text-foreground/65">
+              Ship code without leaving the terminal.
+            </p>
+          </div>
+          <CopyCmd cmd="npm i -g @devang0907/agent-dev" variant="hero" />
         </div>
-        <CopyCmd cmd="npm i -g @devang0907/agent-dev" />
       </div>
     </section>
   );
 }
 
-function Section({
+function LandingSection({
   id,
-  label,
   title,
+  subtitle,
   children,
 }: {
   id: string;
-  label: string;
   title: string;
+  subtitle?: string;
   children: React.ReactNode;
 }) {
   return (
-    <section id={id} className="editorial-section border-t border-border/60">
-      <div className="mb-8 flex items-baseline gap-4">
-        <span className="editorial-label text-muted-foreground">[{label}]</span>
-        <h2 className="editorial-section-title text-3xl sm:text-5xl">{title}</h2>
-      </div>
-      {children}
+    <section id={id} className="scroll-mt-28 py-10 sm:py-14">
+      <h2 className="ref-section-title text-foreground">{title}</h2>
+      {subtitle ? (
+        <p className="mt-4 max-w-2xl text-base leading-relaxed text-foreground/65">{subtitle}</p>
+      ) : null}
+      <div className="mt-8">{children}</div>
     </section>
   );
 }
 
-function CodeBlock({ title, lines }: { title: string; lines: string[] }) {
+function TerminalCodeBlock({ title, lines }: { title: string; lines: string[] }) {
   return (
-    <div className="editorial-card overflow-hidden">
-      <div className="editorial-label border-b border-border/70 px-5 py-3 text-muted-foreground">
-        {title}
+    <div className="overflow-hidden rounded-2xl bg-terminal text-terminal-foreground shadow-lg">
+      <div className="flex items-center justify-between border-b border-white/10 px-4 py-2.5">
+        <span className="text-[10px] uppercase tracking-[0.08em] text-white/40">{title}</span>
+        <div className="flex gap-1.5">
+          <span className="h-2.5 w-2.5 rounded-full bg-red-400/80" />
+          <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/80" />
+          <span className="h-2.5 w-2.5 rounded-full bg-green-400/80" />
+        </div>
       </div>
       <pre className="terminal-mono overflow-x-auto px-5 py-5 text-xs leading-relaxed">
         {lines.map((l) => (
