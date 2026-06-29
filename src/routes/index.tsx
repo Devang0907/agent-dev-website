@@ -150,8 +150,8 @@ function LogoTicker() {
 
   return (
     <div className="relative mb-8 overflow-hidden sm:mb-10" aria-label="Supported AI providers">
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-linear-to-r from-[#d4eaf7] to-transparent sm:w-16" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-linear-to-l from-[#d4eaf7] to-transparent sm:w-16" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-linear-to-r from-[#f3f2ee] to-transparent sm:w-16" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-linear-to-l from-[#f3f2ee] to-transparent sm:w-16" />
       <div className="logo-ticker-track gap-10 sm:gap-14">
         {items.map((provider, i) => (
           <div key={`${provider.name}-${i}`} className="flex shrink-0 items-center gap-3">
@@ -178,13 +178,14 @@ function FeatureSpotlight() {
   const tab = SHOWCASE_TABS.find((t) => t.id === active) ?? SHOWCASE_TABS[0];
 
   return (
-    <section className="mx-3 pt-2 pb-8 sm:mx-4 sm:pt-4 lg:mx-5">
+    <section className="mx-3 pt-10 pb-8 sm:mx-4 sm:pt-14 lg:mx-5">
+      <h2 className="ref-section-title mb-6 text-center text-foreground sm:mb-8">
+        Empowering autonomous development with
+      </h2>
+      <LogoTicker />
+
       <div className="hero-frame ref-sky-bg editorial-shadow overflow-hidden">
-        <div className="border-b border-black/8 px-4 pt-8 sm:px-8 sm:pt-10">
-          <h2 className="ref-section-title mb-6 text-center text-foreground sm:mb-8">
-            Empowering autonomous development with
-          </h2>
-          <LogoTicker />
+        <div className="border-b border-black/8 px-4 pt-6 sm:px-8">
           <div className="flex gap-6 overflow-x-auto pb-0 sm:gap-10">
             {SHOWCASE_TABS.map((item) => (
               <button

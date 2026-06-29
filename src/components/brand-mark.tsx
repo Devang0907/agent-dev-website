@@ -14,7 +14,7 @@ export function BrandMark({ className, inverted = false }: BrandMarkProps) {
       src={LOGO_SRC}
       alt=""
       aria-hidden
-      className={cn("h-4 w-4 shrink-0 object-contain", inverted && "invert", className)}
+      className={cn("h-7 w-7 shrink-0 object-contain", inverted && "invert", className)}
     />
   );
 }
