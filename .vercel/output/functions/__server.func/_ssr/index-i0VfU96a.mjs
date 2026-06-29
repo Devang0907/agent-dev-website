@@ -1,5 +1,5 @@
 import { j as jsxRuntimeExports, r as reactExports } from "../_libs/react.mjs";
-import { S as SiteNav, a as SiteFooter, c as cn } from "./site-nav-B8kotMET.mjs";
+import { S as SiteNav, a as SiteFooter, c as cn } from "./site-nav-Bpy8w57-.mjs";
 import { B as BananaSlug } from "../_libs/github-slugger.mjs";
 import { M as Markdown } from "../_libs/react-markdown.mjs";
 import { r as rehypeSlug } from "../_libs/rehype-slug.mjs";

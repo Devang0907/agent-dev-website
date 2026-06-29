@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { BrowserShowcase } from "@/components/browser-showcase";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
 
@@ -109,13 +110,13 @@ const SHOWCASE_TABS = [
     href: "/docs#agent-modes",
   },
   {
-    id: "tools",
-    label: "Built-in tools",
-    subtitle: "20 terminal tools",
-    title: "Built-in tools",
-    body: "Read, edit, grep, git, bash, browser, MCP, and skills — with approval gates before anything destructive runs in your repo.",
-    cta: "Explore tools",
-    href: "/docs#tools",
+    id: "browser",
+    label: "Browser agent",
+    subtitle: "Shop & book with approval",
+    title: "Browser automation",
+    body: "Let the agent drive a real browser — search Amazon, compare flights, book hotels, and fill checkout flows. Every payment step pauses for your approval before anything is charged.",
+    cta: "Browser automation docs",
+    href: "/docs#browser-automation",
   },
   {
     id: "telegram",
@@ -179,40 +180,36 @@ const TERMINAL_DEMOS: Record<
       </>
     ),
   },
-  tools: {
-    badge: "Build · 20 tools",
-    badgeClass: "text-sky-400",
+  browser: {
+    badge: "Build · Browser",
+    badgeClass: "text-orange-400",
     children: (
       <>
         <span className="text-white/50">$ </span>agent{"\n"}
         <span className="text-primary">◆</span> agent{" "}
         <span className="text-white/40">claude-sonnet-4 · Build</span>
         {"\n\n"}
-        <span className="text-primary">›</span> audit API routes and fix type errors{"\n\n"}
-        <span className="text-green-400">grep</span>{" "}
-        <span className="text-white/60">"any" src/api/**/*.ts</span>
+        <span className="text-primary">›</span> buy a wireless mouse on Amazon under $50{"\n\n"}
+        <span className="text-orange-400">browser</span>{" "}
+        <span className="text-white/60">goto amazon.com</span>
         {"\n"}
-        <span className="text-green-400">read</span>{" "}
-        <span className="text-white/60">src/api/users.ts</span>
+        <span className="text-orange-400">browser</span>{" "}
+        <span className="text-white/60">type "wireless mouse" · click search</span>
         {"\n"}
-        <span className="text-green-400">edit</span>{" "}
-        <span className="text-white/60">src/api/users.ts</span>{" "}
-        <span className="text-white/40">(+12 -4)</span>
-        {"\n"}
-        <span className="text-green-400">git</span>{" "}
-        <span className="text-white/60">diff --stat</span>
+        <span className="text-orange-400">browser</span>{" "}
+        <span className="text-white/60">click product · add to cart</span>
         {"\n"}
         <span className="text-yellow-300">approve?</span>{" "}
-        <span className="text-white/60">bash npm run typecheck</span>
+        <span className="text-white/60">checkout · pay $49.99</span>
         {"\n"}
-        <span className="text-white/60"> ✓ approved</span>
+        <span className="text-white/60"> ✓ approved by user</span>
         {"\n"}
-        <span className="text-green-400">bash</span>{" "}
-        <span className="text-white/60">npm run typecheck</span>
+        <span className="text-orange-400">browser</span>{" "}
+        <span className="text-white/60">confirm order</span>
         {"\n"}
-        <span className="text-white/60"> ✓ 0 errors</span>
+        <span className="text-white/60"> ✓ order placed</span>
         {"\n\n"}
-        <span className="text-white/80">Fixed 3 files. Ready to commit.</span>
+        <span className="text-white/80">Mouse ordered. Receipt saved.</span>
       </>
     ),
   },
@@ -373,11 +370,19 @@ function FeatureSpotlight() {
               className="absolute inset-0 h-full w-full object-cover"
             />
             <div className="absolute inset-0 bg-linear-to-t from-black/25 via-transparent to-sky-200/20" />
-            <div className="absolute inset-x-2 bottom-2 sm:inset-x-4 sm:bottom-4 md:inset-x-6 md:bottom-6">
-              <div className="rounded-xl bg-white/92 p-1.5 shadow-lg backdrop-blur-md sm:rounded-2xl sm:p-2">
-                <TerminalDemo compact variant={active} />
+            {active === "browser" ? (
+              <div className="absolute inset-2 sm:inset-4 md:inset-6">
+                <div className="h-full overflow-hidden rounded-xl bg-white/92 p-1.5 shadow-lg backdrop-blur-md sm:rounded-2xl sm:p-2">
+                  <BrowserShowcase className="h-full" />
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="absolute inset-x-2 bottom-2 sm:inset-x-4 sm:bottom-4 md:inset-x-6 md:bottom-6">
+                <div className="rounded-xl bg-white/92 p-1.5 shadow-lg backdrop-blur-md sm:rounded-2xl sm:p-2">
+                  <TerminalDemo compact variant={active} />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -591,10 +596,10 @@ const FEATURES = [
     tag: "Modes",
   },
   {
-    title: "20 built-in tools",
-    desc: "Read, edit, grep, git, bash, browser, MCP, and skills — with approval gates before anything destructive.",
-    href: "/docs#tools",
-    tag: "Tools",
+    title: "Browser automation",
+    desc: "Shop on Amazon, book flights and hotels, and complete checkouts — with payment approval before anything is charged.",
+    href: "/docs#browser-automation",
+    tag: "Browser",
   },
   {
     title: "Bring your own model",

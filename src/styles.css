@@ -395,6 +395,20 @@
     animation-play-state: paused;
   }
 
+  .browser-demo-cursor {
+    filter: drop-shadow(0 1px 1.5px rgb(0 0 0 / 0.28));
+  }
+
+  .browser-demo-caret {
+    animation: browser-caret-blink 1s steps(2, start) infinite;
+  }
+
+  @keyframes browser-caret-blink {
+    to {
+      visibility: hidden;
+    }
+  }
+
   @keyframes logo-ticker-scroll {
     from {
       transform: translateX(0);

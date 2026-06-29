@@ -104,34 +104,43 @@ function NavLinks({ tone }) {
     select: (state) => state.location.pathname.startsWith("/docs")
   });
   const linkClass = (active) => cn(
-    "transition-colors",
+    "transition-colors whitespace-nowrap text-[11px] uppercase tracking-[0.08em]",
     tone === "light" ? active ? "font-medium text-foreground" : "hover:opacity-100" : active ? "font-medium text-primary-foreground" : "hover:text-primary-foreground"
   );
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/docs", className: linkClass(isOnDocs), children: "docs" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#install", className: linkClass(false), children: "install" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#features", className: linkClass(false), children: "features" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "a",
-      {
-        href: "https://github.com/Devang0907/agent-dev",
-        target: "_blank",
-        rel: "noreferrer",
-        className: linkClass(false),
-        children: "github ↗"
-      }
-    ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "a",
-      {
-        href: "https://github.com/Devang0907/agent-dev/issues/new",
-        target: "_blank",
-        rel: "noreferrer",
-        className: linkClass(false),
-        children: "feedback ↗"
-      }
-    )
-  ] });
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "div",
+    {
+      className: cn(
+        "flex items-center gap-5 lg:gap-6",
+        tone === "light" ? "text-foreground/70" : "text-primary-foreground/70"
+      ),
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/docs", className: linkClass(isOnDocs), children: "docs" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#install", className: linkClass(false), children: "install" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/#features", className: linkClass(false), children: "features" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "a",
+          {
+            href: "https://github.com/Devang0907/agent-dev",
+            target: "_blank",
+            rel: "noreferrer",
+            className: linkClass(false),
+            children: "github ↗"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "a",
+          {
+            href: "https://github.com/Devang0907/agent-dev/issues/new",
+            target: "_blank",
+            rel: "noreferrer",
+            className: linkClass(false),
+            children: "feedback ↗"
+          }
+        )
+      ]
+    }
+  );
 }
 function TryAgentButton({ tone }) {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(
@@ -229,7 +238,7 @@ function NavBar({ tone, invertedLogo = false }) {
               ]
             }
           ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { className: "hidden items-center gap-5 text-[11px] uppercase tracking-[0.08em] lg:flex lg:gap-6", children: tone === "light" ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-foreground/70", children: /* @__PURE__ */ jsxRuntimeExports.jsx(NavLinks, { tone: "light" }) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-primary-foreground/70", children: /* @__PURE__ */ jsxRuntimeExports.jsx(NavLinks, { tone: "dark" }) }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { className: "hidden shrink-0 lg:flex", children: /* @__PURE__ */ jsxRuntimeExports.jsx(NavLinks, { tone }) }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex shrink-0 items-center gap-1.5 sm:gap-2", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(TryAgentButton, { tone }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -314,7 +323,7 @@ function HeroNavBar() {
         ]
       }
     ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { className: "editorial-shadow absolute left-1/2 hidden -translate-x-1/2 items-center gap-5 rounded-full border border-white/60 bg-white/90 px-6 py-2.5 text-[11px] uppercase tracking-[0.08em] text-foreground/70 backdrop-blur-md lg:flex", children: /* @__PURE__ */ jsxRuntimeExports.jsx(NavLinks, { tone: "light" }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { className: "editorial-shadow absolute left-1/2 hidden -translate-x-1/2 rounded-full border border-white/60 bg-white/90 px-6 py-2.5 backdrop-blur-md lg:flex", children: /* @__PURE__ */ jsxRuntimeExports.jsx(NavLinks, { tone: "light" }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex shrink-0 items-center gap-1.5 sm:gap-2", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(TryAgentButton, { tone: "light" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(
