@@ -3,9 +3,9 @@ import { BrandMark } from "@/components/brand-mark";
 
 export function SiteFooter() {
   return (
-    <footer className="mx-3 mt-4 pb-10 sm:mx-4 lg:mx-5">
-      <div className="hero-frame border border-black/6 bg-white/50 px-8 py-12 backdrop-blur-sm sm:px-12 sm:py-14">
-        <div className="grid gap-10 border-b border-black/8 pb-10 md:grid-cols-4">
+    <footer className="mx-2 mt-4 pb-8 sm:mx-4 sm:pb-10 lg:mx-5">
+      <div className="hero-frame border border-black/6 bg-white/50 px-5 py-10 backdrop-blur-sm sm:px-12 sm:py-14">
+        <div className="grid gap-8 border-b border-black/8 pb-8 sm:gap-10 sm:pb-10 md:grid-cols-4">
           <div className="md:col-span-2">
             <div className="flex items-center gap-2.5 text-sm font-semibold text-foreground">
               <BrandMark />

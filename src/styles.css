@@ -61,6 +61,14 @@
   --terminal-foreground: oklch(0.95 0.003 90);
 }
 
+@media (max-width: 639px) {
+  :root {
+    --nav-top: 0.75rem;
+    --nav-height: 56px;
+    --nav-gap: 1rem;
+  }
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
@@ -72,6 +80,7 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "cv01", "cv02";
+    overflow-x: clip;
   }
 
   ::selection {
@@ -86,8 +95,8 @@
     margin-right: auto;
     width: 100%;
     max-width: 1130px;
-    padding-left: clamp(20px, 3vw, 64px);
-    padding-right: clamp(20px, 3vw, 64px);
+    padding-left: clamp(12px, 3vw, 64px);
+    padding-right: clamp(12px, 3vw, 64px);
   }
 
   .nav-offset {
@@ -151,7 +160,7 @@
 
   .nature-hero-title {
     font-family: var(--font-serif);
-    font-size: clamp(2.75rem, 5.8vw, 4.5rem);
+    font-size: clamp(2.25rem, 8.5vw, 4.5rem);
     line-height: 1.02;
     letter-spacing: -0.02em;
     font-weight: 600;
@@ -159,7 +168,7 @@
 
   .ref-section-title {
     font-family: var(--font-serif);
-    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-size: clamp(1.75rem, 5.5vw, 3.25rem);
     line-height: 1.08;
     letter-spacing: -0.02em;
     font-weight: 600;
@@ -170,7 +179,15 @@
   }
 
   .hero-frame {
-    border-radius: clamp(28px, 4vw, 40px);
+    border-radius: clamp(20px, 4vw, 40px);
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
   }
 
   .glass-panel {

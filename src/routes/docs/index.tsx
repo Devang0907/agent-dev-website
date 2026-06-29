@@ -31,13 +31,13 @@ export const Route = createFileRoute("/docs/")({
 
 function DocsPage() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-[#f3f2ee] text-foreground">
       <SiteNav />
-      <main className="editorial-shell nav-offset pb-10 sm:pb-14">
-        <div className="mb-8 border-b border-dashed border-border pb-8">
+      <main className="nav-offset mx-2 pb-8 sm:mx-4 sm:pb-14 lg:mx-auto lg:max-w-[1130px] lg:px-16">
+        <div className="mb-6 border-b border-dashed border-border pb-6 sm:mb-8 sm:pb-8">
           <p className="text-xs text-muted-foreground">[docs]</p>
-          <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">documentation</h1>
-          <p className="mt-3 max-w-2xl text-sm text-muted-foreground">
+          <h1 className="mt-2 text-xl font-bold tracking-tight sm:text-3xl">documentation</h1>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
             Full reference for installing, configuring, and using agent-dev — synced from the{" "}
             <a
               href="https://github.com/Devang0907/agent-dev"
@@ -51,7 +51,7 @@ function DocsPage() {
           </p>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] lg:gap-10 xl:grid-cols-[minmax(0,16.5rem)_minmax(0,1fr)] xl:gap-12">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] lg:gap-10 xl:grid-cols-[minmax(0,16.5rem)_minmax(0,1fr)] xl:gap-12">
           <DocsSidebar items={toc} />
           <MarkdownDoc content={readme} />
         </div>
