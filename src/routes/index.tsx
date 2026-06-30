@@ -6,44 +6,16 @@ import { McpShowcase } from "@/components/mcp-showcase";
 import { TelegramShowcase } from "@/components/telegram-showcase";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
+import { buildSeoHead, siteConfig, softwareApplicationJsonLd } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({
   head: () => ({
-    meta: [
-      { title: "agent-dev — a minimal terminal coding agent" },
-      {
-        name: "description",
-        content:
-          "A minimal terminal coding agent with an Ink TUI. Read and edit code, use MCP servers, load skills, chat via Telegram, and optionally delegate through a boss orchestrator.",
-      },
-      {
-        property: "og:title",
-        content: "agent-dev — terminal coding agent with Ink TUI",
-      },
-      {
-        property: "og:description",
-        content:
-          "Chat with an AI in your terminal. 20 built-in tools, Telegram gateway, browser automation, Build/Plan modes, boss orchestrator, MCP, and Vercel Agent Skills.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
-    ],
-    links: [{ rel: "canonical", href: "/" }],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
-          name: "agent-dev",
-          applicationCategory: "DeveloperApplication",
-          operatingSystem: "macOS, Linux, Windows",
-          offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-          description:
-            "A minimal terminal coding agent with an Ink TUI. ReAct loop with 20 tools, Telegram gateway, browser automation, boss orchestrator, MCP, and skills.",
-        }),
-      },
-    ],
+    ...buildSeoHead({
+      title: siteConfig.title,
+      description: siteConfig.description,
+      path: "/",
+    }),
+    scripts: [softwareApplicationJsonLd()],
   }),
   component: Index,
 });

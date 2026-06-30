@@ -5,27 +5,20 @@ import { MarkdownDoc } from "@/components/markdown-doc";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
 import { parseHeadings } from "@/lib/parse-headings";
+import { buildSeoHead, documentationPageJsonLd } from "@/lib/seo";
 import readme from "../../../content/docs/readme.md?raw";
 
 const toc = parseHeadings(readme);
 
 export const Route = createFileRoute("/docs/")({
   head: () => ({
-    meta: [
-      { title: "Documentation — agent-dev" },
-      {
-        name: "description",
-        content: "How to install, configure, and use agent-dev.",
-      },
-      { property: "og:title", content: "Documentation — agent-dev" },
-      {
-        property: "og:description",
-        content: "How to install, configure, and use agent-dev.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/docs" },
-    ],
-    links: [{ rel: "canonical", href: "/docs" }],
+    ...buildSeoHead({
+      title: "Documentation — agent-dev",
+      description:
+        "Install, configure, and use agent-dev. Terminal coding agent with Ink TUI, MCP, skills, Telegram gateway, and boss orchestrator.",
+      path: "/docs",
+    }),
+    scripts: [documentationPageJsonLd()],
   }),
   component: DocsPage,
 });

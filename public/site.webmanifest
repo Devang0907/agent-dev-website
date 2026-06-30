@@ -1,0 +1,21 @@
+{
+  "name": "agent-dev",
+  "short_name": "agent-dev",
+  "description": "A minimal terminal coding agent with an Ink TUI.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f3f2ee",
+  "theme_color": "#f3f2ee",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/agent-dev-logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
