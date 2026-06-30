@@ -11,6 +11,9 @@ type DemoStep = {
   pointer: boolean;
 };
 
+const SEARCH_QUERY = "wireless mouse";
+const STEP_MS = 3000;
+
 const STEPS: DemoStep[] = [
   {
     url: "amazon.com/s?k=wireless+mouse",
@@ -60,8 +63,18 @@ function measureCursorPos(
   target: HTMLElement,
   container: HTMLElement,
   targetId: DemoTarget,
+  caretEl?: HTMLElement | null,
 ): { x: number; y: number } {
   const cr = container.getBoundingClientRect();
+
+  if (caretEl) {
+    const tr = caretEl.getBoundingClientRect();
+    return {
+      x: tr.right - cr.left + 1,
+      y: tr.top - cr.top + tr.height / 2,
+    };
+  }
+
   const tr = target.getBoundingClientRect();
 
   let x = tr.left - cr.left + tr.width / 2;
@@ -75,8 +88,9 @@ function measureCursorPos(
   return { x, y };
 }
 
+const POINTER_IMAGE = "/pointer.png";
 const POINTER_CURSOR_SIZE = 30;
-const POINTER_HOTSPOT = { x: 185 / 512, y: 85 / 512 };
+const POINTER_HOTSPOT = { x: 192 / 512, y: 2 / 512 };
 
 function ArrowCursor() {
   return (
@@ -91,31 +105,16 @@ function ArrowCursor() {
   );
 }
 
-const POINTER_MASK = "url(/click.png) center / contain no-repeat";
-
 function PointerCursor() {
   return (
-    <div
-      aria-hidden
-      className="relative block select-none"
-      style={{ width: POINTER_CURSOR_SIZE, height: POINTER_CURSOR_SIZE }}
-    >
-      <div
-        className="absolute inset-0 bg-white"
-        style={{
-          WebkitMask: POINTER_MASK,
-          mask: POINTER_MASK,
-        }}
-      />
-      <img
-        src="/click.png"
-        alt=""
-        width={POINTER_CURSOR_SIZE}
-        height={POINTER_CURSOR_SIZE}
-        draggable={false}
-        className="absolute inset-0 h-full w-full"
-      />
-    </div>
+    <img
+      src={POINTER_IMAGE}
+      alt=""
+      width={POINTER_CURSOR_SIZE}
+      height={POINTER_CURSOR_SIZE}
+      draggable={false}
+      className="block select-none"
+    />
   );
 }
 
@@ -153,6 +152,7 @@ function DemoCursor({ pos, visible }: { pos: CursorPos; visible: boolean }) {
 
 export function BrowserShowcase({ className }: { className?: string }) {
   const [step, setStep] = useState(0);
+  const [typedText, setTypedText] = useState("");
   const [cursorPos, setCursorPos] = useState<CursorPos>({
     x: 0,
     y: 0,
@@ -162,8 +162,11 @@ export function BrowserShowcase({ className }: { className?: string }) {
   const [cursorReady, setCursorReady] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const targetsRef = useRef<Partial<Record<DemoTarget, HTMLElement>>>({});
+  const caretAnchorRef = useRef<HTMLSpanElement>(null);
 
   const current = STEPS[step];
+  const isTypingStep = step === 0 && current.target === "search-input";
+  const searchDisplayText = isTypingStep ? typedText : SEARCH_QUERY;
 
   const registerTarget = useCallback((id: DemoTarget, el: HTMLElement | null) => {
     if (el) targetsRef.current[id] = el;
@@ -175,10 +178,11 @@ export function BrowserShowcase({ className }: { className?: string }) {
     const target = targetsRef.current[current.target];
     if (!container || !target) return;
 
-    const { x, y } = measureCursorPos(target, container, current.target);
+    const caretEl = isTypingStep ? caretAnchorRef.current : null;
+    const { x, y } = measureCursorPos(target, container, current.target, caretEl);
     setCursorPos({ x, y, pointer: current.pointer, clicking: false });
     setCursorReady(true);
-  }, [current.target, current.pointer]);
+  }, [current.target, current.pointer, isTypingStep]);
 
   useLayoutEffect(() => {
     setCursorReady(false);
@@ -187,7 +191,39 @@ export function BrowserShowcase({ className }: { className?: string }) {
       requestAnimationFrame(updateCursor);
     });
     return () => cancelAnimationFrame(frame);
-  }, [updateCursor, step, current.scene]);
+  }, [updateCursor, step, current.scene, typedText]);
+
+  useEffect(() => {
+    if (!isTypingStep) {
+      setTypedText("");
+      return;
+    }
+
+    setTypedText("");
+    let index = 0;
+    const timers: number[] = [];
+
+    const typeNext = () => {
+      if (index >= SEARCH_QUERY.length) return;
+
+      index += 1;
+      setTypedText(SEARCH_QUERY.slice(0, index));
+
+      const char = SEARCH_QUERY[index - 1];
+      const delay =
+        char === " "
+          ? 420
+          : index === 8
+            ? 320
+            : 145 + (index % 3) * 18;
+
+      timers.push(window.setTimeout(typeNext, delay));
+    };
+
+    timers.push(window.setTimeout(typeNext, 520));
+
+    return () => timers.forEach((timer) => window.clearTimeout(timer));
+  }, [isTypingStep, step]);
 
   useEffect(() => {
     const container = contentRef.current;
@@ -206,7 +242,7 @@ export function BrowserShowcase({ className }: { className?: string }) {
   useEffect(() => {
     const timer = window.setInterval(() => {
       setStep((s) => (s + 1) % STEPS.length);
-    }, 3000);
+    }, STEP_MS);
     return () => window.clearInterval(timer);
   }, []);
 
@@ -261,9 +297,11 @@ export function BrowserShowcase({ className }: { className?: string }) {
                   highlight("search-input"),
                 )}
               >
-                wireless mouse
-                {current.target === "search-input" ? (
-                  <span className="browser-demo-caret ml-0.5 inline-block h-3 w-px bg-black/70" />
+                {searchDisplayText}
+                {isTypingStep ? (
+                  <span ref={caretAnchorRef} className="inline-flex align-middle">
+                    <span className="browser-demo-caret ml-px inline-block h-3 w-px bg-black/70" />
+                  </span>
                 ) : null}
               </div>
             </div>

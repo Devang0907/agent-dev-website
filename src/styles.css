@@ -87,6 +87,13 @@
     background-color: var(--color-primary);
     color: var(--color-primary-foreground);
   }
+
+  .bg-terminal ::selection,
+  .text-terminal-foreground ::selection,
+  .terminal-mono ::selection {
+    background-color: oklch(0.72 0.11 230);
+    color: oklch(0.14 0.005 90);
+  }
 }
 
 @layer utilities {
@@ -152,6 +159,15 @@
 
   .terminal-mono {
     font-family: var(--font-mono);
+    user-select: text;
+    -webkit-user-select: text;
+  }
+
+  .terminal-selectable,
+  .terminal-selectable * {
+    user-select: text;
+    -webkit-user-select: text;
+    cursor: text;
   }
 
   .font-serif-display {

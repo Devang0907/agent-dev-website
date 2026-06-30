@@ -369,7 +369,7 @@ function FeatureSpotlight() {
               alt=""
               className="absolute inset-0 h-full w-full object-cover"
             />
-            <div className="absolute inset-0 bg-linear-to-t from-black/25 via-transparent to-sky-200/20" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/25 via-transparent to-sky-200/20 pointer-events-none" />
             {active === "browser" ? (
               <div className="absolute inset-2 sm:inset-4 md:inset-6">
                 <div className="h-full overflow-hidden rounded-xl bg-white/92 p-1.5 shadow-lg backdrop-blur-md sm:rounded-2xl sm:p-2">
@@ -393,31 +393,45 @@ function FeatureSpotlight() {
 function CopyCmd({ cmd, variant = "default" }: { cmd: string; variant?: "default" | "hero" }) {
   const [copied, setCopied] = useState(false);
   const isHero = variant === "hero";
+
+  const copy = () => {
+    navigator.clipboard.writeText(cmd);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1400);
+  };
+
+  if (isHero) {
+    return (
+      <div className="inline-flex h-11 w-full max-w-lg items-stretch overflow-hidden rounded-lg bg-foreground sm:w-auto">
+        <div className="flex min-w-0 flex-1 items-center overflow-x-auto">
+          <code className="terminal-mono terminal-selectable whitespace-nowrap px-4 text-left text-xs font-normal normal-case tracking-normal text-background">
+            $ {cmd}
+          </code>
+        </div>
+        <button
+          type="button"
+          onClick={copy}
+          className="shrink-0 border-l border-background/15 px-4 text-xs font-semibold uppercase tracking-[0.08em] text-background/70 transition-colors hover:bg-background/10 hover:text-background"
+        >
+          {copied ? "Copied ✓" : "Copy"}
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <button
-      onClick={() => {
-        navigator.clipboard.writeText(cmd);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 1400);
-      }}
-      className={
-        isHero
-          ? "group inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-foreground px-6 text-xs font-semibold uppercase tracking-[0.08em] text-background transition-opacity hover:opacity-90 sm:w-auto"
-          : "group inline-flex h-11 max-w-full items-center gap-2 overflow-x-auto rounded-full bg-foreground px-4 text-xs font-semibold uppercase tracking-[0.08em] text-background transition-transform hover:scale-[1.02] sm:gap-3 sm:px-5"
-      }
-    >
-      {isHero ? (
-        <span>{copied ? "Copied ✓" : "Get started"}</span>
-      ) : (
-        <>
-          <span>$</span>
-          <span>{cmd}</span>
-          <span className="ml-2 text-[10px] text-background/60 group-hover:text-background">
-            {copied ? "copied ✓" : "copy"}
-          </span>
-        </>
-      )}
-    </button>
+    <div className="group inline-flex h-11 max-w-full items-center gap-2 overflow-x-auto rounded-full bg-foreground px-4 text-xs font-semibold uppercase tracking-[0.08em] text-background sm:gap-3 sm:px-5">
+      <code className="terminal-mono terminal-selectable whitespace-nowrap font-semibold">
+        <span className="text-background/60">$</span> {cmd}
+      </code>
+      <button
+        type="button"
+        onClick={copy}
+        className="shrink-0 text-[10px] text-background/60 transition-colors hover:text-background"
+      >
+        {copied ? "copied ✓" : "copy"}
+      </button>
+    </div>
   );
 }
 
@@ -447,17 +461,23 @@ function TerminalDemo({
         </span>
         <span className={`shrink-0 text-[9px] sm:text-[10px] ${demo.badgeClass}`}>{demo.badge}</span>
       </div>
-      <pre
-        className={`terminal-mono overflow-x-auto overflow-y-hidden ${
-          compact
-            ? "h-[248px] px-3 py-3 text-[9px] leading-relaxed sm:h-[294px] sm:px-4 sm:py-4 sm:text-[10px]"
-            : "overflow-x-auto px-6 py-6 text-[12px] leading-relaxed"
+      <div
+        className={`min-h-0 flex-1 overflow-x-auto overflow-y-auto ${
+          compact ? "max-h-[248px] sm:max-h-[294px]" : ""
         }`}
       >
-        {demo.children}
-        {"\n\n"}
-        <span className="text-primary">›</span> <span className="blink" />
-      </pre>
+        <pre
+          className={`terminal-mono terminal-selectable whitespace-pre-wrap ${
+            compact
+              ? "px-3 py-3 text-[9px] leading-relaxed sm:px-4 sm:py-4 sm:text-[10px]"
+              : "px-6 py-6 text-[12px] leading-relaxed"
+          }`}
+        >
+          {demo.children}
+          {"\n\n"}
+          <span className="text-primary">›</span> <span className="blink pointer-events-none select-none" />
+        </pre>
+      </div>
     </div>
   );
 }
@@ -746,11 +766,11 @@ function TerminalCodeBlock({
           </div>
         </div>
       </div>
-      <pre className="terminal-mono overflow-x-auto px-3 py-3 text-[11px] leading-relaxed sm:px-4 sm:py-4 sm:text-xs">
-        {lines.map((l) => (
-          <div key={l}>{l}</div>
-        ))}
-      </pre>
+      <div className="overflow-x-auto">
+        <pre className="terminal-mono terminal-selectable whitespace-pre px-3 py-3 text-[11px] leading-relaxed sm:px-4 sm:py-4 sm:text-xs">
+          {lines.join("\n")}
+        </pre>
+      </div>
     </div>
   );
 }

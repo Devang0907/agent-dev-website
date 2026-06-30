@@ -25,9 +25,11 @@ const components: Components = {
     );
   },
   pre: ({ children }) => (
-    <pre className="docs-code-block overflow-x-auto rounded-md border border-border bg-terminal p-4 text-xs leading-relaxed text-terminal-foreground">
-      {children}
-    </pre>
+    <div className="docs-code-block overflow-x-auto rounded-md border border-border bg-terminal">
+      <pre className="terminal-mono terminal-selectable whitespace-pre-wrap p-4 text-xs leading-relaxed text-terminal-foreground">
+        {children}
+      </pre>
+    </div>
   ),
   code: ({ className, children, ...props }) => {
     const isBlock = className?.includes("language-");
