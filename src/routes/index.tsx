@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { BrowserShowcase } from "@/components/browser-showcase";
+import { BossShowcase } from "@/components/boss-showcase";
+import { McpShowcase } from "@/components/mcp-showcase";
+import { TelegramShowcase } from "@/components/telegram-showcase";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
 
@@ -138,151 +141,6 @@ const SHOWCASE_TABS = [
   },
 ] as const;
 
-type ShowcaseTabId = (typeof SHOWCASE_TABS)[number]["id"];
-
-const TERMINAL_DEMOS: Record<
-  ShowcaseTabId,
-  { badge: string; badgeClass: string; children: React.ReactNode }
-> = {
-  boss: {
-    badge: "BOSS · Build",
-    badgeClass: "text-purple-400",
-    children: (
-      <>
-        <span className="text-white/50">$ </span>agent --boss{"\n"}
-        <span className="text-primary">◆</span> agent{" "}
-        <span className="text-white/40">free/llama-3.3-70b · BOSS</span>
-        {"\n\n"}
-        <span className="text-primary">›</span> refactor auth module and run tests{"\n\n"}
-        <span className="text-purple-400">boss</span>{" "}
-        <span className="text-white/60">delegate → explore worker</span>
-        {"\n"}
-        <span className="text-green-400">grep</span>{" "}
-        <span className="text-white/60">auth middleware patterns</span>
-        {"\n"}
-        <span className="text-purple-400">boss</span>{" "}
-        <span className="text-white/60">delegate → implement worker</span>
-        {"\n"}
-        <span className="text-green-400">edit</span>{" "}
-        <span className="text-white/60">src/auth.ts</span>{" "}
-        <span className="text-white/40">(+24 -11)</span>
-        {"\n"}
-        <span className="text-purple-400">boss</span>{" "}
-        <span className="text-white/60">delegate → shell worker</span>
-        {"\n"}
-        <span className="text-green-400">bash</span>{" "}
-        <span className="text-white/60">npm test</span>
-        {"\n"}
-        <span className="text-white/60"> ✓ 42 passed</span>
-        {"\n\n"}
-        <span className="text-white/80">Auth refactor complete. Trace: </span>
-        <span className="text-yellow-300">/trace</span>
-      </>
-    ),
-  },
-  browser: {
-    badge: "Build · Browser",
-    badgeClass: "text-orange-400",
-    children: (
-      <>
-        <span className="text-white/50">$ </span>agent{"\n"}
-        <span className="text-primary">◆</span> agent{" "}
-        <span className="text-white/40">claude-sonnet-4 · Build</span>
-        {"\n\n"}
-        <span className="text-primary">›</span> buy a wireless mouse on Amazon under $50{"\n\n"}
-        <span className="text-orange-400">browser</span>{" "}
-        <span className="text-white/60">goto amazon.com</span>
-        {"\n"}
-        <span className="text-orange-400">browser</span>{" "}
-        <span className="text-white/60">type "wireless mouse" · click search</span>
-        {"\n"}
-        <span className="text-orange-400">browser</span>{" "}
-        <span className="text-white/60">click product · add to cart</span>
-        {"\n"}
-        <span className="text-yellow-300">approve?</span>{" "}
-        <span className="text-white/60">checkout · pay $49.99</span>
-        {"\n"}
-        <span className="text-white/60"> ✓ approved by user</span>
-        {"\n"}
-        <span className="text-orange-400">browser</span>{" "}
-        <span className="text-white/60">confirm order</span>
-        {"\n"}
-        <span className="text-white/60"> ✓ order placed</span>
-        {"\n\n"}
-        <span className="text-white/80">Mouse ordered. Receipt saved.</span>
-      </>
-    ),
-  },
-  telegram: {
-    badge: "Telegram · Build",
-    badgeClass: "text-blue-400",
-    children: (
-      <>
-        <span className="text-white/50">$ </span>agent --telegram{"\n"}
-        <span className="text-primary">◆</span> agent{" "}
-        <span className="text-white/40">gateway listening · Build</span>
-        {"\n\n"}
-        <span className="text-blue-400">telegram</span>{" "}
-        <span className="text-white/60">@you: run tests then deploy staging</span>
-        {"\n\n"}
-        <span className="text-green-400">bash</span>{" "}
-        <span className="text-white/60">npm test</span>
-        {"\n"}
-        <span className="text-white/60"> ✓ 42 passed</span>
-        {"\n"}
-        <span className="text-yellow-300">approve?</span>{" "}
-        <span className="text-white/60">bash npm run deploy:staging</span>
-        {"\n"}
-        <span className="text-blue-400">telegram</span>{" "}
-        <span className="text-white/60">inline ✅ approved from phone</span>
-        {"\n"}
-        <span className="text-green-400">bash</span>{" "}
-        <span className="text-white/60">npm run deploy:staging</span>
-        {"\n"}
-        <span className="text-white/60"> ✓ deployed staging.agent.dev</span>
-        {"\n\n"}
-        <span className="text-blue-400">telegram</span>{" "}
-        <span className="text-white/60">agent: staging is live 🚀</span>
-        {"\n"}
-        <span className="text-white/40">daily task scheduled · 09:00 UTC</span>
-      </>
-    ),
-  },
-  mcp: {
-    badge: "Build · MCP",
-    badgeClass: "text-emerald-400",
-    children: (
-      <>
-        <span className="text-white/50">$ </span>agent{"\n"}
-        <span className="text-primary">◆</span> agent{" "}
-        <span className="text-white/40">gpt-4.1 · Build</span>
-        {"\n\n"}
-        <span className="text-primary">›</span> check deploy status and load project skills{"\n\n"}
-        <span className="text-emerald-400">mcp</span>{" "}
-        <span className="text-white/60">vercel → list_deployments</span>
-        {"\n"}
-        <span className="text-emerald-400">skill</span>{" "}
-        <span className="text-white/60">vercel-agent-skills/deploy</span>
-        {"\n"}
-        <span className="text-green-400">read</span>{" "}
-        <span className="text-white/60">.vercel/project.json</span>
-        {"\n"}
-        <span className="text-emerald-400">mcp</span>{" "}
-        <span className="text-white/60">filesystem → read AGENTS.md</span>
-        {"\n"}
-        <span className="text-emerald-400">skill</span>{" "}
-        <span className="text-white/60">cursor-rules → inject rules</span>
-        {"\n"}
-        <span className="text-white/60"> ✓ 2 MCP servers · 4 skills loaded</span>
-        {"\n\n"}
-        <span className="text-white/80">Production </span>
-        <span className="text-emerald-400">READY</span>
-        <span className="text-white/80"> · agent-dev-a3f91c</span>
-      </>
-    ),
-  },
-};
-
 const PROVIDERS = [
   { name: "OpenAI", logo: "/logos/openai.svg", color: "#10A37F" },
   { name: "Anthropic", logo: "/logos/anthropic.svg", color: "#CC785C" },
@@ -370,19 +228,19 @@ function FeatureSpotlight() {
               className="absolute inset-0 h-full w-full object-cover"
             />
             <div className="absolute inset-0 bg-linear-to-t from-black/25 via-transparent to-sky-200/20 pointer-events-none" />
-            {active === "browser" ? (
-              <div className="absolute inset-2 sm:inset-4 md:inset-6">
-                <div className="h-full overflow-hidden rounded-xl bg-white/92 p-1.5 shadow-lg backdrop-blur-md sm:rounded-2xl sm:p-2">
+            <div className="absolute inset-2 sm:inset-4 md:inset-6">
+              <div className="h-full overflow-hidden rounded-xl bg-white/92 p-1.5 shadow-lg backdrop-blur-md sm:rounded-2xl sm:p-2">
+                {active === "boss" ? (
+                  <BossShowcase className="h-full" />
+                ) : active === "browser" ? (
                   <BrowserShowcase className="h-full" />
-                </div>
+                ) : active === "telegram" ? (
+                  <TelegramShowcase className="h-full" />
+                ) : (
+                  <McpShowcase className="h-full" />
+                )}
               </div>
-            ) : (
-              <div className="absolute inset-x-2 bottom-2 sm:inset-x-4 sm:bottom-4 md:inset-x-6 md:bottom-6">
-                <div className="rounded-xl bg-white/92 p-1.5 shadow-lg backdrop-blur-md sm:rounded-2xl sm:p-2">
-                  <TerminalDemo compact variant={active} />
-                </div>
-              </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
@@ -431,53 +289,6 @@ function CopyCmd({ cmd, variant = "default" }: { cmd: string; variant?: "default
       >
         {copied ? "copied ✓" : "copy"}
       </button>
-    </div>
-  );
-}
-
-function TerminalDemo({
-  compact = false,
-  variant = "boss",
-}: {
-  compact?: boolean;
-  variant?: ShowcaseTabId;
-}) {
-  const demo = TERMINAL_DEMOS[variant];
-
-  return (
-    <div
-      className={`flex flex-col overflow-hidden bg-terminal text-terminal-foreground ${
-        compact ? "h-[280px] rounded-lg sm:h-[330px] sm:rounded-xl" : "rounded-[18px] sm:rounded-[20px]"
-      }`}
-    >
-      <div className="flex h-8 shrink-0 items-center justify-between gap-2 border-b border-white/10 px-2.5 sm:h-9 sm:px-3">
-        <div className="flex shrink-0 gap-1.5">
-          <span className="h-2 w-2 rounded-full bg-red-400/80 sm:h-2.5 sm:w-2.5" />
-          <span className="h-2 w-2 rounded-full bg-yellow-400/80 sm:h-2.5 sm:w-2.5" />
-          <span className="h-2 w-2 rounded-full bg-green-400/80 sm:h-2.5 sm:w-2.5" />
-        </div>
-        <span className="hidden min-w-0 truncate text-[9px] text-white/40 sm:inline sm:text-[10px]">
-          ~/projects/app — agent-dev
-        </span>
-        <span className={`shrink-0 text-[9px] sm:text-[10px] ${demo.badgeClass}`}>{demo.badge}</span>
-      </div>
-      <div
-        className={`min-h-0 flex-1 overflow-x-auto overflow-y-auto ${
-          compact ? "max-h-[248px] sm:max-h-[294px]" : ""
-        }`}
-      >
-        <pre
-          className={`terminal-mono terminal-selectable whitespace-pre-wrap ${
-            compact
-              ? "px-3 py-3 text-[9px] leading-relaxed sm:px-4 sm:py-4 sm:text-[10px]"
-              : "px-6 py-6 text-[12px] leading-relaxed"
-          }`}
-        >
-          {demo.children}
-          {"\n\n"}
-          <span className="text-primary">›</span> <span className="blink pointer-events-none select-none" />
-        </pre>
-      </div>
     </div>
   );
 }
