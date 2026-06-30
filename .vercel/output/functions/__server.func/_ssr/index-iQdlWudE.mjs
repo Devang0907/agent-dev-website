@@ -211,7 +211,7 @@ const components = {
       }
     );
   },
-  pre: ({ children }) => /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "docs-code-block overflow-x-auto rounded-md border border-border bg-terminal p-4 text-xs leading-relaxed text-terminal-foreground", children }),
+  pre: ({ children }) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "docs-code-block overflow-x-auto rounded-md border border-border bg-terminal", children: /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "terminal-mono terminal-selectable whitespace-pre-wrap p-4 text-xs leading-relaxed text-terminal-foreground", children }) }),
   code: ({ className, children, ...props }) => {
     const isBlock = className?.includes("language-");
     if (isBlock) {
