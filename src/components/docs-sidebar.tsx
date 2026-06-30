@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
+import { scrollToDocHeading } from "@/lib/docs-navigation";
 import type { TocItem } from "@/lib/parse-headings";
 
 type DocsSidebarProps = {
@@ -98,12 +99,8 @@ export function DocsSidebar({ items }: DocsSidebarProps) {
   }, [items]);
 
   const scrollTo = (id: string) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    const top = el.getBoundingClientRect().top + window.scrollY - 116;
-    window.scrollTo({ top, behavior: "smooth" });
+    scrollToDocHeading(id);
     setActiveId(id);
-    history.replaceState(null, "", `#${id}`);
   };
 
   return (

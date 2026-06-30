@@ -1,10 +1,23 @@
 import { j as jsxRuntimeExports, r as reactExports } from "../_libs/react.mjs";
+import { _ as _e } from "../_libs/cmdk.mjs";
 import { S as SiteNav, a as SiteFooter, c as cn } from "./site-nav-Bpy8w57-.mjs";
+import { R as Root, P as Portal, C as Content, a as Close, O as Overlay, T as Title, D as Description } from "../_libs/radix-ui__react-dialog.mjs";
 import { B as BananaSlug } from "../_libs/github-slugger.mjs";
+import { S as Search, X } from "../_libs/lucide-react.mjs";
 import { M as Markdown } from "../_libs/react-markdown.mjs";
 import { r as rehypeSlug } from "../_libs/rehype-slug.mjs";
 import { r as rehypeAutolinkHeadings } from "../_libs/rehype-autolink-headings.mjs";
 import { r as remarkGfm } from "../_libs/remark-gfm.mjs";
+import "../_libs/radix-ui__react-primitive.mjs";
+import "../_libs/react-dom.mjs";
+import "util";
+import "crypto";
+import "async_hooks";
+import "stream";
+import "../_libs/radix-ui__react-slot.mjs";
+import "../_libs/radix-ui__react-compose-refs.mjs";
+import "../_libs/radix-ui__react-id.mjs";
+import "../_libs/@radix-ui/react-use-layout-effect+[...].mjs";
 import "../_libs/tanstack__react-router.mjs";
 import "../_libs/tanstack__router-core.mjs";
 import "../_libs/tanstack__history.mjs";
@@ -13,15 +26,27 @@ import "../_libs/seroval.mjs";
 import "../_libs/seroval-plugins.mjs";
 import "node:stream/web";
 import "node:stream";
-import "../_libs/react-dom.mjs";
-import "util";
-import "crypto";
-import "async_hooks";
-import "stream";
 import "../_libs/isbot.mjs";
 import "../_libs/clsx.mjs";
 import "../_libs/tailwind-merge.mjs";
-import "../_libs/lucide-react.mjs";
+import "../_libs/radix-ui__primitive.mjs";
+import "../_libs/radix-ui__react-context.mjs";
+import "../_libs/@radix-ui/react-use-controllable-state+[...].mjs";
+import "../_libs/@radix-ui/react-dismissable-layer+[...].mjs";
+import "../_libs/@radix-ui/react-use-callback-ref+[...].mjs";
+import "../_libs/@radix-ui/react-use-escape-keydown+[...].mjs";
+import "../_libs/radix-ui__react-focus-scope.mjs";
+import "../_libs/radix-ui__react-portal.mjs";
+import "../_libs/radix-ui__react-presence.mjs";
+import "../_libs/radix-ui__react-focus-guards.mjs";
+import "../_libs/react-remove-scroll.mjs";
+import "tslib";
+import "../_libs/react-remove-scroll-bar.mjs";
+import "../_libs/react-style-singleton.mjs";
+import "../_libs/get-nonce.mjs";
+import "../_libs/use-sidecar.mjs";
+import "../_libs/use-callback-ref.mjs";
+import "../_libs/aria-hidden.mjs";
 import "../_libs/devlop.mjs";
 import "../_libs/unified.mjs";
 import "../_libs/bail.mjs";
@@ -97,6 +122,235 @@ import "../_libs/mdast-util-to-markdown.mjs";
 import "../_libs/longest-streak.mjs";
 import "../_libs/mdast-util-phrasing.mjs";
 import "../_libs/mdast-util-gfm-task-list-item.mjs";
+const Dialog = Root;
+const DialogPortal = Portal;
+const DialogOverlay = reactExports.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+  Overlay,
+  {
+    ref,
+    className: cn(
+      "fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      className
+    ),
+    ...props
+  }
+));
+DialogOverlay.displayName = Overlay.displayName;
+const DialogContent = reactExports.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogPortal, { children: [
+  /* @__PURE__ */ jsxRuntimeExports.jsx(DialogOverlay, {}),
+  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    Content,
+    {
+      ref,
+      className: cn(
+        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 sm:rounded-lg",
+        className
+      ),
+      ...props,
+      children: [
+        children,
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Close, { className: "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background cursor-pointer transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "h-4 w-4" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "sr-only", children: "Close" })
+        ] })
+      ]
+    }
+  )
+] }));
+DialogContent.displayName = Content.displayName;
+const DialogTitle = reactExports.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+  Title,
+  {
+    ref,
+    className: cn("text-lg font-semibold leading-none tracking-tight", className),
+    ...props
+  }
+));
+DialogTitle.displayName = Title.displayName;
+const DialogDescription = reactExports.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+  Description,
+  {
+    ref,
+    className: cn("text-sm text-muted-foreground", className),
+    ...props
+  }
+));
+DialogDescription.displayName = Description.displayName;
+const Command = reactExports.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+  _e,
+  {
+    ref,
+    className: cn(
+      "flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground",
+      className
+    ),
+    ...props
+  }
+));
+Command.displayName = _e.displayName;
+const CommandDialog = ({ children, ...props }) => {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Dialog, { ...props, children: /* @__PURE__ */ jsxRuntimeExports.jsx(DialogContent, { className: "overflow-hidden p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Command, { className: "[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5", children }) }) });
+};
+const CommandInput = reactExports.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center border-b px-3", "cmdk-input-wrapper": "", children: [
+  /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "mr-2 h-4 w-4 shrink-0 opacity-50" }),
+  /* @__PURE__ */ jsxRuntimeExports.jsx(
+    _e.Input,
+    {
+      ref,
+      className: cn(
+        "flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
+        className
+      ),
+      ...props
+    }
+  )
+] }));
+CommandInput.displayName = _e.Input.displayName;
+const CommandList = reactExports.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+  _e.List,
+  {
+    ref,
+    className: cn("max-h-[300px] overflow-y-auto overflow-x-hidden", className),
+    ...props
+  }
+));
+CommandList.displayName = _e.List.displayName;
+const CommandEmpty = reactExports.forwardRef((props, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(_e.Empty, { ref, className: "py-6 text-center text-sm", ...props }));
+CommandEmpty.displayName = _e.Empty.displayName;
+const CommandGroup = reactExports.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+  _e.Group,
+  {
+    ref,
+    className: cn(
+      "overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground",
+      className
+    ),
+    ...props
+  }
+));
+CommandGroup.displayName = _e.Group.displayName;
+const CommandSeparator = reactExports.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+  _e.Separator,
+  {
+    ref,
+    className: cn("-mx-1 h-px bg-border", className),
+    ...props
+  }
+));
+CommandSeparator.displayName = _e.Separator.displayName;
+const CommandItem = reactExports.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+  _e.Item,
+  {
+    ref,
+    className: cn(
+      "relative flex cursor-default gap-2 select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+      className
+    ),
+    ...props
+  }
+));
+CommandItem.displayName = _e.Item.displayName;
+const CommandShortcut = ({ className, ...props }) => {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "span",
+    {
+      className: cn("ml-auto text-xs tracking-widest text-muted-foreground", className),
+      ...props
+    }
+  );
+};
+CommandShortcut.displayName = "CommandShortcut";
+function scrollToDocHeading(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const top = el.getBoundingClientRect().top + window.scrollY - 116;
+  window.scrollTo({ top, behavior: "smooth" });
+  history.replaceState(null, "", `#${id}`);
+}
+function groupTocItems$1(items) {
+  const groups = [];
+  let current = null;
+  for (const item of items) {
+    if (item.level === 2) {
+      current = { section: item, children: [] };
+      groups.push(current);
+    } else if (current) {
+      current.children.push(item);
+    }
+  }
+  return groups;
+}
+function isMac() {
+  return typeof navigator !== "undefined" && /Mac|iPhone|iPad|iPod/.test(navigator.platform);
+}
+function DocsSearch({ items, className }) {
+  const [open, setOpen] = reactExports.useState(false);
+  const groups = reactExports.useMemo(() => groupTocItems$1(items), [items]);
+  const shortcutLabel = isMac() ? "⌘K" : "Ctrl+K";
+  reactExports.useEffect(() => {
+    const onKeyDown = (event) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        setOpen(true);
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+  const goTo = (id) => {
+    scrollToDocHeading(id);
+    setOpen(false);
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "button",
+      {
+        type: "button",
+        onClick: () => setOpen(true),
+        className: cn(
+          "inline-flex h-9 w-full items-center gap-2 rounded-md border border-border bg-card px-3 text-sm text-muted-foreground shadow-sm transition-colors hover:border-foreground/20 hover:text-foreground sm:w-56 lg:w-64",
+          className
+        ),
+        "aria-label": "Search documentation",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "h-4 w-4 shrink-0 opacity-60" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1 truncate text-left text-xs sm:text-sm", children: "Search docs…" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("kbd", { className: "hidden shrink-0 rounded border border-border bg-secondary/60 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground sm:inline", children: shortcutLabel })
+        ]
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(CommandDialog, { open, onOpenChange: setOpen, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(CommandInput, { placeholder: "Search documentation…" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(CommandList, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(CommandEmpty, { children: "No results found." }),
+        groups.map((group) => /* @__PURE__ */ jsxRuntimeExports.jsxs(CommandGroup, { heading: group.section.text, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            CommandItem,
+            {
+              value: group.section.text,
+              onSelect: () => goTo(group.section.id),
+              children: group.section.text
+            }
+          ),
+          group.children.map((child) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+            CommandItem,
+            {
+              value: `${group.section.text} ${child.text}`,
+              onSelect: () => goTo(child.id),
+              className: "pl-6",
+              children: child.text
+            },
+            child.id
+          ))
+        ] }, group.section.id))
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-end border-t border-border px-3 py-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(CommandShortcut, { className: "text-[10px]", children: [
+        shortcutLabel,
+        " to open"
+      ] }) })
+    ] })
+  ] });
+}
 function groupTocItems(items) {
   const groups = [];
   let current = null;
@@ -164,12 +418,8 @@ function DocsSidebar({ items }) {
     return () => observer.disconnect();
   }, [items]);
   const scrollTo = (id) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    const top = el.getBoundingClientRect().top + window.scrollY - 116;
-    window.scrollTo({ top, behavior: "smooth" });
+    scrollToDocHeading(id);
     setActiveId(id);
-    history.replaceState(null, "", `#${id}`);
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("nav", { className: "docs-toc-mobile mb-8 lg:hidden", children: [
@@ -262,15 +512,18 @@ function DocsPage() {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-[#f3f2ee] text-foreground", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(SiteNav, {}),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { className: "nav-offset mx-2 pb-8 sm:mx-4 sm:pb-14 lg:mx-auto lg:max-w-[1130px] lg:px-16", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6 border-b border-dashed border-border pb-6 sm:mb-8 sm:pb-8", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground", children: "[docs]" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "mt-2 text-xl font-bold tracking-tight sm:text-3xl", children: "documentation" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground", children: [
-          "Full reference for installing, configuring, and using agent-dev — synced from the",
-          " ",
-          /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "https://github.com/Devang0907/agent-dev", target: "_blank", rel: "noreferrer", className: "text-primary hover:underline", children: "official README" }),
-          "."
-        ] })
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6 flex flex-col gap-4 border-b border-dashed border-border pb-6 sm:mb-8 sm:flex-row sm:items-end sm:justify-between sm:gap-6 sm:pb-8", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground", children: "[docs]" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "mt-2 text-xl font-bold tracking-tight sm:text-3xl", children: "documentation" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground", children: [
+            "Full reference for installing, configuring, and using agent-dev — synced from the",
+            " ",
+            /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "https://github.com/Devang0907/agent-dev", target: "_blank", rel: "noreferrer", className: "text-primary hover:underline", children: "official README" }),
+            "."
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(DocsSearch, { items: toc, className: "shrink-0 sm:ml-auto" })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid gap-6 lg:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] lg:gap-10 xl:grid-cols-[minmax(0,16.5rem)_minmax(0,1fr)] xl:gap-12", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(DocsSidebar, { items: toc }),
